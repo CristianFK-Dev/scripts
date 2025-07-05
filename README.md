@@ -40,6 +40,6 @@ Colección de scripts Bash / Python para automatizar la configuración inicial d
 
 
 🙋 Autor
-Desarrollado por Cristian Fernández Kittler
-📧 contacto: [cfk2424@gmail.com]
-🔗 LinkedIn: [https://www.linkedin.com/in/cristian-fk/] 
+- Desarrollado por Cristian Fernández Kittler
+- 📧 contacto: [cfk2424@gmail.com]
+- 🔗 LinkedIn: [https://www.linkedin.com/in/cristian-fk/] 
