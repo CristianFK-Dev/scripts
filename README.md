@@ -1,4 +1,4 @@
-# 🛠️ Linux Catalog Scripts
+# 🛠️ Linux and Windows Catalog Scripts
 
 Colección de scripts Bash / Python para automatizar la configuración, instalaciòn y uso de aplicaciones en sistemas operativos Linux y Windows. 
 Ideal para administradores de sistemas, entornos de testing, laboratorios o despliegues rápidos.
@@ -25,16 +25,22 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 ---
 
-## 🤚🏽 Permisos y ejecuciòn
+## 🤚🏽 Permisos y ejecuciòn LINUX
 
-- Dar los permisos para ejecuciòn: chmod +x script.sh
-- Ejecutar como root o con sudo: sudo ./script.sh o sudo bash script.sh
+- Dar los permisos para ejecuciòn:(`chmod +x script.sh`)
+- Ejecutar como root o con sudo: (`sudo ./script.sh`) o (`sudo bash script.sh`)
 
 ---
 
-## 📋 Lista de scripts
+## 📋 Lista de scripts LINUX🐧
 
 - 001-apt-upgrade.sh
+
+---
+
+## 📋 Lista de scripts WINDOWS🪟
+
+- Proximamente...
 
 ---
 
