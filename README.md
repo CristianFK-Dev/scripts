@@ -27,8 +27,8 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 ## 🤚🏽 Permisos y ejecuciòn LINUX
 
-- Dar los permisos para ejecuciòn:(`chmod +x script.sh`)
-- Ejecutar como root o con sudo: (`sudo ./script.sh`) o (`sudo bash script.sh`)
+- Dar los permisos para ejecuciòn:`chmod +x script.sh`
+- Ejecutar como root o con sudo: `sudo ./script.sh` o `sudo bash script.sh`
 
 ---
 
