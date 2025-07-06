@@ -1,6 +1,7 @@
 # 🛠️ Linux Catalog Scripts
 
-Colección de scripts Bash / Python para automatizar la configuración inicial de servidores Linux. Ideal para administradores de sistemas, entornos de testing, laboratorios o despliegues rápidos.
+Colección de scripts Bash / Python para automatizar la configuración, instalaciòn y uso de aplicaciones en sistemas operativos Linux y Windows. 
+Ideal para administradores de sistemas, entornos de testing, laboratorios o despliegues rápidos.
 
 ---
 
@@ -18,21 +19,28 @@ Colección de scripts Bash / Python para automatizar la configuración inicial d
 
 ## 🖥️ Sistemas operativos soportados
 
-- ✅ Debian 10/11/12
-- ✅ Ubuntu 20.04/22.04
+- 🐧 Debian 10/11/12
+- 🐧 Ubuntu 20.04/22.04
+- 🪟 Windows 10/11
+
+---
+
+## 🤚🏽 Permisos y ejecuciòn
+
+- Dar los permisos para ejecuciòn: chmod +x script.sh
+- Ejecutar como root o con sudo: sudo ./script.sh o sudo bash script.sh
 
 ---
 
 ## 📋 Lista de scripts
 
-- Proximamente ...
+- 001-apt-upgrade.sh
 
 ---
 
 ## ⚙️ Instalación rápida
 
 - Proximamente ...
-
 
 
 ---
