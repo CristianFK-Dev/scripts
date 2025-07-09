@@ -1,13 +1,30 @@
 #!/bin/bash
+
+# ────────────────────────────────────────────────────────────────────────────────
+# 📄 Documentación 001-update
+# Este script permite:
+#   - Ejecutar `apt update` para actualizar el índice de paquetes
+#   - Listar paquetes actualizables numerados (nombre y versión)
+#   - Permitir seleccionar uno o varios paquetes por número
+#   - Instalar los seleccionados, o todos con la opción 'a'
+#   - Mostrar informe final de paquetes instalados y sus versiones
+# Uso: sudo ./001-update.sh
+# ────────────────────────────────────────────────────────────────────────────────
+
 set -euo pipefail
+
+# Mostrar documentación y esperar
+echo -e "\n🧾 Este script actualiza la lista de paquetes APT y permite instalar selectivamente los actualizables."
+echo -e "Podés elegir uno o varios por número, o instalar todos.\n"
+read -rp "Presioná ENTER para continuar..."
 
 # Verificamos si es root
 if [[ $EUID -ne 0 ]]; then
-    echo "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"
+    echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"
     exit 1
 fi
 
-echo "\n🔄 Actualizando lista de paquetes...\n"
+echo -e "\n🔄 Actualizando lista de paquetes...\n"
 apt update -y > /dev/null
 
 # Obtener lista de paquetes actualizables
@@ -15,7 +32,7 @@ mapfile -t packages < <(apt list --upgradable 2>/dev/null | grep -v "Listing..."
 mapfile -t rawinfo < <(apt list --upgradable 2>/dev/null | grep -v "Listing...")
 
 if [ ${#packages[@]} -eq 0 ]; then
-    echo "\n✅ Todo está actualizado. No hay paquetes pendientes.\n"
+    echo -e "\n✅ Todo está actualizado. No hay paquetes pendientes.\n"
     exit 0
 fi
 
@@ -27,11 +44,15 @@ read -rp "Tu elección: " choice
 
 to_install=()
 
-if [[ $choice == "a" ]]; then
+if [[ "$choice" == "a" ]]; then
     # Instalar todos
     to_install=( $(printf "%s\n" "${rawinfo[@]}" | awk -F'/' '{print $1}') )
 else
     for num in $choice; do
+        if ! [[ "$num" =~ ^[0-9]+$ ]] || (( num < 1 || num > ${#packages[@]} )); then
+            echo -e "\n❌ Número inválido: $num"
+            exit 1
+        fi
         pkg_line="${packages[$((num-1))]}"
         pkg_name=$(echo "$pkg_line" | awk '{print $2}')
         to_install+=( "$pkg_name" )

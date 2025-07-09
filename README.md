@@ -1,7 +1,8 @@
-# 🛠️ Linux and Windows Catalog Scripts
+## 🛠️ Linux and Windows Catalog Scripts
 
-Colección de scripts Bash / Python para automatizar la configuración, instalaciòn y uso de aplicaciones en sistemas operativos Linux y Windows. 
+Colección de scripts Bash / Python para automatizar la configuración, instalaciòn, mantenimiento y uso de aplicaciones en sistemas operativos Linux y Windows. 
 Ideal para administradores de sistemas, entornos de testing, laboratorios o despliegues rápidos.
+`Cada script contiene la documentaciòn sobre su funcionamiento.`
 
 ---
 
