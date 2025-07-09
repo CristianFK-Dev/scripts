@@ -2,7 +2,7 @@
 
 Colección de scripts Bash / Python para automatizar la configuración, instalaciòn, mantenimiento y uso de aplicaciones en sistemas operativos Linux y Windows. 
 Ideal para administradores de sistemas, entornos de testing, laboratorios o despliegues rápidos.
-`Cada script contiene la documentaciòn sobre su funcionamiento.`
+- `Cada script contiene la documentaciòn sobre su funcionamiento.`
 
 ---
 
@@ -56,6 +56,6 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 
 🙋 Autor
-- Desarrollado por Cristian Fernández Kittler
+- Desarrollado por Cristian F.K.
 - 📧 contacto: [cfk2424@gmail.com]
 - 🔗 LinkedIn: [https://www.linkedin.com/in/cristian-fk/] 
