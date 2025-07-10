@@ -27,8 +27,9 @@ fi
 
 echo -e "\n📦 Listando módulos del kernel activos..."
 
-# Obtener módulos con sus nombres y versiones (si se pueden identificar)
-mapfile -t modules < <(lsmod | awk 'NR>1 {print $1, $3}' | nl -w2 -s'. ')
+# Obtener módulos con sus nombres y versiones ordenados alfabeticamente (si se pueden identificar)
+mapfile -t modules < <(lsmod | awk 'NR>1 {print $1, $3}' | sort | nl -w2 -s'. ')
+
 
 if [ ${#modules[@]} -eq 0 ]; then
     echo -e "\n✅ No hay módulos activos (muy raro)\n"
