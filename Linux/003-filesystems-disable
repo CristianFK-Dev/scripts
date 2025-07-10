@@ -41,10 +41,6 @@ for i in "${!fs_modules_raw[@]}"; do
     fs_modules+=("${fs_modules_raw[$i]}")
 done
 
-# Agregar opción para salir
-echo -e "$((${#fs_modules[@]}+1)). Salir"
-exit_option=$((${#fs_modules[@]}+1))
-
 echo
 read -rp "👉 Ingresá el número del sistema de archivos a desactivar o 'exit' para salir: " input
 
