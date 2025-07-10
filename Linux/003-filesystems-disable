@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# ────────────────────────────────────────────────────────────────────────────────
+# 📄 Documentación 003-filesystems-disable
+# Este script permite:
+#   - Listar los sistemas de archivos cargados en el kernel (de /proc/filesystems)
+#   - Mostrar una lista numerada y ordenada alfabéticamente
+#   - Seleccionar uno para desactivar (modprobe -r)
+#   - Confirmar antes de eliminarlo
+# Uso: sudo ./filesystems-disable.sh
+# ────────────────────────────────────────────────────────────────────────────────
+
+set -euo pipefail
+
+echo -e "\n🧾 Este script permite listar y desactivar sistemas de archivos soportados por el kernel."
+echo "Podés usarlo para deshabilitar módulos como cramfs, udf, squashfs, etc."
+echo -e "Presioná ENTER para continuar..."
+read -r
+
+# Verificar permisos
+if [[ $EUID -ne 0 ]]; then
+    echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"
+    exit 1
+fi
+
+echo -e "\n📂 Listando sistemas de archivos cargados..."
+
+# Obtener lista única de sistemas de archivos (ignorando los "nodev") y ordenarlos
+mapfile -t fs_modules < <(grep -v 'nodev' /proc/filesystems | awk '{print $1}' | sort | nl -w2 -s'. ')
+
+if [ ${#fs_modules[@]} -eq 0 ]; then
+    echo -e "\n✅ No se encontraron sistemas de archivos cargados para desactivar\n"
+    exit 0
+fi
+
+# Mostrar lista
+for fs in "${fs_modules[@]}"; do
+    echo "$fs"
+done
+
+echo
+read -rp "👉 Ingresá el número del sistema de archivos que querés desactivar: " index
+
+if ! [[ "$index" =~ ^[0-9]+$ ]] || (( index < 1 || index > ${#fs_modules[@]} )); then
+    echo -e "\n❌ Número inválido\n"
+    exit 1
+fi
+
+fs_line="${fs_modules[$((index-1))]}"
+fs_name=$(echo "$fs_line" | awk '{print $2}')
+
+echo -e "\n⚠️ Estás por intentar desactivar el sistema de archivos: \e[1m$fs_name\e[0m"
+read -rp "🔐 Por seguridad, escribí el nombre exacto para confirmar: " confirm
+
+if [[ "$confirm" != "$fs_name" ]]; then
+    echo -e "\n❌ Nombre incorrecto. Cancelando."
+    exit 1
+fi
+
+echo -e "\n🚧 Desactivando módulo asociado al sistema de archivos '$fs_name'..."
+
+# Intentamos remover el módulo
+if modprobe -r "$fs_name" 2>/dev/null; then
+    echo -e "\n✅ Módulo del sistema de archivos '$fs_name' desactivado correctamente con modprobe -r"
+elif rmmod "$fs_name" 2>/dev/null; then
+    echo -e "\n✅ Módulo '$fs_name' removido con rmmod"
+else
+    echo -e "\n❌ No se pudo remover el módulo. Puede no estar cargado, no tener módulo o estar en uso."
+    exit 1
+fi
