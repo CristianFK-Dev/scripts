@@ -13,8 +13,9 @@
 
 set -euo pipefail
 
-# Mostrar documentación y esperar
-echo "\n🧾002-mod-kernel.sh\n"
+echo
+echo "🧾002-mod-kernel.sh"
+echo
 echo -e "Este script permite listar y eliminar módulos del kernel activos."
 echo "Por seguridad, se pedirá que escribas el nombre exacto del módulo antes de eliminarlo."
 echo -e "Presioná ENTER para continuar..."
@@ -22,11 +23,12 @@ read -r
 
 # Verificamos si es root
 if [[ $EUID -ne 0 ]]; then
-    echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"
+    echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)"
     exit 1
 fi
 
 echo -e "\n📦 Listando módulos del kernel activos..."
+echo
 
 # Obtener módulos con sus nombres y versiones ordenados alfabéticamente
 mapfile -t modules < <(lsmod | awk 'NR>1 {print $1, $3}' | sort | nl -w2 -s'. ')
@@ -47,6 +49,7 @@ read -rp "👉 Ingresá el número del módulo a desactivar o escribí 'exit' pa
 # Verificar si quiere salir
 if [[ "$index" == "exit" || "$index" == "salir" ]]; then
     echo -e "\n👋 Saliendo sin hacer cambios."
+    echo
     exit 0
 fi
 
