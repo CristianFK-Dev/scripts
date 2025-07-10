@@ -12,7 +12,7 @@
 
 set -euo pipefail
 
-echo "🧾 003-filesystems-disable"
+echo "\n🧾 003-filesystems-disable\n"
 echo -e "Este script permite listar y desactivar sistemas de archivos soportados por el kernel."
 echo "Podés usarlo para deshabilitar módulos como cramfs, udf, squashfs, etc."
 echo -e "Presioná ENTER para continuar..."
