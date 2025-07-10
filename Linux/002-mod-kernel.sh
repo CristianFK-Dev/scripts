@@ -18,6 +18,7 @@ echo "🧾002-mod-kernel.sh"
 echo
 echo -e "Este script permite listar y eliminar módulos del kernel activos."
 echo "Por seguridad, se pedirá que escribas el nombre exacto del módulo antes de eliminarlo."
+echo
 echo -e "Presioná ENTER para continuar..."
 read -r
 
