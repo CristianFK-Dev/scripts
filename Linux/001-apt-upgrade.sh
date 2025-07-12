@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ────────────────────────────────────────────────────────────────────────────────
-# 📄 Documentación 001-update
+# 📄 Documentación 001-update.sh
 # Este script permite:
 #   - Ejecutar `apt update` para actualizar el índice de paquetes
 #   - Listar paquetes actualizables numerados (nombre y versión)
@@ -14,12 +14,9 @@
 set -euo pipefail
 
 # Mostrar documentación y esperar
-echo
-echo  "🧾001-apt-upgrade.sh"
-echo
+echo -e "\n🧾001-apt-upgrade.sh\n"
 echo -e " Este script actualiza la lista de paquetes APT y permite instalar selectivamente los actualizables."
 echo -e "Podés elegir uno o varios por número, o instalar todos.\n"
-echo
 read -rp "Presioná ENTER para continuar..."
 
 # Verificamos si es root

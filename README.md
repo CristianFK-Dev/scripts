@@ -35,7 +35,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 ## 📋 Lista de scripts LINUX🐧
 
-- 000-check-user
+- 000-check-user.sh
 - 001-apt-upgrade.sh
 - 002-mod-kernel.sh
 
@@ -48,18 +48,16 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 001| [SSH Keys administrator](Windows/ssh_keys.py) | [README](Windows/Docs/ssh_keys.md) | 🚧 En progreso 🚧 |
 
 
----
-
-## ⚙️ Instalación rápida
-
-- Próximamente ...
-
 
 ---
 
 
+🙋 Desarrollado por:
 
-🙋 Autor
-- Desarrollado por Cristian F.K.
+- Pablo S.F.K.
+- 📧 contacto: []
+- 🔗 LinkedIn: []
+
+- Cristian F.K.
 - 📧 contacto: [cfk2424@gmail.com]
 - 🔗 LinkedIn: [https://www.linkedin.com/in/cristian-fk/] 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ────────────────────────────────────────────────────────────────────────────────
-# 📄 Documentación 002-mod-kernel
+# 📄 Documentación 002-mod-kernel.sh
 # Este script permite:
 #   - Listar todos los módulos del kernel actualmente cargados (lsmod)
 #   - Mostrar la lista con un número asignado
@@ -13,14 +13,11 @@
 
 set -euo pipefail
 
-echo
-echo "🧾002-mod-kernel.sh"
-echo
+# Mostrar documentación y esperar
+echo -e "\n🧾002-mod-kernel.sh\n"
 echo -e "Este script permite listar y eliminar módulos del kernel activos."
-echo "Por seguridad, se pedirá que escribas el nombre exacto del módulo antes de eliminarlo."
-echo
-echo -e "Presioná ENTER para continuar..."
-read -r
+echo -e "Por seguridad, se pedirá que escribas el nombre exacto del módulo antes de eliminarlo.\n"
+read -rp "Presioná ENTER para continuar..."
 
 # Verificamos si es root
 if [[ $EUID -ne 0 ]]; then
@@ -28,8 +25,7 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-echo -e "\n📦 Listando módulos del kernel activos..."
-echo
+echo -e "\n📦 Listando módulos del kernel activos...\n"
 
 # Obtener módulos con sus nombres y versiones ordenados alfabéticamente
 mapfile -t modules < <(lsmod | awk 'NR>1 {print $1, $3}' | sort | nl -w2 -s'. ')
@@ -49,8 +45,7 @@ read -rp "👉 Ingresá el número del módulo a desactivar o escribí 'exit' pa
 
 # Verificar si quiere salir
 if [[ "$index" == "exit" || "$index" == "salir" ]]; then
-    echo -e "\n👋 Saliendo sin hacer cambios."
-    echo
+    echo -e "\n👋 Saliendo sin hacer cambios.\n"
     exit 0
 fi
 

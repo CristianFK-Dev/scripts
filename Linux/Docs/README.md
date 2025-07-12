@@ -1,10 +1,6 @@
 # 🚀 001-update.sh - Gestor de Actualizaciones APT Interactivo
 
----
-
 Este script de Bash es una herramienta sencilla y robusta para **gestionar las actualizaciones de paquetes en sistemas basados en Debian/Ubuntu (usando APT)**. Ofrece una forma interactiva de actualizar la lista de paquetes, ver cuáles están disponibles para actualizar y seleccionar específicamente cuáles quieres instalar, o bien, instalarlos todos de una vez.
-
----
 
 ## ✨ Características Principales
 
@@ -17,14 +13,10 @@ Este script de Bash es una herramienta sencilla y robusta para **gestionar las a
 * **Informe Final**: Al terminar, te muestra una lista de los paquetes que se instalaron y sus versiones actuales.
 * **Validación de Permisos**: Asegura que el script se ejecute con permisos de root, vital para operaciones de `apt`.
 
----
-
 ## 🛠️ Requisitos
 
 * Un sistema operativo basado en **Debian o Ubuntu** (o cualquier distribución que use `apt`).
 * Permisos de **root** para ejecutar el script (se usa `sudo`).
-
----
 
 ## 🚀 Uso
 
@@ -67,8 +59,6 @@ Después de que el script actualice la lista de paquetes y te muestre los dispon
     Tu elección: a
     ```
 
----
-
 ## 💡 ¿Por qué usar este script?
 
 Aunque podés hacer `sudo apt upgrade`, este script te da un **control más granular** sobre tus actualizaciones. Es ideal si querés:
@@ -79,14 +69,3 @@ Aunque podés hacer `sudo apt upgrade`, este script te da un **control más gran
 
 ---
 
-## 🛑 Consideraciones de Seguridad
-
-* Siempre ejecutá scripts que modifiquen tu sistema con precaución y solo si confiás en su origen.
-* Este script utiliza `sudo`, lo que le otorga permisos elevados. Asegurate de entender lo que hace antes de ejecutarlo.
-* El script usa `apt install -y` lo que significa que **no te pedirá confirmación adicional** durante la instalación de los paquetes seleccionados.
-
----
-
-## 🤝 Contribuciones
-
-¡Las contribuciones son bienvenidas! Si tenés ideas para mejorar el script, sentite libre de abrir un "issue" o enviar un "pull request".
