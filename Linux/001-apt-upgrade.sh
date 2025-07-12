@@ -1,16 +1,5 @@
 #!/bin/bash
 
-# ────────────────────────────────────────────────────────────────────────────────
-# 📄 Documentación 001-update.sh
-# Este script permite:
-#   - Ejecutar `apt update` para actualizar el índice de paquetes
-#   - Listar paquetes actualizables numerados (nombre y versión)
-#   - Permitir seleccionar uno o varios paquetes por número
-#   - Instalar los seleccionados, o todos con la opción 'a'
-#   - Mostrar informe final de paquetes instalados y sus versiones
-# Uso: sudo ./001-update.sh
-# ────────────────────────────────────────────────────────────────────────────────
-
 set -euo pipefail
 
 # Mostrar documentación y esperar

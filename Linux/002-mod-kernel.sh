@@ -1,16 +1,5 @@
 #!/bin/bash
 
-# ────────────────────────────────────────────────────────────────────────────────
-# 📄 Documentación 002-mod-kernel.sh
-# Este script permite:
-#   - Listar todos los módulos del kernel actualmente cargados (lsmod)
-#   - Mostrar la lista con un número asignado
-#   - Ingresar el número del módulo que se desea desactivar o eliminar
-#   - Confirmar escribiendo el nombre exacto del módulo
-#   - Desactivarlo con modprobe -r o rmmod según el caso
-# Uso: sudo ./modulos-kernel.sh
-# ────────────────────────────────────────────────────────────────────────────────
-
 set -euo pipefail
 
 # Mostrar documentación y esperar

@@ -35,9 +35,12 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 ## 📋 Lista de scripts LINUX🐧
 
-- 000-check-user.sh
-- 001-apt-upgrade.sh
-- 002-mod-kernel.sh
+| N° | Script | Documentación | Estado |
+|---:|---------------|:-------------:|:----:|
+| 001|[SSH Keys administrator](000-user-check.sh)|[README](000-user-check.md) | 🚧 En progreso 🚧 |
+| 002|[SSH Keys administrator](001-apt-upgrade.sh)|[README](001-apt-upgrade.md) | 🚧 En progreso 🚧 |
+| 003|[SSH Keys administrator](002-mod-kernel.sh)|[README](002-mod-kernel.md) | 🚧 En progreso 🚧 |
+| 004|[SSH Keys administrator](003-filesystem-disable.sh)|[README](003-filesystem-disable.md) | 🚧 En progreso 🚧 |
 
 ---
 

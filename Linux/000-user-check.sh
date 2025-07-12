@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# ────────────────────────────────────────────────────────────────────────────────
-# 📄 Documentación 000-check-user.sh
-# Este script permite verificar:
-#   - El UID (User ID) del usuario real que ejecutó el proceso
-#   - El EUID (Effective User ID) que determina los permisos reales del proceso
-#   - Si el script está siendo ejecutado como root o no
-# Uso: ./000-check-user.sh  o  sudo ./000-check-user.sh
-# ────────────────────────────────────────────────────────────────────────────────
-
 set -euo pipefail
 
 # Mostrar documentación y esperar
