@@ -15,30 +15,54 @@ Por cuestiones de seguridad, recomendamos encarezidamente que lea el contenido d
 
 ## Ejecución
 
-Este es un script, y como tal no necesita ser instalado, sino más bien ejecutado. Las opciones que les presentamos son dos:
+Este es un script, y como tal no necesita ser instalado, sino más bien ejecutado. La opción recomendada: Descargar y ejecutar.
+Esta es la forma más segura y funcional para este script interactivo. Te permite revisar el código antes de ejecutarlo y asegura que el script pueda pedirte información durante su ejecución.
 
-- [Descarga y ejecución local](#descarga-y-ejecución-local)
-- [Ejecución online](#ejecución-online)
+### Descarga y ejecución local 💻
+Para descargar el script desde `GitHub` de forma manual, puedes ir a la ruta del [**script**](../ssh_keys.py) y hacer click en el ícono de descarga <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18"><path fill="currentcolor" d="M7.47 10.78a.749.749 0 0 0 1.06 0l3.75-3.75a.749.749 0 1 0-1.06-1.06L8.75 8.439V1.75a.75.75 0 0 0-1.5 0v6.689L4.78 5.97a.749.749 0 1 0-1.06 1.06l3.75 3.75ZM3.75 13a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z"/></svg> arriba a la derecha y ejecutarlo por consola como mostraremos más adelante.
 
-### Descarga y ejecución local <a name="descarga-y-ejecucion-local"></a>
-Este método es el más común, y se trata de descargar el script desde GitHub haciendo click en el ícono ![DESCARGA](./ssh_keys_download.svg) arriba a la derecha y ejecutarlo por consola de la siguiente forma:
+Para su descarga de forma remota por consola:
 
-```bash
-python ruta/al/ssh_keys.py
-```
-o si usas el binario de Python 3
+1.  **Abre tu terminal** (CMD o PowerShell en Windows, o Terminal en Linux/macOS, o bash en cualquier caso).
 
-```bash
-python3 ruta/al/ssh_keys.py
-```
+2.  **Navega al directorio** donde deseas guardar el script (por ejemplo, `cd ~/Descargas` o `cd C:\Users\TuUsuario\Documents`en **Windows**, `cd ~/Downloads` o `cd ~/Documentos` en **Linux** y **macOS**).
 
-Si en la terminal ya te encuentras en el directorio en el que se ubica el script, solo basta ejecutar
+3.  **Descarga del script:**
 
-```bash
-python ssh_keys.py
-```
+    * **Para Windows (CMD o PowerShell):**
 
-### Ejecución online <a name="ejecucion-online"></a>
+        ```powershell
+        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Golidor24/scripts/refs/heads/main/Windows/ssh_keys.py" -OutFile "ssh_keys.py"
+        ```
+        O si tienes `curl` disponible:
+
+        ```cmd
+        curl -o ssh_keys.py https://raw.githubusercontent.com/Golidor24/scripts/refs/heads/main/Windows/ssh_keys.py
+        python ssh_keys.py
+        ```
+    * **Para Linux y macOS (Terminal/Bash):**
+        ```bash
+        curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/ssh_keys.py
+        ```
+        O si prefieres `wget`:
+        ```bash
+        wget https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/ssh_keys.py
+        ```
+
+4.  **Ejecuta el script (una vez descargado):**
+
+    * **Para Windows:**
+        ```bash
+        python ssh_keys.py
+        ```
+
+    * **Para Linux/macOS:**
+        ```bash
+        python3 ssh_keys.py
+        ```
+        (Usa `python` si `python3` no funciona y sabes que tu sistema usa Python 3 por defecto con ese comando).
+
+## Consideraciones a tener en cuenta 👷 
 
 🚧 Trabajando 🚧
 
