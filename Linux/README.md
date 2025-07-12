@@ -6,3 +6,4 @@
 | 002|[APT upgrade](001-apt-upgrade.sh) | [README](Docs/001-apt-upgrade.md) | ✅ Terminado ✅ |
 | 003|[Kernel modules](002-mod-kernel.sh) | [README](Docs/002-mod-kernel.md) | ✅ Terminado ✅ |
 | 004|[Filse system disable](003-filesystems-disable.sh) | [README](Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
+
