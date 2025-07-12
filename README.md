@@ -26,9 +26,9 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 ---
 
-## 🤚🏽 Permisos y ejecuciòn LINUX
+## 🤚🏽 Permisos y ejecución LINUX
 
-- Dar los permisos para ejecuciòn:`chmod +x script.sh`
+- Dar los permisos para ejecución:`chmod +x script.sh`
 - Ejecutar como root o con sudo: `sudo ./script.sh` o `sudo bash script.sh`
 
 ---
@@ -43,13 +43,16 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 ## 📋 Lista de scripts WINDOWS🪟
 
-- Proximamente...
+| N° | Script | Documentación | Estado |
+|---:|---------------|:-------------:|:----:|
+| 001| [SSH Keys administrator](Windows/ssh_keys.py) | [README](Windows/Docs/ssh_keys.md) | 🚧 En progreso 🚧 |
+
 
 ---
 
 ## ⚙️ Instalación rápida
 
-- Proximamente ...
+- Próximamente ...
 
 
 ---
