@@ -11,15 +11,15 @@
 
 ⚠️ **Advertencia de Seguridad Importante** ⚠️
 
-Por cuestiones de seguridad, recomendamos encarezidamente que lea el contenido de este o cualquier script antes de ejecutarlo en su computadora, en especial si lo va a correr directamente de forma online; o bien puede pasarle el script o incluso la url del repositorio a alguna IA para que corrobore por usted mismo que está libre de cualquier amenaza. 
+Por cuestiones de seguridad, recomendamos encarecidamente que lea el contenido de este o cualquier script antes de ejecutarlo en su computadora, en especial si lo va a correr directamente de forma online; o bien puede pasarle el script o incluso la url del repositorio a alguna IA para que corrobore por usted que está libre de cualquier amenaza. 
 
 ## Ejecución
 
-Este es un script, y como tal no necesita ser instalado, sino más bien ejecutado. La opción recomendada: Descargar y ejecutar.
+Este es un script, y como tal no necesita ser instalado, sino más bien ejecutado. La opción recomendada es **descargar y ejecutar**.
 Esta es la forma más segura y funcional para este script interactivo. Te permite revisar el código antes de ejecutarlo y asegura que el script pueda pedirte información durante su ejecución.
 
 ### Descarga y ejecución local 💻
-Para descargar el script desde `GitHub` de forma manual, puedes ir a la ruta del [**script**](../ssh_keys.py) y hacer click en el ícono de descarga <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18"><path fill="currentcolor" d="M7.47 10.78a.749.749 0 0 0 1.06 0l3.75-3.75a.749.749 0 1 0-1.06-1.06L8.75 8.439V1.75a.75.75 0 0 0-1.5 0v6.689L4.78 5.97a.749.749 0 1 0-1.06 1.06l3.75 3.75ZM3.75 13a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z"/></svg> arriba a la derecha y ejecutarlo por consola como mostraremos más adelante.
+Para descargar el script desde `GitHub` de forma manual, puedes ir a la ruta del [**script**](../ssh_keys.py) y hacer clic en el ícono de descarga <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18"><path fill="currentcolor" d="M7.47 10.78a.749.749 0 0 0 1.06 0l3.75-3.75a.749.749 0 1 0-1.06-1.06L8.75 8.439V1.75a.75.75 0 0 0-1.5 0v6.689L4.78 5.97a.749.749 0 1 0-1.06 1.06l3.75 3.75ZM3.75 13a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z"/></svg> arriba a la derecha y ejecutarlo por consola como mostraremos más adelante.
 
 Para su descarga de forma remota por consola:
 
