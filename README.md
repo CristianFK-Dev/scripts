@@ -40,7 +40,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 001|[SSH Keys administrator](Linux/000-user-check.sh) | [README](Linux/Docs/000-user-check.md) | ✅ Terminado ✅ |
 | 002|[SSH Keys administrator](Linux/001-apt-upgrade.sh) | [README](Linux/Docs/001-apt-upgrade.md) | ✅ Terminado ✅ |
 | 003|[SSH Keys administrator](Linux/002-mod-kernel.sh) | [README](Linux/Docs/002-mod-kernel.md) | ✅ Terminado ✅ |
-| 004|[SSH Keys administrator](Linux/003-filesystem-disable.sh) | [README](Linux/Docs/003-filesystem-disable.md) | ✅ Terminado ✅ |
+| 004|[SSH Keys administrator](Linux/003-filesystems-disable.sh) | [README](Linux/Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
 
 ---
 
@@ -55,7 +55,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 ---
 
 
-🙋 Desarrollado por:
+## 🙋 Desarrollado por:
 
 - Pablo S.F.K.
 - 📧 contacto: []
