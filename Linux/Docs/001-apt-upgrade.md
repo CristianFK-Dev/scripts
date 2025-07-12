@@ -1,4 +1,4 @@
-# 🚀 001-update.sh - Gestor de Actualizaciones APT Interactivo
+# Script gestor de Actualizaciones APT Interactivo
 
 <p align="center">
     <img src="https://img.shields.io/badge/Lenguaje-Bash-4EAA25?style=flat&logo=gnubash&labelColor=363D44" alt="Lenguaje">
@@ -98,17 +98,6 @@ Este script es útil si querés:
 - **Evitar romper dependencias** al hacer `apt upgrade` completo
 - Automatizar y simplificar la gestión en servidores o equipos personales
 - Obtener un **informe claro** al finalizar
-
----
-
-## 📁 Estructura recomendada
-
-```
-scripts/
-└── 001-update.sh
-Docs/
-└── 001-update.md
-```
 
 ---
 

@@ -5,22 +5,23 @@
     <img src="https://img.shields.io/badge/OS-Linux%20%7C%20macOS-blue?style=flat&logoColor=b0c0c0&labelColor=363D44" alt="Sistemas operativos">
 </p>
 
-## Recomendaciones
+---
 
-⚠️ **Advertencia de Seguridad Importante** ⚠️
+## ⚠️ Recomendaciones de Seguridad
 
+⚠️ **Advertencia Importante** 
 Siempre revisá el contenido de cualquier script antes de ejecutarlo, especialmente si lo bajás de internet o desde un repositorio. Este script no realiza modificaciones en el sistema, pero es una buena práctica verificar el código o pedir a una IA como ChatGPT que lo audite.
 
 ---
 
-## Descripción
+## ✨ Descripción
 
 Este script Bash (`000-check-user.sh`) muestra el UID (ID del usuario real que ejecuta el script) y el EUID (ID del usuario efectivo con el que se ejecuta el proceso).  
 Sirve para comprobar si el proceso tiene permisos de root (`EUID = 0`) o no.
 
 ---
 
-## Ejecución
+## 🚀 Uso
 
 Este script no requiere instalación. Podés descargarlo y ejecutarlo localmente.
 
@@ -34,6 +35,7 @@ curl -O https://raw.githubusercontent.com/TU_USUARIO/scripts/main/000-check-user
 chmod +x 000-check-user.sh
 
 ./000-check-user.sh
+```
 
 ---
 
