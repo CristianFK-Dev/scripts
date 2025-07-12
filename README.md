@@ -35,6 +35,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 ## 📋 Lista de scripts LINUX🐧
 
+- 000-check-user
 - 001-apt-upgrade.sh
 - 002-mod-kernel.sh
 
