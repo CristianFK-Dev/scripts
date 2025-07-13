@@ -11,9 +11,96 @@
 
 ---
 
-## ⚠️ Recomendaciones de Seguridad
+## ⚠️ Advertencia de Seguridad
 
-⚠️ **Advertencia Importante** 
-Siempre revisá el contenido de cualquier script antes de ejecutarlo, especialmente si lo bajás de internet o desde un repositorio. Este script no realiza modificaciones en el sistema, pero es una buena práctica verificar el código o pedir a una IA como ChatGPT que lo audite.
+> **Este script modifica el comportamiento del kernel en tiempo real.**  
+> ⚠️ Solo se recomienda para usuarios avanzados o tareas de hardening específicas.  
+> 🔒 Revisá el script antes de ejecutarlo. También podés copiarlo y analizarlo con una IA confiable.
 
 ---
+
+## 🧾 Descripción
+
+Este script te permite:
+
+- Listar todos los **sistemas de archivos activos soportados por el kernel**
+- Seleccionar **interactivamente** uno de ellos
+- Desactivarlo mediante `modprobe -r` o `rmmod`
+- Confirmar la acción escribiendo el nombre del módulo para mayor seguridad
+
+Ideal para tareas de **endurecimiento del sistema (hardening)** desactivando FS no necesarios como `cramfs`, `udf`, `squashfs`, etc.
+
+---
+
+## 🛠️ Requisitos
+
+- ✅ Linux
+- 🛡️ Permisos de superusuario (`sudo`)
+- Herramientas: `bash`, `grep`, `awk`, `modprobe`, `rmmod`, `sort`
+
+---
+
+## 🚀 Uso
+
+### 📥 Descargar y ejecutar
+
+```bash
+curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/003-filesystems-disable.sh
+
+chmod +x 003-filesystems-disable.sh
+
+sudo ./003-filesystems-disable.sh
+
+```
+
+---
+
+## 💡 Ejemplo de uso
+
+Al ejecutar el script:
+
+```
+🧾 003-filesystems-disable.sh
+
+Este script permite listar y desactivar sistemas de archivos soportados por el kernel.
+Podés usarlo para deshabilitar módulos como cramfs, udf, squashfs, etc.
+
+Presioná ENTER para continuar...
+```
+
+Luego:
+
+```
+📂 Listando sistemas de archivos cargados...
+
+ 1. cramfs
+ 2. squashfs
+ 3. udf
+ ...
+
+👉 Ingresá el número del sistema de archivos a desactivar o 'exit' para salir:
+```
+
+Después de confirmar el nombre:
+
+```bash
+✅ Módulo 'squashfs' desactivado correctamente con modprobe -r
+```
+
+---
+
+## 🧠 ¿Por qué usar este script?
+
+- 🔐 Desactivar sistemas de archivos que **no usás mejora la seguridad** de tu sistema.
+- 🧹 Elimina vectores de ataque potenciales.
+- ✅ Ideal para reforzar entornos que siguen normas **CIS**, **PCI-DSS** o hardening de servidores.
+
+---
+
+## 📤 Compartir este script
+
+[![GitHub](https://img.shields.io/badge/Compartir-181717?logo=github&logoColor=white)](https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh)
+[![Reddit](https://img.shields.io/badge/Compartir-FF4500?logo=reddit&logoColor=white)](https://www.reddit.com/submit?url=https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Compartir-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh)
+[![WhatsApp](https://img.shields.io/badge/Compartir-25D366?logo=whatsapp&logoColor=white)](https://wa.me/?text=Revisá%20este%20script:%20https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh)
+[![Telegram](https://img.shields.io/badge/Compartir-0088CC?logo=telegram&logoColor=white)](https://t.me/share/url?url=https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh)
