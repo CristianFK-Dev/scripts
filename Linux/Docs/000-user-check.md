@@ -14,7 +14,7 @@
 ## ⚠️ Recomendaciones de Seguridad
 
 ⚠️ **Advertencia Importante** 
-Siempre revisá el contenido de cualquier script antes de ejecutarlo, especialmente si lo bajás de internet o desde un repositorio. Este script no realiza modificaciones en el sistema, pero es una buena práctica verificar el código o pedir a una IA como ChatGPT que lo audite.
+> Siempre revisá el contenido de cualquier script antes de ejecutarlo, especialmente si lo bajás de internet o  desde un repositorio. Este script no realiza modificaciones en el sistema, pero es una buena práctica verificar el código o pedir a una IA como ChatGPT que lo audite.
 
 ---
 

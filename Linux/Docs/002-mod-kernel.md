@@ -13,10 +13,10 @@
 
 ## ⚠️ Recomendaciones de Seguridad
 
-⚠️ **Este script realiza acciones sensibles sobre el kernel de Linux.**  
-Usalo únicamente si sabés lo que estás haciendo.  
-✅ **Nunca elimines módulos críticos del sistema** (como `ext4`, `xfs`, `netfilter`, etc).  
-📌 Siempre revisá el código antes de ejecutarlo, o pedile a una IA que lo revise por vos.
+> ⚠️ **Este script realiza acciones sensibles sobre el kernel de Linux.**  
+> Usalo únicamente si sabés lo que estás haciendo.  
+> ✅ **Nunca elimines módulos críticos del sistema** (como `ext4`, `xfs`, `netfilter`, etc).  
+> 📌 Siempre revisá el código antes de ejecutarlo, o pedile a una IA que lo revise por vos.
 
 ---
 
