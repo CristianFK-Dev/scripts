@@ -47,7 +47,9 @@ Es útil para tareas de depuración o limpieza de módulos dinámicos en tiempo 
 
 ```bash
 curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/002-mod-kernel.sh
+
 chmod +x 002-mod-kernel.sh
+
 sudo ./002-mod-kernel.sh
 ```
 
@@ -93,17 +95,6 @@ Después:
 - 🧪 Ideal para **entornos de pruebas, debugging, desarrollo de drivers**
 - 🛑 Requiere precaución: **no se recomienda para sistemas en producción sin conocimiento previo**
 - 🔍 Brinda una forma controlada de inspeccionar y manipular los módulos activos
-
----
-
-## 📁 Estructura sugerida
-
-```
-scripts/
-└── 002-mod-kernel.sh
-Docs/
-└── 002-mod-kernel.md
-```
 
 ---
 
