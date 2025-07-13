@@ -46,7 +46,7 @@ Es útil para tareas de depuración o limpieza de módulos dinámicos en tiempo 
 ### 📥 Descargar y ejecutar:
 
 ```bash
-curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/002-mod-kernel.sh
+curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/002-mod-kernel.sh
 
 chmod +x 002-mod-kernel.sh
 

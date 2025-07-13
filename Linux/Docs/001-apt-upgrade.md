@@ -35,18 +35,13 @@ Permite ver los paquetes pendientes, elegir cuáles instalar, o instalar todos d
 
 ## 🚀 Uso
 
-### ✅ Paso a paso:
-
-1. **Descargar el script:**
+### 📥 Descargar y ejecutar:
 
    ```bash
-   curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/001-apt-upgrade.sh
+   curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/001-apt-upgrade.sh
+
    chmod +x 001-apt-upgrade.sh
-   ```
-
-2. **Ejecutar el script:**
-
-   ```bash
+   
    sudo ./001-apt-upgrade.sh
    ```
 

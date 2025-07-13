@@ -27,14 +27,10 @@ Sirve para comprobar si el proceso tiene permisos de root (`EUID = 0`) o no.
 
 ## 🚀 Uso
 
-Este script no requiere instalación. Podés descargarlo y ejecutarlo localmente.
-
-### Descarga y ejecución local 💻
-
-#### Linux / macOS:
+### 📥 Descargar y ejecutar:
 
 ```bash
-curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/000-check-user.sh
+curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/000-check-user.sh
 
 chmod +x 000-check-user.sh
 
