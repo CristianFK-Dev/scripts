@@ -48,7 +48,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 | N° | Script | Documentación | Estado |
 |---:|---------------|:-------------:|:----:|
-| 001| [SSH Keys administrator](Windows/ssh_keys.py) | [README](Windows/Docs/ssh_keys.md) | 🚧 En progreso 🚧 |
+| 000| [SSH Keys administrator](Windows/000_ssh_keys.py) | [README](Windows/Docs/000_ssh_keys.md) | 🚧 En progreso 🚧 |
 
 
 
