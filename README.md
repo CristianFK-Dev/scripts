@@ -58,8 +58,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 ## 🙋 Desarrollado por:
 
 - Pablo S.F.K.
-- 📧 contacto: []
-- 🔗 LinkedIn: []
+- 📧 contacto: [pablosfk@gmail.com]
 
 - Cristian F.K.
 - 📧 contacto: [cfk2424@gmail.com]
