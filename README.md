@@ -1,5 +1,8 @@
 ## 🛠️ Linux and Windows Catalog Scripts
 
+Descarga la colección completa:
+- `git clone https://github.com/Golidor24/scripts.git`
+
 Colección de scripts Bash / Python para automatizar la configuración, instalaciòn, mantenimiento y uso de aplicaciones en sistemas operativos Linux y Windows. 
 Ideal para administradores de sistemas, entornos de testing, laboratorios o despliegues rápidos.
 - `Cada script contiene la documentaciòn sobre su funcionamiento.`
