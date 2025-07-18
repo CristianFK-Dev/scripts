@@ -32,33 +32,32 @@ Para su descarga de forma remota por consola:
     * **Para Windows (CMD o PowerShell):**
 
         ```powershell
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Golidor24/scripts/refs/heads/main/Windows/ssh_keys.py" -OutFile "ssh_keys.py"
+        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/000_ssh_keys.py" -OutFile "000_ssh_keys.py"
         ```
         O si tienes `curl` disponible:
 
         ```cmd
-        curl -o ssh_keys.py https://raw.githubusercontent.com/Golidor24/scripts/refs/heads/main/Windows/ssh_keys.py
-        python ssh_keys.py
+        curl -o ssh_keys.py https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/000_ssh_keys.py
         ```
     * **Para Linux y macOS (Terminal/Bash):**
         ```bash
-        curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/ssh_keys.py
+        curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/000_ssh_keys.py
         ```
         O si prefieres `wget`:
         ```bash
-        wget https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/ssh_keys.py
+        wget https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/000_ssh_keys.py
         ```
 
 4.  **Ejecuta el script (una vez descargado):**
 
     * **Para Windows:**
         ```bash
-        python ssh_keys.py
+        python 000_ssh_keys.py
         ```
 
     * **Para Linux/macOS:**
         ```bash
-        python3 ssh_keys.py
+        python3 000_ssh_keys.py
         ```
         (Usa `python` si `python3` no funciona y sabes que tu sistema usa Python 3 por defecto con ese comando).
 
