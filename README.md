@@ -44,6 +44,8 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 001|[APT upgrade](Linux/001-apt-upgrade.sh) | [README](Linux/Docs/001-apt-upgrade.md) | ✅ Terminado ✅ |
 | 002|[Kernel modules](Linux/002-mod-kernel.sh) | [README](Linux/Docs/002-mod-kernel.md) | ✅ Terminado ✅ |
 | 003|[Filse system disable](Linux/003-filesystems-disable.sh) | [README](Linux/Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
+| 004|[Password security check](Linux004-pass-check.sh) | [README](Linux/Docs/004-pass-check.md) | 🚧 En progreso 🚧 |
+
 
 ---
 
