@@ -1,5 +1,4 @@
 import re
-import select
 import os
 import subprocess
 from sys import exit
@@ -10,6 +9,9 @@ class key_admin:
     
     def __init__(self):
         self.ssh_dir = self.get_ssh_directory()
+        self.csv_dir = os.path.join(os.getcwd(), 'CSV')  # Directorio CSV en el directorio actual
+        if not os.path.exists(self.csv_dir):
+            os.makedirs(self.csv_dir)  # Crear el directorio CSV si no existe
         print(f"Directorio SSH: {self.ssh_dir}")
         self.claves_generadas = []  # Lista para almacenar las claves generadas
     
@@ -25,8 +27,9 @@ class key_admin:
                 return False
             
             print("\n--- Claves SSH encontradas ---")
-            for key in ssh_keys:
-                print(f"- {key}")
+            print(f"Directorio: {self.ssh_dir}\n")
+            for index, key in enumerate(ssh_keys, start=1):
+                print(f"{index}. {key}")
             print("-------------------------------")
             return True
         except FileNotFoundError:
@@ -116,7 +119,7 @@ class key_admin:
         else:
             return ""
 
-    def generate_ssh_key(self, email: str, key_name: str, bits: int = 4096, passphrase: str | None = None) -> bool:
+    def generate_ssh_key(self, key_name: str, email: str, bits: int = 4096, passphrase: str | None = None) -> bool:
         """
         Genera un par de claves SSH (privada y pública).
 
@@ -136,7 +139,7 @@ class key_admin:
         key_path = os.path.join(self.ssh_dir, key_name)
         public_key_path = key_path + ".pub"
 
-        print(f"Intentando generar claves SSH en: {key_path}")
+        print(f"Generando claves SSH en: {key_path}")
 
         # Comando base para ssh-keygen
         command = ["ssh-keygen", "-t", "rsa", "-b", str(bits), "-C", email, "-f", key_path]
@@ -150,7 +153,7 @@ class key_admin:
         try:
             # Ejecutar el comando
             process = subprocess.run(command, capture_output=True, text=True, check=True)
-            print("Salida de ssh-keygen (stdout):\n", process.stdout)
+            #print("Salida de ssh-keygen (stdout):\n", process.stdout)
             if process.stderr:
                 print("Errores de ssh-keygen (stderr):\n", process.stderr)
             print(f"Claves SSH generadas exitosamente en:\nClave: {key_path}\nClave Pública: {public_key_path}")
@@ -183,7 +186,8 @@ class key_admin:
             return True
         else:
             return False
-
+    
+    
     def key_gen(self) -> bool:
         """Genera una nueva clave SSH."""
         
@@ -195,8 +199,8 @@ class key_admin:
         # --- Generación las claves ---
         print("Iniciando proceso de generación de claves SSH...\n")
         success = self.generate_ssh_key(
-            email=user_email,
             key_name=key_file_name,
+            email=user_email,
             passphrase=user_passphrase
         )
         
@@ -205,7 +209,8 @@ class key_admin:
             # --- Muestra la clave pública ---
             public_key = self.display_public_key(key_file_name)
             if public_key:
-                print("\n¡Copia la clave pública de arriba y pégala donde la necesites (ej. GitHub, servidor)!")
+                self.copy_to_clipboard(public_key)
+                print("\n¡Pega la clave donde la necesites (ej. GitHub, servidor)!")
                 return True
             else:
                 return False
@@ -240,7 +245,147 @@ class key_admin:
         except Exception as e:
             print(f"Error al leer la clave pública: {e}")
             return None
- 
+    
+    def copy_to_clipboard(self, text: str) -> None:
+        """Copia el texto proporcionado al portapapeles."""
+        # Lo haremos usando librerías integradas de Python, no pyperclip, para evitar dependencias externas.
+        try:
+            import tkinter as tk
+            root = tk.Tk()
+            root.withdraw()  # Oculta la ventana principal
+            root.clipboard_clear()  # Limpia el portapapeles
+            root.clipboard_append(text)  # Añade el texto al portapapeles
+            root.update()  # Actualiza el portapapeles
+            print("\nClave pública copiada al portapapeles.")
+        except Exception as e:
+            print(f"Error al copiar la clave pública al portapapeles: {e}")
+            return None
+        
+
+    
+    @staticmethod
+    def abrir_link_web(url):
+        """
+        Abre una URL en el navegador web predeterminado del sistema.
+        """
+        
+        import webbrowser
+        
+        try:
+            webbrowser.open(url)
+            print(f"Abriendo el vínculo: {url}")
+        except Exception as e:
+            print(f"No se pudo abrir el vínculo: {url}. Error: {e}")
+    
+    # Se abrirá cada archivo CSV en el directorio CSV y se generarán las claves SSH automáticamente.
+    
+    def multi_key_gen(self) -> None:
+        """
+        Genera múltiples claves SSH de forma automática o desde un fichero.
+        
+        El fichero debe estar en formato CSV, sin importar su nombre, ubicado en 
+        un directorio CSV dentro del directorio raíz del script:
+        
+        Directorio raíz/
+        ├── 000_ssh_keys.py
+        └── CSV/
+            ├── claves_ssh_1.csv
+            ├── claves_ssh_2.csv
+            ├── ...
+            ├── desarrollo.csv
+            ├── contabilidad.csv
+            └──...
+           
+        y con los siguientes campos dentro de cada archivo CSV:
+        
+        - Nombre de la clave
+        - Email (comentario)
+        - Frase de contraseña (opcional)
+        - Tamaño de la clave en bits (opcional)
+        
+        El formato CSV debe ser de la siguiente manera:
+        nombre_clave_1,email1,frase_contraseña_1,tamaño_bits_1
+        nombre_clave_2,email2,frase_contraseña_2,tamaño_bits_2
+        ...
+        
+        Ejemplo:
+        mi_clave_ssh,mi_email@gmail.com,mi_frase_contraseña,4096
+        
+        nombre_clave: Son válidas letras, números, guiones bajos y guiones.
+        email: Debe ser un comentario válido, generalmente un correo electrónico, el cuál se verificará su formato.
+        frase_contraseña: Puede ser una cadena de texto o dejarse en blanco.
+        tamaño_bits: Puede ser un número entero o dejarse en blanco, en cuyo caso se usará el valor por defecto de 4096 bits.
+        
+        Si el fichero no existe o no se puede leer, se mostrará un mensaje de error.
+        Si hay más de un archivo CSV en el directorio raíz del script, se procesarán todos.
+        """
+        
+        import csv
+        
+        def cargar_csv(nombre_archivo: str) -> list:
+            """
+            Carga un archivo CSV en una lista de listas.
+
+            Args:
+                nombre_archivo (str): La ruta al archivo CSV. 
+
+            Returns:
+                list: Una lista de listas, donde cada lista interna representa una fila del CSV.
+                      Retorna una lista vacía si el archivo no existe o está vacío.
+            """
+            ruta_archivo = os.path.join(self.csv_dir, nombre_archivo) 
+            data = []
+            try:
+                with open(ruta_archivo, 'r', newline='', encoding='utf-8') as archivo_csv:
+                    lector_csv = csv.reader(archivo_csv)
+                    for fila in lector_csv:
+                        data.append(fila)
+            except FileNotFoundError:
+                print(f"Error: El archivo '{nombre_archivo}' no fue encontrado en {self.csv_dir}. <-------<<<")
+            except Exception as e:
+                print(f"Ocurrió un error inesperado al leer el archivo CSV: {e} <-------<<<")
+            return data
+        
+        # --- Verificar si el directorio CSV existe y tiene archivos, y enlista los .csv encontrados ---
+        if not os.path.exists(self.csv_dir):
+            print(f"El directorio {self.csv_dir} no existe. Por favor, crea el directorio y coloca los archivos CSV necesarios.\n")
+            return None
+        csv_files = [f.lower() for f in os.listdir(self.csv_dir) if f.lower().endswith('.csv')]
+        # --- Por cada archivo CSV encontrado, se generarán las claves SSH ---
+        if csv_files:
+            print(f"\nArchivos CSV encontrados en {self.csv_dir}: \n{', '.join(csv_files)}\n")
+            for CSV in csv_files:
+                print(f"Procesando el archivo CSV: {CSV}")
+                data = cargar_csv(CSV)
+                if not data:
+                    print(f"No se encontraron datos en el archivo {CSV}. Asegúrate de que el formato sea correcto.\n")
+                    continue
+                else:
+                    for new_key in data:
+                        if len(new_key) < 2:
+                            print(f"Error: La línea {new_key} en el archivo {CSV} no tiene suficientes campos. "
+                                  "Debe tener al menos nombre de clave y email (comentario)."
+                                  "ADVERTENCIA: Esta clave es ignorada por el generador, ingrésela manualmente luego de corregirla.")
+                            continue
+                        key_name = new_key[0].strip()
+                        email = new_key[1].strip()
+                        if len(new_key) > 2:
+                            try:
+                                bits = int(new_key[2].strip())
+                                passphrase = new_key[3].strip() if len(new_key) > 3 else ""
+                            except Exception:
+                                passphrase = new_key[2].strip()
+                                try:
+                                    bits = int(new_key[3].strip()) if len(new_key) > 3 else 4096
+                                except Exception:
+                                    bits = 4096
+                        else:
+                            bits = 4096
+                            passphrase = ""
+                        
+                        print(f"\nGenerando clave SSH del fichero {CSV}: {key_name}, Email: {email}, Frase de contraseña: {passphrase}, Bits: {bits}")
+                        self.generate_ssh_key(key_name, email, bits, passphrase)
+    
     @staticmethod
     def get_ssh_directory() -> str:
         """Determina la ruta del directorio .ssh según el sistema operativo."""
@@ -275,14 +420,15 @@ def main_menu(ka: key_admin) -> None:
     
     print("\n--- Bienvenido al generador de claves SSH. ---")
     while True:
-        print("\n Por favor, elija la opción deseada:\n")
+        print("\n--- Por favor, elija la opción deseada:\n")
         print("1. Mostrar lista de claves SSH") # TODO: Implementar más adelante con sub-menú: Editar nombre, eliminar clave, mostrar clave pub, etc.
         print("2. Generar nueva clave SSH") # TODO: Preguntar al finalizar si desea ver la clave pública generada. 
                                             # TODO: También preguntar si desea añadir la clave pública a un servicio como GitHub, GitLab, etc.
-        print("3. Generar múltiples claves SSH") # Desde fichero o generadas de forma automática.
+        print("3. Generar múltiples claves SSH desde CSV. (Ver documentación, opción 6)") # Desde fichero o generadas de forma automática.
         print("4. Añadir clave pública a un servicio (GitHub, GitLab, etc.)") # TODO: Implementar más adelante.
         print("5. Añadir clave(s) al agente SSH") # TODO: Implementar más adelante.
-        print("6. Salir")
+        print("6. Documentación y ayuda: github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
+        print("7. Salir")
         
         while True:
             opción = input("Selecciona una opción: ").strip()
@@ -297,15 +443,17 @@ def main_menu(ka: key_admin) -> None:
             case 2:
                 ka.key_gen()  # Llama al método para generar una clave SSH
             case 3:
-                return None  # Implementar más adelante
+                ka.multi_key_gen()  # Llama al método para generar múltiples claves SSH
             case 4:
                 return None  # Implementar más adelante
             case 5:
                 return None  # Implementar más adelante
             case 6:
-                return exit("Saliendo del generador de claves SSH. ¡Hasta luego!")
+                ka.abrir_link_web("https://github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
+            case 7:
+                return exit("\nSaliendo del generador de claves SSH. ¡Hasta luego!\n")
             case _:
-                print("Seleccione una opción correcta basada en el número indicado a su izquierda.")
+                print("\nSeleccione una opción correcta basada en el número indicado a su izquierda.")
 
 
 if __name__ == "__main__":

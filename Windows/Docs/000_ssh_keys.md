@@ -61,7 +61,56 @@ Para su descarga de forma remota por consola:
         ```
         (Usa `python` si `python3` no funciona y sabes que tu sistema usa Python 3 por defecto con ese comando).
 
-## Consideraciones a tener en cuenta 👷 
+## Consideraciones 👷 
+
+### Generación manual de clave SSH
+
+Luego de generarse la clave SSH con éxito, la clave SSH pública será imrpesa por pantalla, y a su vez, se copiará en el portapapeles, a fin de que pueda ir a pegarla directamente donde la necesite con mayor comodidad.
+
+### Generar múltiples claves SSH desde CSV
+
+Este script permite la creación de múltiples claves SSH desde un archivo CSV, sin nececidad de estar yendo una y otra vez por cada opción del menú interactivo, el cuál es muy práctico para la creación de una o dos claves, pero pierde sentido su uso para grandes números de claves a generar, ante esa necesidad.
+Por esto hemos decidido incorporar esta opción al algoritmo. 
+
+El uso de esta opción incluye la posibilidad de leer múltiples archivos, y dentro de ellos, múltiples claves. La configuración de directorios y archivos debe ser la siguiente:
+
+```
+Directorio raíz/
+├── 000_ssh_keys.py
+└── CSV/
+    ├── claves_ssh_1.csv
+    ├── claves_ssh_2.csv
+    ├── ...
+    ├── desarrollo.csv
+    ├── contabilidad.csv
+    └──...
+```
+En el mismo directorio donde se encuentra el script, debe haber incluída una carpeta CSV, en la cuál deben estar los archivos CSV con las claves.
+
+Estos archivos deben estar estructurados de la siguiente manera:
+
+    - Nombre de la clave (solo letras, números, guiones (-) y guiones bajos (_))
+    - Email (comentario)
+    - Frase de contraseña (opcional)
+    - Tamaño de la clave en bits (opcional)
+
+```csv
+nombre_clave_1,email1,frase_contraseña_1,tamaño_bits_1
+nombre_clave_2,email2,frase_contraseña_2,tamaño_bits_2
+...
+```
+por ejemplo:
+```csv
+mi_clave_ssh,mi_email@gmail.com,mi_frase_contraseña,4096
+otra_clave_ssh,otro_email@gmail.com,otra_frase_contraseña,2048
+esta_clave_sin_bits,sin_bits@gmail.com,sin_bits_frase_contraseña
+esta_otra_sin_pass,sin_pass@gmail.com
+```
+⚠️ **Advertencia Importante** ⚠️
+
+En caso de haber claves con nombres ya existentes en el sistema dentro de los archivos CSV, al correr la opción de generar claves múltiples, estas serán reemplazadas sin previo aviso, usar con precaución. 
+
+
 
 🚧 Trabajando 🚧
 
