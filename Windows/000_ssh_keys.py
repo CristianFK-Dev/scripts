@@ -76,15 +76,25 @@ class key_admin:
                         continue
                 break
             else:
-                aux = 0
-                while True:
-                    key_file_name = f"mi_clave_ssh_{aux}"
-                    key_path = os.path.join(self.ssh_dir, key_file_name)
-                    if not os.path.exists(key_path):
-                        print(f"No se ha introducido un nombre de archivo. Usando nombre de archivo por defecto: {key_file_name}")
-                        break
-                    aux += 1
+                key_file_name = self.generador_de_nombres()
                 break
+        return key_file_name
+
+    def generador_de_nombres(self) -> str:
+        """
+        Genera un nombre de archivo por defecto para la clave SSH.
+        
+        Returns:
+            str: Nombre de archivo por defecto.
+        """
+        aux = 0
+        while True:
+            key_file_name = f"mi_clave_ssh_{aux}"
+            key_path = os.path.join(self.ssh_dir, key_file_name)
+            if not os.path.exists(key_path):
+                print(f"No se ha introducido un nombre de archivo. Usando nombre de archivo por defecto: {key_file_name}")
+                break
+            aux += 1
         return key_file_name
 
     def get_comment(self) -> str:
@@ -186,8 +196,7 @@ class key_admin:
             return True
         else:
             return False
-    
-    
+       
     def key_gen(self) -> bool:
         """Genera una nueva clave SSH."""
         
@@ -210,7 +219,7 @@ class key_admin:
             public_key = self.display_public_key(key_file_name)
             if public_key:
                 self.copy_to_clipboard(public_key)
-                print("\n¡Pega la clave donde la necesites (ej. GitHub, servidor)!")
+                print("¡Pega la clave donde la necesites (ej. GitHub, servidor)!")
                 return True
             else:
                 return False
@@ -356,6 +365,7 @@ class key_admin:
             print(f"\nArchivos CSV encontrados en {self.csv_dir}: \n{', '.join(csv_files)}\n")
             for CSV in csv_files:
                 print(f"Procesando el archivo CSV: {CSV}")
+                print("-----------------------------------")
                 data = cargar_csv(CSV)
                 if not data:
                     print(f"No se encontraron datos en el archivo {CSV}. Asegúrate de que el formato sea correcto.\n")
@@ -368,6 +378,15 @@ class key_admin:
                                   "ADVERTENCIA: Esta clave es ignorada por el generador, ingrésela manualmente luego de corregirla.")
                             continue
                         key_name = new_key[0].strip()
+                        # Si existe un nombre de clave, se verifica que no exista ya en el directorio .ssh, de ser así, se borra la antigua clave SSH y su .pub
+                        if key_name:
+                            key_path = os.path.join(self.ssh_dir, key_name)
+                            if os.path.exists(key_path):
+                                print(f"\nEl archivo {key_path} ya existe. Se pasa a sobrescribirlo.")
+                                os.remove(key_path)
+                                os.remove(key_path + ".pub")
+                        else:
+                            key_name = self.generador_de_nombres()
                         email = new_key[1].strip()
                         if len(new_key) > 2:
                             try:
