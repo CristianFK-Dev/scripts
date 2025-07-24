@@ -4,6 +4,8 @@ import subprocess
 from sys import exit
 from tkinter import N
 
+from click import edit
+
 class key_admin:
     """Clase para administrar claves SSH."""
     
@@ -413,7 +415,7 @@ class key_admin:
         """
         print("\n--- Menú de edición de claves SSH ---")
         print("1. Mostrar clave pública SSH")
-        print("2. Editar nombre de claves SSH")
+        print("2. Cambiar nombre de claves SSH")
         print("3. Eliminar clave SSH")
         print("4. Volver al menú principal")
         
@@ -424,29 +426,82 @@ class key_admin:
                 continue
             break
         
+        def file_search(list_keys: list) -> str | None:
+            key_name = input("\nIntroduce el nombre de la clave SSH (sin extensión) o su número de orden: \n").strip()
+            if self.is_number(key_name):
+                numered_keys = enumerate(list_keys, start=1)
+                # Pasamos a buscar la clave pública por su número de orden
+                for index, key in numered_keys:
+                    if index == int(key_name):
+                        key_name = key.split('.pub')[0]
+                        break
+            elif not self.input_char_validate(key_name):
+                print("El nombre de la clave solo puede contener letras, números, guiones bajos y guiones.")
+                return None
+            return key_name
+        
         def show_key() -> None:
             """
             Muestra el contenido de la clave pública SSH por pantalla.
             """
             list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
             while True:
-                key_name = input("\nIntroduce el nombre de la clave SSH (sin extensión) o su número de orden: \n").strip()
-                if self.is_number(key_name):
-                    print(f"[Debug] Número de orden: {key_name}")
-                    numered_keys = enumerate(list_keys, start=1)
-                    # Pasamos a buscar la clave pública por su número de orden
-                    for index, key in numered_keys:
-                        if index == int(key_name):
-                            key_name = key.split('.pub')[0]
-                            print(f"[Debug] Nombre de clave: {key_name}")
-                            break
-                print(print(f"[Debug] Lista de claves: {list_keys}"))
-                if key_name+".pub" in list_keys:
-                    public_key = self.display_public_key(key_name)
+                key_name = file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
+                if key_name and key_name+".pub" in list_keys:
+                    public_key = self.display_public_key(key_name) # Se entrega el contenido de la clave pública
                     if public_key:
                         self.copy_to_clipboard(public_key)
                     else:
                         print(f"No se pudo mostrar la clave pública para {key_name}. Asegúrate de que la clave exista.")
+                    break
+                else:
+                    print(f"La clave {key_name} no se encontró en la lista de claves SSH. Por favor, verifica el nombre o número de orden.")
+                    continue
+            return None
+        
+        def edit_key() -> None:
+            """
+            Edita el nombre de una clave SSH existente.
+            """
+            list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
+            while True:
+                key_name = file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
+                if key_name and key_name+".pub" in list_keys:
+                    while True:
+                        new_key_name = input("\nIntroduce el nuevo nombre para la clave SSH (sin extensión): \n").strip()
+                        if not self.input_char_validate(new_key_name):
+                            print("El nombre de la clave solo puede contener letras, números, guiones bajos y guiones.")
+                            continue
+                        break
+                    new_key_path = os.path.join(self.ssh_dir, new_key_name)
+                    if os.path.exists(new_key_path):
+                        print(f"El archivo {new_key_path} ya existe. \n")
+                        continue
+                    old_key_path = os.path.join(self.ssh_dir, key_name)
+                    old_pub_key_path = old_key_path + ".pub"
+                    new_pub_key_path = new_key_path + ".pub"
+                    os.rename(old_key_path, new_key_path)
+                    os.rename(old_pub_key_path, new_pub_key_path)
+                    print(f"Clave SSH renombrada de {key_name} a {new_key_name} exitosamente.")
+                    break
+                else:
+                    print(f"La clave {key_name} no se encontró en la lista de claves SSH. Por favor, verifica el nombre o número de orden.")
+                    continue
+            return None
+         
+        def remove_key() -> None:
+            """
+            Elimina una clave SSH existente elegida desde una lista impresa en pantalla.
+            """
+            list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
+            while True:
+                key_name = file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
+                if key_name and key_name+".pub" in list_keys:
+                    key_path = os.path.join(self.ssh_dir, key_name)
+                    pub_key_path = key_path + ".pub"
+                    os.remove(key_path)
+                    os.remove(pub_key_path)
+                    print(f"La clave SSH {key_name} y su clave pública han sido eliminadas exitosamente.")
                     break
                 else:
                     print(f"La clave {key_name} no se encontró en la lista de claves SSH. Por favor, verifica el nombre o número de orden.")
@@ -458,13 +513,12 @@ class key_admin:
             case 1:
                 show_key()
             case 2:
-                pass
+                edit_key()
             case 3:
-                pass
+                remove_key()
             case 4:
                 return None
         
-    
     @staticmethod
     def open_link_web(url):
         """
