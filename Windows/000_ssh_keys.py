@@ -15,7 +15,7 @@ class key_admin:
         print(f"Directorio SSH: {self.ssh_dir}")
         self.claves_generadas = []  # Lista para almacenar las claves generadas
     
-    def show_keys(self) -> bool:
+    def show_keys(self) -> list:
         """Muestra una lista de las claves SSH en el sistema."""
         try:
             # Listar archivos en el directorio .ssh
@@ -24,20 +24,23 @@ class key_admin:
             
             if not ssh_keys:
                 print(f"No se encontraron claves SSH en el directorio {self.ssh_dir}.")
-                return False
+                return []
             
             print("\n--- Claves SSH encontradas ---")
             print(f"Directorio: {self.ssh_dir}\n")
             for index, key in enumerate(ssh_keys, start=1):
                 print(f"{index}. {key}")
             print("-------------------------------")
-            return True
+            return ssh_keys
+        except PermissionError:
+            print(f"No tienes permiso para acceder al directorio {self.ssh_dir}.")
+            return []
         except FileNotFoundError:
             print(f"El directorio {self.ssh_dir} no existe. Asegúrate de que las claves SSH estén generadas.")
-            return False
+            return []
         except Exception as e:
             print(f"Error inesperado al listar las claves SSH: {e}")
-            return False
+            return []
     
     # --------- Bloque generación de claves SSH ---------
     
@@ -76,11 +79,11 @@ class key_admin:
                         continue
                 break
             else:
-                key_file_name = self.generador_de_nombres()
+                key_file_name = self.names_gen()
                 break
         return key_file_name
 
-    def generador_de_nombres(self) -> str:
+    def names_gen(self) -> str:
         """
         Genera un nombre de archivo por defecto para la clave SSH.
         
@@ -269,25 +272,24 @@ class key_admin:
         except Exception as e:
             print(f"Error al copiar la clave pública al portapapeles: {e}")
             return None
-        
-
     
-    @staticmethod
-    def abrir_link_web(url):
+    def is_number(self, s: str) -> bool:
         """
-        Abre una URL en el navegador web predeterminado del sistema.
+        Verifica si la cadena proporcionada es un número entero.
+        
+        Args:
+            s (str): Cadena a verificar.
+        
+        Returns:
+            bool: True si es un número entero, False en caso contrario.
         """
-        
-        import webbrowser
-        
         try:
-            webbrowser.open(url)
-            print(f"Abriendo el vínculo: {url}")
-        except Exception as e:
-            print(f"No se pudo abrir el vínculo: {url}. Error: {e}")
-    
+            int(s)
+            return True
+        except ValueError:
+            return False
+     
     # Se abrirá cada archivo CSV en el directorio CSV y se generarán las claves SSH automáticamente.
-    
     def multi_key_gen(self) -> None:
         """
         Genera múltiples claves SSH de forma automática o desde un fichero.
@@ -331,7 +333,7 @@ class key_admin:
         
         import csv
         
-        def cargar_csv(nombre_archivo: str) -> list:
+        def csv_load(nombre_archivo: str) -> list:
             """
             Carga un archivo CSV en una lista de listas.
 
@@ -366,7 +368,7 @@ class key_admin:
             for CSV in csv_files:
                 print(f"Procesando el archivo CSV: {CSV}")
                 print("-----------------------------------")
-                data = cargar_csv(CSV)
+                data = csv_load(CSV)
                 if not data:
                     print(f"No se encontraron datos en el archivo {CSV}. Asegúrate de que el formato sea correcto.\n")
                     continue
@@ -386,7 +388,7 @@ class key_admin:
                                 os.remove(key_path)
                                 os.remove(key_path + ".pub")
                         else:
-                            key_name = self.generador_de_nombres()
+                            key_name = self.names_gen()
                         email = new_key[1].strip()
                         if len(new_key) > 2:
                             try:
@@ -404,6 +406,78 @@ class key_admin:
                         
                         print(f"\nGenerando clave SSH del fichero {CSV}: {key_name}, Email: {email}, Frase de contraseña: {passphrase}, Bits: {bits}")
                         self.generate_ssh_key(key_name, email, bits, passphrase)
+ 
+    def ssh_edit_menu(self) -> None:
+        """
+        Implementación de menú para editar claves SSH existentes.
+        """
+        print("\n--- Menú de edición de claves SSH ---")
+        print("1. Mostrar clave pública SSH")
+        print("2. Editar nombre de claves SSH")
+        print("3. Eliminar clave SSH")
+        print("4. Volver al menú principal")
+        
+        while True:
+            opción = input("Selecciona una opción: ").strip()
+            if not re.match(r"^\d+$", opción):
+                print("Por favor, ingresa un número válido para la opción.")
+                continue
+            break
+        
+        def show_key() -> None:
+            """
+            Muestra el contenido de la clave pública SSH por pantalla.
+            """
+            list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
+            while True:
+                key_name = input("\nIntroduce el nombre de la clave SSH (sin extensión) o su número de orden: \n").strip()
+                if self.is_number(key_name):
+                    print(f"[Debug] Número de orden: {key_name}")
+                    numered_keys = enumerate(list_keys, start=1)
+                    # Pasamos a buscar la clave pública por su número de orden
+                    for index, key in numered_keys:
+                        if index == int(key_name):
+                            key_name = key.split('.pub')[0]
+                            print(f"[Debug] Nombre de clave: {key_name}")
+                            break
+                print(print(f"[Debug] Lista de claves: {list_keys}"))
+                if key_name+".pub" in list_keys:
+                    public_key = self.display_public_key(key_name)
+                    if public_key:
+                        self.copy_to_clipboard(public_key)
+                    else:
+                        print(f"No se pudo mostrar la clave pública para {key_name}. Asegúrate de que la clave exista.")
+                    break
+                else:
+                    print(f"La clave {key_name} no se encontró en la lista de claves SSH. Por favor, verifica el nombre o número de orden.")
+                    continue
+            return None
+        
+        # --- Menú de opciones ---
+        match int(opción):
+            case 1:
+                show_key()
+            case 2:
+                pass
+            case 3:
+                pass
+            case 4:
+                return None
+        
+    
+    @staticmethod
+    def open_link_web(url):
+        """
+        Abre una URL en el navegador web predeterminado del sistema.
+        """
+        
+        import webbrowser
+        
+        try:
+            webbrowser.open(url)
+            print(f"Abriendo el vínculo: {url}")
+        except Exception as e:
+            print(f"No se pudo abrir el vínculo: {url}. Error: {e}")
     
     @staticmethod
     def get_ssh_directory() -> str:
@@ -440,11 +514,10 @@ def main_menu(ka: key_admin) -> None:
     print("\n--- Bienvenido al generador de claves SSH. ---")
     while True:
         print("\n--- Por favor, elija la opción deseada:\n")
-        print("1. Mostrar lista de claves SSH") # TODO: Implementar más adelante con sub-menú: Editar nombre, eliminar clave, mostrar clave pub, etc.
-        print("2. Generar nueva clave SSH") # TODO: Preguntar al finalizar si desea ver la clave pública generada. 
-                                            # TODO: También preguntar si desea añadir la clave pública a un servicio como GitHub, GitLab, etc.
-        print("3. Generar múltiples claves SSH desde CSV. (Ver documentación, opción 6)") # Desde fichero o generadas de forma automática.
-        print("4. Añadir clave pública a un servicio (GitHub, GitLab, etc.)") # TODO: Implementar más adelante.
+        print("1. Mostrar lista de claves SSH")
+        print("2. Generar nueva clave SSH")
+        print("3. Generar múltiples claves SSH desde CSV. (Ver documentación, opción 6)")
+        print("4. Operar sobre clave existente: Editar nombre, eliminar clave, mostrar clave pub, etc.") # TODO: Implementar más adelante.
         print("5. Añadir clave(s) al agente SSH") # TODO: Implementar más adelante.
         print("6. Documentación y ayuda: github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
         print("7. Salir")
@@ -464,11 +537,11 @@ def main_menu(ka: key_admin) -> None:
             case 3:
                 ka.multi_key_gen()  # Llama al método para generar múltiples claves SSH
             case 4:
-                return None  # Implementar más adelante
+                ka.ssh_edit_menu()
             case 5:
                 return None  # Implementar más adelante
             case 6:
-                ka.abrir_link_web("https://github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
+                ka.open_link_web("https://github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
             case 7:
                 return exit("\nSaliendo del generador de claves SSH. ¡Hasta luego!\n")
             case _:
