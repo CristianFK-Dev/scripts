@@ -2,9 +2,6 @@ import re
 import os
 import subprocess
 from sys import exit
-from tkinter import N
-
-from click import edit
 
 class key_admin:
     """Clase para administrar claves SSH."""
@@ -518,7 +515,97 @@ class key_admin:
                 remove_key()
             case 4:
                 return None
-        
+            case _:
+                print("\nSeleccione una opción correcta basada en el número indicado a su izquierda.")
+                return None
+
+    # --------- Bloque Agente SSH ---------
+
+    def check_ssh_agent_running(self):
+        """
+        Verifica si el agente SSH está corriendo.
+        Retorna True si está corriendo, False en caso contrario.
+        """
+        if os.name == "nt":
+            try:
+                # En Windows, comprobamos el servicio OpenSSH Authentication Agent con PowerShell.
+                result = subprocess.run(
+                    ["powershell", "-Command", "Get-Service ssh-agent | Select-Object -ExpandProperty Status"],
+                    capture_output=True, text=True, check=True
+                )
+                return "Running" in result.stdout.strip()
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                return False
+        elif os.name == "posix": # Linux, macOS, etc.
+            # En sistemas Unix-like, comprobamos la variable SSH_AUTH_SOCK y si ssh-add puede listar las claves.
+            if "SSH_AUTH_SOCK" in os.environ:
+                try:
+                    result = subprocess.run(
+                        ["ssh-add", "-l"],
+                        capture_output=True, text=True, check=False # check=False porque ssh-add -l puede fallar si no hay claves
+                    )
+                    # Si ssh-add -l devuelve un código de salida 0, el agente está accesible.
+                    # También verificamos si la salida no indica un error de conexión al agente.
+                    return result.returncode == 0 and "Could not open a connection to your authentication agent" not in result.stderr
+                except FileNotFoundError:
+                    return False
+            return False
+        else:
+            raise EnvironmentError("Sistema operativo no soportado. Este script solo funciona en Windows, Linux y macOS. "
+                                f"Sistema detectado: {os.name}")
+    
+    def start_ssh_agent(self):
+        """
+        Intenta iniciar el agente SSH de forma multiplataforma.
+        Retorna True si se inició o si ya estaba corriendo, False en caso de error.
+        """
+        if self.check_ssh_agent_running():
+            print("El agente SSH ya está corriendo.")
+            return True
+
+        print("Intentando iniciar el agente SSH...")
+        if os.name == "nt":
+            try:
+                # En Windows, iniciar el servicio "OpenSSH Authentication Agent"
+                # Necesita permisos de administrador para esto.
+                # Idealmente, el usuario ya debería haber configurado el servicio en automático.
+                print("En Windows, asegúrate de que el servicio 'OpenSSH Authentication Agent' esté configurado como 'Automático' o 'Automático (Inicio retrasado)' y esté iniciado.")
+                print("Puedes intentar iniciarlo manualmente con PowerShell (como administrador):")
+                print("  Set-Service ssh-agent -StartupType Automatic -PassThru | Start-Service")
+                # Este script por sí mismo no puede elevar permisos para iniciar el servicio.
+                # Por lo tanto, el usuario debe haberlo configurado o iniciarlo manualmente.
+                # Si el servicio no está corriendo y no se puede iniciar, `ssh-add` fallará.
+                return True # Asumimos que el usuario lo manejará o ya está iniciado
+            except Exception as e:
+                print(f"Error al intentar iniciar el agente SSH en Windows (requiere privilegios): {e}")
+                return False
+        else: # Linux y macOS
+            try:
+                # En sistemas Unix-like, usamos 'eval $(ssh-agent -s)' para configurar el entorno.
+                # Es crucial capturar la salida para establecer las variables de entorno.
+                result = subprocess.run(
+                    ["ssh-agent", "-s"],
+                    capture_output=True, text=True, check=True
+                )
+                # Parsear la salida para obtener las variables de entorno (SSH_AUTH_SOCK, SSH_AGENT_PID)
+                # y establecerlas en el entorno del proceso Python.
+                for line in result.stdout.splitlines():
+                    if line.startswith("SSH_AUTH_SOCK="):
+                        os.environ["SSH_AUTH_SOCK"] = line.split("=")[1].split(";")[0]
+                    elif line.startswith("SSH_AGENT_PID="):
+                        os.environ["SSH_AGENT_PID"] = line.split("=")[1].split(";")[0]
+                print("Agente SSH iniciado y variables de entorno configuradas.")
+                return True
+            except subprocess.CalledProcessError as e:
+                print(f"Error al iniciar el agente SSH: {e}")
+                print(f"Stderr: {e.stderr}")
+                return False
+            except FileNotFoundError:
+                print("Comando 'ssh-agent' no encontrado. Asegúrate de tener OpenSSH instalado.")
+                return False
+    
+    # --------------------------------------
+    
     @staticmethod
     def open_link_web(url):
         """
@@ -571,7 +658,7 @@ def main_menu(ka: key_admin) -> None:
         print("1. Mostrar lista de claves SSH")
         print("2. Generar nueva clave SSH")
         print("3. Generar múltiples claves SSH desde CSV. (Ver documentación, opción 6)")
-        print("4. Operar sobre clave existente: Editar nombre, eliminar clave, mostrar clave pub, etc.") # TODO: Implementar más adelante.
+        print("4. Operar sobre clave existente: Editar nombre, eliminar clave, mostrar clave pub, etc.")
         print("5. Añadir clave(s) al agente SSH") # TODO: Implementar más adelante.
         print("6. Documentación y ayuda: github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
         print("7. Salir")
@@ -593,7 +680,8 @@ def main_menu(ka: key_admin) -> None:
             case 4:
                 ka.ssh_edit_menu()
             case 5:
-                return None  # Implementar más adelante
+                print("\n---------------------------------------------")
+                ka.start_ssh_agent()
             case 6:
                 ka.open_link_web("https://github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
             case 7:
