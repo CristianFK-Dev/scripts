@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+if [ -t 1 ]; then
+    clear
+fi
+
 # Mostrar documentación y esperar
 echo -e "\n🧾001-user-check.sh\n"
 echo -e "Este script muestra el UID (usuario real) y el EUID (usuario efectivo)."
@@ -14,7 +18,7 @@ echo    "🛡️  EUID (effective user ID): $EUID"
 
 # Evaluar si se está ejecutando como root
 if [[ $EUID -eq 0 ]]; then
-    echo -e "\n✅ Este script se está ejecutando con privilegios de root (EUID = 0)"
+    echo -e "\n✅ Este script se está ejecutando con privilegios de root (EUID = 0)\n"
 else
-    echo -e "\n❌ Este script NO se está ejecutando como root"
+    echo -e "\n❌ Este script NO se está ejecutando como root\n"
 fi

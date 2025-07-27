@@ -2,11 +2,18 @@
 
 set -euo pipefail
 
+cs () {
+    if [ -t 1 ]; then
+        clear
+    fi
+}
+
 # Mostrar documentación y esperar
 echo -e "\n🧾001-apt-upgrade.sh\n"
-echo -e " Este script actualiza la lista de paquetes APT y permite instalar selectivamente los actualizables."
+echo -e "Este script actualiza la lista de paquetes APT y permite instalar selectivamente los actualizables."
 echo -e "Podés elegir uno o varios por número, o instalar todos.\n"
 read -rp "Presioná ENTER para continuar..."
+cs
 
 # Verificamos si es root
 if [[ $EUID -ne 0 ]]; then

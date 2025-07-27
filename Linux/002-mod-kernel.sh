@@ -2,12 +2,19 @@
 
 set -euo pipefail
 
+cs () {
+    if [ -t 1 ]; then
+        clear
+    fi
+}
+
 # Mostrar documentación y esperar
 echo -e "\n🧾002-mod-kernel.sh\n"
 echo -e "Este script permite listar y eliminar módulos del kernel activos."
 echo -e "También permite ver si hay módulos bloqueados por archivos de blacklist."
 echo -e "Por seguridad, se pedirá que escribas el nombre exacto del módulo antes de eliminarlo.\n"
 read -rp "Presioná ENTER para continuar..."
+cs
 
 # Verificamos si es root
 if [[ $EUID -ne 0 ]]; then
@@ -52,7 +59,7 @@ read -rp "👉 Ingresá el número del módulo a desactivar o escribí 'exit' pa
 
 # Verificar si quiere salir
 if [[ "$index" == "exit" || "$index" == "salir" ]]; then
-    echo -e "\n👋 Saliendo sin hacer cambios.\n"
+    cs && echo -e "\n👋 Saliendo sin hacer cambios.\n"
     exit 0
 fi
 
