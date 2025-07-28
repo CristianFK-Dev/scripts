@@ -49,7 +49,7 @@ curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/004-pass-
 
 chmod +x 004-pass-check.sh
 
-./004-pass-check.sh.sh
+./004-pass-check.sh
 
 ```
 
