@@ -1,6 +1,10 @@
-echo "=== CUENTAS DEL SISTEMA (UID <= 1000) ==="
-echo "Usuario | Estado Shell | Contraseña | Bloqueada | Caducidad"
-echo "-----------------------------------------------------------"
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ -t 1 ]; then
+    clear
+fi
 
 awk -F: '$3 <= 1000 && $1 != "nobody" {print $1, $7}' /etc/passwd | while read user shell; do
     # Verificar tipo de shell
