@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# Limpiar pantalla si está en terminal interactiva
 if [ -t 1 ]; then
     clear
 fi
@@ -29,6 +28,27 @@ lower=$(grep -o '[a-z]' <<< "$PASSWORD" | wc -l)
 digit=$(grep -o '[0-9]' <<< "$PASSWORD" | wc -l)
 symbol=$(grep -o '[^a-zA-Z0-9]' <<< "$PASSWORD" | wc -l)
 
+# Verificar requisitos obligatorios de composición
+if [[ $upper -eq 0 ]]; then
+    echo -e "\n❌ La contraseña debe contener al menos una letra mayúscula."
+    exit 1
+fi
+
+if [[ $lower -eq 0 ]]; then
+    echo -e "\n❌ La contraseña debe contener al menos una letra minúscula."
+    exit 1
+fi
+
+if [[ $digit -eq 0 ]]; then
+    echo -e "\n❌ La contraseña debe contener al menos un número."
+    exit 1
+fi
+
+if [[ $symbol -eq 0 ]]; then
+    echo -e "\n❌ La contraseña debe contener al menos un carácter especial (símbolo)."
+    exit 1
+fi
+
 # Determinar qué conjuntos de caracteres están presentes
 charsets_count=0
 charsets_description=""
@@ -38,7 +58,6 @@ charsets_description=""
 [[ $digit -gt 0 ]] && { charsets_count=$((charsets_count + 10)); charsets_description+="números (10) + "; }
 [[ $symbol -gt 0 ]] && { charsets_count=$((charsets_count + 32)); charsets_description+="símbolos (32) + "; }
 
-# Limpiar descripción
 charsets_description=${charsets_description%+ }
 
 # Combinaciones posibles y entropía
@@ -62,7 +81,6 @@ echo "Mayúsculas             : $upper"
 echo "Minúsculas             : $lower"
 echo "Números                : $digit"
 echo "Símbolos               : $symbol"
-echo "Conjuntos activos      : ${charsets_description:-ninguno}"
 echo "Combinaciones posibles : $combinations"
 echo "Entropía estimada      : $entropy_bits bits"
 echo "Clasificación          : $strength"
