@@ -1,4 +1,4 @@
-# Script para Administración de Claves SSH
+# Script para Administración de Claves SSH multisistema
 
 <p align="center">
     <a href="https://docs.python.org/3/">
@@ -9,9 +9,11 @@
 
 ## Recomendaciones
 
-⚠️ **Advertencia de Seguridad Importante** ⚠️
-
-Por cuestiones de seguridad, recomendamos encarecidamente que lea el contenido de este o cualquier script antes de ejecutarlo en su computadora, en especial si lo va a correr directamente de forma online; o bien puede pasarle el script o incluso la url del repositorio a alguna IA para que corrobore por usted que está libre de cualquier amenaza. 
+> [!TIP]
+>
+>⚠️ **Advertencia de Seguridad Importante** ⚠️
+>
+>Por cuestiones de seguridad, recomendamos encarecidamente que lea el contenido de este o cualquier script antes de ejecutarlo en su computadora, en especial si lo va a correr directamente de forma online; o bien puede pasarle el script o incluso la url del repositorio a alguna IA para que corrobore por usted que está libre de cualquier amenaza. 
 
 ## Ejecución
 
@@ -106,9 +108,9 @@ otra_clave_ssh,otro_email@gmail.com,otra_frase_contraseña,2048
 esta_clave_sin_bits,sin_bits@gmail.com,sin_bits_frase_contraseña
 esta_otra_sin_pass,sin_pass@gmail.com
 ```
-⚠️ **Advertencia Importante** ⚠️
-
-En caso de haber claves con nombres ya existentes en el sistema dentro de los archivos CSV, al correr la opción de generar claves múltiples, estas serán reemplazadas sin previo aviso, usar con precaución. 
+> [!CAUTION]
+>
+>En caso de haber claves con nombres ya existentes en el sistema dentro de los archivos CSV, al correr la opción de generar claves múltiples, estas serán reemplazadas sin previo aviso, usar con precaución. 
 
 
 

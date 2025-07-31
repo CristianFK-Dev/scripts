@@ -1,6 +1,5 @@
-## 📋 Lista de scripts WINDOWS🪟
+## 📋 Lista de scripts Multisistema
 
-| N° | Script | Documentación | Estado |
-|---:|---------------|:-------------:|:----:|
-| 000| [SSH Keys administrator](000_ssh_keys.py) | [README](Docs/000_ssh_keys.md) | 🚧 En progreso 🚧 |
-
+| N° | Script | Documentación | Tipo | Win🪟 | Linux🐧 | MacOS🍎 | Estado |
+|---:|---------------|:-------------:|:----:|:----:|:----:|:----:|:----:|
+| 000| [SSH Keys admin](Windows/000_ssh_keys.py) | [README](Windows/Docs/000_ssh_keys.md) | Consola | ✅ | ✅ | ✅ |🚧 En progreso 🚧 |

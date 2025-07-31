@@ -45,16 +45,17 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 002|[Kernel modules](Linux/002-mod-kernel.sh) | [README](Linux/Docs/002-mod-kernel.md) | ✅ Terminado ✅ |
 | 003|[Filse system disable](Linux/003-filesystems-disable.sh) | [README](Linux/Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
 | 004|[Password security check](Linux/004-pass-check.sh) | [README](Linux/Docs/004-pass-check.md) | 🚧 En progreso 🚧 |
-| 00|[Users status](Linux/005-users.sh) | [README](Linux/Docs/005-users.md) | 🚧 En progreso 🚧 |
+| 005|[Users status](Linux/005-users.sh) | [README](Linux/Docs/005-users.md) | 🚧 En progreso 🚧 |
 
 
 ---
 
-## 📋 Lista de scripts WINDOWS🪟
+## 📋 Lista de scripts Multisistema
 
-| N° | Script | Documentación | Estado |
-|---:|---------------|:-------------:|:----:|
-| 000| [SSH Keys administrator](Windows/000_ssh_keys.py) | [README](Windows/Docs/000_ssh_keys.md) | 🚧 En progreso 🚧 |
+| N° | Script | Documentación | Tipo | Win🪟 | Linux🐧 | MacOS🍎 | Estado |
+|---:|---------------|:-------------:|:----:|:----:|:----:|:----:|:----:|
+| 000| [SSH Keys admin](Windows/000_ssh_keys.py) | [README](Windows/Docs/000_ssh_keys.md) | Consola | ✅ | ✅ | ✅ |🚧 En progreso 🚧 |
+| 001| [SSH Keys admin](Windows/001/001_ssh_keys_desktop.py) | ------ | Escritorio | ✅ | ✅ | ✅ |🚧 En progreso 🚧 |
 
 
 
