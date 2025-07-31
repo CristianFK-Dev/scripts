@@ -6,82 +6,50 @@ if [ -t 1 ]; then
     clear
 fi
 
-read -rsp "Ingrese la contraseña a analizar: " PASSWORD
-echo
+# Función para calcular entropía
+calc_entropy() {
+    local password=$1
+    local length=${#password}
+    local char_classes=0
 
-# Verificar longitud mínima
-total_length=${#PASSWORD}
-if [[ $total_length -lt 8 ]]; then
-    echo -e "\n❌ La contraseña debe tener al menos 8 caracteres."
-    exit 1
-fi
+    # Verificar clases de caracteres presentes
+    [[ $password =~ [a-z] ]] && ((char_classes+=26))   # Minúsculas
+    [[ $password =~ [A-Z] ]] && ((char_classes+=26))   # Mayúsculas
+    [[ $password =~ [0-9] ]] && ((char_classes+=10))   # Números
+    [[ $password =~ [^a-zA-Z0-9] ]] && ((char_classes+=32))  # Símbolos (ASCII común)
 
-# Validar que bc esté instalado (solo para entropía)
-if ! command -v bc >/dev/null; then
-    echo -e "\n❌ Error: 'bc' no está instalado.\n"
-    exit 1
-fi
+    # Cálculo de entropía (fórmula: log2(R^L)) donde R=clases, L=longitud
+    local entropy=$(echo "scale=2; l($char_classes^$length)/l(2)" | bc -l)
+    
+    # Evaluación cualitativa
+    if (( $(echo "$entropy < 28" | bc -l) ); then
+        strength="Muy Débil 🔴"
+    elif (( $(echo "$entropy < 36" | bc -l) ); then
+        strength="Débil 🟠"
+    elif (( $(echo "$entropy < 60" | bc -l) ); then
+        strength="Moderada 🟡"
+    elif (( $(echo "$entropy < 128" | bc -l) ); then
+        strength="Fuerte 🟢"
+    else
+        strength="Muy Fuerte 🔵"
+    fi
 
-# Contadores de tipos de caracteres
-upper=$(grep -o '[A-Z]' <<< "$PASSWORD" | wc -l)
-lower=$(grep -o '[a-z]' <<< "$PASSWORD" | wc -l)
-digit=$(grep -o '[0-9]' <<< "$PASSWORD" | wc -l)
-symbol=$(grep -o '[^a-zA-Z0-9]' <<< "$PASSWORD" | wc -l)
+    echo "--------------------------------"
+    echo "🔐 Análisis de Contraseña"
+    echo "--------------------------------"
+    echo "Longitud: $length caracteres"
+    echo "Clases de caracteres:"
+    echo "  - Minúsculas: $( [[ $password =~ [a-z] ]] && echo "Sí ✅" || echo "No ❌" )"
+    echo "  - Mayúsculas: $( [[ $password =~ [A-Z] ]] && echo "Sí ✅" || echo "No ❌" )"
+    echo "  - Números: $( [[ $password =~ [0-9] ]] && echo "Sí ✅" || echo "No ❌" )"
+    echo "  - Símbolos: $( [[ $password =~ [^a-zA-Z0-9] ]] && echo "Sí ✅" || echo "No ❌" )"
+    echo "--------------------------------"
+    echo "Entropía: $entropy bits"
+    echo "Fortaleza estimada: $strength"
+    echo "--------------------------------"
+}
 
-# Verificar requisitos obligatorios de composición
-if [[ $upper -eq 0 ]]; then
-    echo -e "\n❌ La contraseña debe contener al menos una letra mayúscula."
-    exit 1
-fi
-
-if [[ $lower -eq 0 ]]; then
-    echo -e "\n❌ La contraseña debe contener al menos una letra minúscula."
-    exit 1
-fi
-
-if [[ $digit -eq 0 ]]; then
-    echo -e "\n❌ La contraseña debe contener al menos un número."
-    exit 1
-fi
-
-if [[ $symbol -eq 0 ]]; then
-    echo -e "\n❌ La contraseña debe contener al menos un carácter especial (símbolo)."
-    exit 1
-fi
-
-# Determinar qué conjuntos de caracteres están presentes
-charsets_count=0
-charsets_description=""
-
-[[ $upper -gt 0 ]] && { charsets_count=$((charsets_count + 26)); charsets_description+="mayúsculas (26) + "; }
-[[ $lower -gt 0 ]] && { charsets_count=$((charsets_count + 26)); charsets_description+="minúsculas (26) + "; }
-[[ $digit -gt 0 ]] && { charsets_count=$((charsets_count + 10)); charsets_description+="números (10) + "; }
-[[ $symbol -gt 0 ]] && { charsets_count=$((charsets_count + 32)); charsets_description+="símbolos (32) + "; }
-
-charsets_description=${charsets_description%+ }
-
-# Combinaciones posibles y entropía
-combinations=$(echo "$charsets_count^$total_length" | bc 2>/dev/null || echo "$charsets_count")
-entropy_bits=$(echo "l($combinations)/l(2)" | bc -l 2>/dev/null | awk '{printf "%.0f", $1}')
-[[ $entropy_bits -eq 0 ]] && entropy_bits=1
-
-# Clasificación de fortaleza
-if [[ $entropy_bits -lt 40 ]]; then
-    strength="❌ Débil"
-elif [[ $entropy_bits -lt 60 ]]; then
-    strength="⚠ Media"
-else
-    strength="✅ Fuerte"
-fi
-
-# Mostrar resultados
-echo "------------------------------------------------------------------"
-echo "Longitud total         : $total_length"
-echo "Mayúsculas             : $upper"
-echo "Minúsculas             : $lower"
-echo "Números                : $digit"
-echo "Símbolos               : $symbol"
-echo "Combinaciones posibles : $combinations"
-echo "Entropía estimada      : $entropy_bits bits"
-echo "Clasificación          : $strength"
-echo "------------------------------------------------------------------"
+# Solicitar contraseña (modo seguro sin eco)
+read -sp "Ingresa tu contraseña: " password
+echo -e "\n"
+calc_entropy "$password"

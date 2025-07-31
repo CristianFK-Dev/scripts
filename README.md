@@ -45,7 +45,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 002|[Kernel modules](Linux/002-mod-kernel.sh) | [README](Linux/Docs/002-mod-kernel.md) | ✅ Terminado ✅ |
 | 003|[Filse system disable](Linux/003-filesystems-disable.sh) | [README](Linux/Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
 | 004|[Password security check](Linux/004-pass-check.sh) | [README](Linux/Docs/004-pass-check.md) | 🚧 En progreso 🚧 |
-| 00|[Users status](Linux/005-users.sh) | [README](Linux/Docs/005-users.md) | 🚧 En progreso 🚧 |
+| 005|[Users status](Linux/005-users.sh) | [README](Linux/Docs/005-users.md) | 🚧 En progreso 🚧 |
 
 
 ---
