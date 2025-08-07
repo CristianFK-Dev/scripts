@@ -42,16 +42,16 @@ chmod +x 000-check-user.sh
 ## 📤 Compartir este script
 
 <p align="center">
-    <a href="https://www.reddit.com/submit?url=https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh">
+    <a href="https://www.reddit.com/submit?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/003-filesystems-disable.sh">
         <img src="https://img.shields.io/badge/Compartir-FF4500?logo=reddit&logoColor=white" alt="Reddit" />
     </a>
-    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh">
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/003-filesystems-disable.sh">
         <img src="https://img.shields.io/badge/LinkedIn-Compartir-0077B5?style=flat&logo=linkedin" alt="LinkedIn" />
     </a>
-    <a href="https://wa.me/?text=Revisá%20este%20script:%20https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh">
+    <a href="https://wa.me/?text=Revisá%20este%20script:%20https://github.com/CristianFK-Dev/scripts/blob/main/Linux/003-filesystems-disable.sh">
         <img src="https://img.shields.io/badge/Compartir-25D366?logo=whatsapp&logoColor=white" alt="WhatsApp" />
     </a>
-    <a href="https://t.me/share/url?url=https://github.com/Golidor24/scripts/blob/main/Linux/003-filesystems-disable.sh">
+    <a href="https://t.me/share/url?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/003-filesystems-disable.sh">
         <img src="https://img.shields.io/badge/Compartir-0088CC?logo=telegram&logoColor=white" alt="Telegram" />
     </a>
 </p>

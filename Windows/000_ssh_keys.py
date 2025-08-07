@@ -660,7 +660,7 @@ def main_menu(ka: key_admin) -> None:
         print("3. Generar múltiples claves SSH desde CSV. (Ver documentación, opción 6)")
         print("4. Operar sobre clave existente: Editar nombre, eliminar clave, mostrar clave pub, etc.")
         print("5. Añadir clave(s) al agente SSH") # TODO: Implementar más adelante.
-        print("6. Documentación y ayuda: github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
+        print("6. Documentación y ayuda: github.com/CristianFK-Dev/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
         print("7. Salir")
         
         while True:
@@ -683,7 +683,7 @@ def main_menu(ka: key_admin) -> None:
                 print("\n---------------------------------------------")
                 ka.start_ssh_agent()
             case 6:
-                ka.open_link_web("https://github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
+                ka.open_link_web("https://github.com/CristianFK-Dev/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
             case 7:
                 return exit("\nSaliendo del generador de claves SSH. ¡Hasta luego!\n")
             case _:
