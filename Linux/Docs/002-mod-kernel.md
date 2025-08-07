@@ -51,7 +51,7 @@ Es útil para tareas de:
 ### 📥 Descargar y ejecutar:
 
 ```bash
-curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/002-mod-kernel.sh
+curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/002-mod-kernel.sh
 
 chmod +x 002-mod-kernel.sh
 

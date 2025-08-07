@@ -45,7 +45,7 @@ Ideal para uso educativo, auditorías rápidas o tareas de hardening.
 ### 📥 Descargar y ejecutar
 
 ```bash
-curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/004-pass-check.sh
+curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/004-pass-check.sh
 
 chmod +x 004-pass-check.sh
 

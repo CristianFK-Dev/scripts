@@ -45,7 +45,7 @@ Ideal para tareas de **endurecimiento del sistema (hardening)** desactivando FS 
 ### 📥 Descargar y ejecutar
 
 ```bash
-curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/003-filesystems-disable.sh
+curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/003-filesystems-disable.sh
 
 chmod +x 003-filesystems-disable.sh
 

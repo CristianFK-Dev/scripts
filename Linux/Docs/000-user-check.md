@@ -30,7 +30,7 @@ Sirve para comprobar si el proceso tiene permisos de root (`EUID = 0`) o no.
 ### 📥 Descargar y ejecutar:
 
 ```bash
-curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/000-check-user.sh
+curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/000-check-user.sh
 
 chmod +x 000-check-user.sh
 

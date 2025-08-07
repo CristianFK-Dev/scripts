@@ -38,7 +38,7 @@ Permite ver los paquetes pendientes, elegir cuáles instalar, o instalar todos d
 ### 📥 Descargar y ejecutar:
 
    ```bash
-   curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Linux/001-apt-upgrade.sh
+   curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/001-apt-upgrade.sh
 
    chmod +x 001-apt-upgrade.sh
    
