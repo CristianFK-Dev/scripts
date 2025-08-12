@@ -25,6 +25,8 @@ generate_data() {
         local password_status
         local locked_status
         local expiry_status
+        local last_change_status
+        local min_max_days
 
         # Verificar tipo de shell
         if [[ "$shell" == "/bin/false" || "$shell" == "/usr/sbin/nologin" || "$shell" == "/sbin/nologin" ]]; then
@@ -33,6 +35,8 @@ generate_data() {
             password_status="N/A"
             locked_status="N/A"
             expiry_status="N/A"
+            last_change_status="N/A"
+            min_max_days="N/A"
         else
             sort_key=0 # Shell activo
             shell_status="🟢 SHELL: $shell"
@@ -42,6 +46,8 @@ generate_data() {
                 password_status="❓ NO EXISTE"
                 locked_status="N/A"
                 expiry_status="N/A"
+                last_change_status="N/A"
+                min_max_days="N/A"
             else
                 # Extraer estado (L=bloqueada, P=activa, NP=sin contraseña)
                 password_state=$(echo "$password_info" | awk '{print $2}')
@@ -59,23 +65,36 @@ generate_data() {
                     locked_status="✅ DESBLOQUEADA"
                 fi
 
-                # Obtener caducidad (chage)
-                expiry_date=$(chage -l "$user" 2>/dev/null | grep "Password expires" | cut -d ":" -f 2- | xargs)
+                # Obtener y formatear datos de políticas de contraseña con chage
+                chage_info=$(chage -l "$user" 2>/dev/null)
+
+                expiry_date=$(echo "$chage_info" | awk -F: '/^Password expires/ {print $2}' | xargs)
                 if [[ -z "$expiry_date" || "$expiry_date" == "never" ]]; then
                     expiry_status="Nunca"
                 else
                     expiry_status="$expiry_date"
                 fi
+
+                last_change=$(echo "$chage_info" | awk -F: '/^Last password change/ {print $2}' | xargs)
+                if [[ -z "$last_change" || "$last_change" == "never" ]]; then
+                    last_change_status="Nunca"
+                else
+                    last_change_status="$last_change"
+                fi
+
+                min_days=$(echo "$chage_info" | awk -F: '/^Minimum number of days/ {print $2}' | xargs)
+                max_days=$(echo "$chage_info" | awk -F: '/^Maximum number of days/ {print $2}' | xargs)
+                min_max_days="${min_days:-?}/${max_days:-?}"
             fi
         fi
         # Imprimir fila con delimitador para que 'column' la procese.
-        echo "$sort_key|$user|$shell_status|$password_status|$locked_status|$expiry_status"
+        echo "$sort_key|$user|$shell_status|$password_status|$locked_status|$expiry_status|$last_change_status|$min_max_days"
     done
 }
 
 cs
 # Encabezado de la tabla
-HEADER="USUARIO|SHELL|ESTADO PASS|BLOQUEO|EXPIRACIÓN"
+HEADER="USUARIO|SHELL|ESTADO PASS|BLOQUEO|EXPIRACIÓN|ÚLTIMO CAMBIO|DÍAS MIN/MAX"
 
 # Generar datos, ordenarlos por la primera columna (clave de ordenamiento),
 # quitar la clave, y luego formatear la tabla.
