@@ -59,9 +59,13 @@ fi
 
 echo -e "\n🚀 Instalando paquetes seleccionados...\n"
 apt install -y "${to_install[@]}"
+echo -e "\n Los logs se borraran en 5 segundos...\n"
+sleep 5
+cs
 
 echo -e "\n✅ Instalación finalizada. Versiones instaladas:\n"
 for pkg in "${to_install[@]}"; do
     ver=$(dpkg -l "$pkg" 2>/dev/null | awk '/^ii/ {print $2, $3}')
-    echo -e "\n🔹 $ver"
+    echo "🔹 $ver"
+    echo ""
 done
