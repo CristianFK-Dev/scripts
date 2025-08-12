@@ -90,12 +90,22 @@ generate_data() {
                 min_max_days="${min_days:-?}/${max_days:-?}"
 
                 # Obtener último login interactivo
-                last_login_info=$(lastlog -u "$user" 2>/dev/null | tail -n 1)
+                last_login_info=$(LC_ALL=C lastlog -u "$user" 2>/dev/null | tail -n 1)
                 if echo "$last_login_info" | grep -q -F '**Never logged in**'; then
                     last_login_status="Nunca"
                 else
-                    # Extraer la fecha eliminando todo lo que está antes del día de la semana
-                    last_login_status=$(echo "$last_login_info" | sed -E 's/.*(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/\1/')
+                    # Extraer la fecha de forma robusta, buscando el día de la semana
+                    # y tomando el resto de la línea. Esto evita problemas con distintos
+                    # formatos de salida de `lastlog` o locales.
+                    last_login_status=$(echo "$last_login_info" | awk '{
+                        for (i=1; i<=NF; i++) {
+                            if ($i ~ /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/) {
+                                for (j=i; j<=NF; j++) { printf "%s ", $j }
+                                print ""
+                                exit
+                            }
+                        }
+                    }' | xargs)
                 fi
             fi
         fi
