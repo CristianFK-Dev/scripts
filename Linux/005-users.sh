@@ -16,11 +16,14 @@ cs() {
 
 generate_data() {
     # Procesa todos los usuarios para generar los datos con una clave de ordenamiento.
-    # La clave (0 o 1) se usa para poner a los usuarios con shell activo primero.
-    # Formato de salida: sort_key|USUARIO|SHELL|ESTADO PASS|BLOQUEO|EXPIRACIÓN
+    # Clave 1 (shell): 0 para shell activo, 1 para inactivo.
+    # Clave 2 (login): 0 para usuarios que han iniciado sesión, 1 para los que nunca lo han hecho.
+    # Esto ordena: 1. Activos con login, 2. Activos sin login, 3. Inactivos.
+    # Formato de salida: sort_key1|sort_key2|USUARIO|...
 
     awk -F: '$1 != "nobody" {print $1, $7}' /etc/passwd | while read -r user shell; do
-        local sort_key
+        local sort_key1
+        local sort_key2
         local shell_status
         local password_status
         local locked_status
@@ -31,7 +34,8 @@ generate_data() {
 
         # Verificar tipo de shell
         if [[ "$shell" == "/bin/false" || "$shell" == "/usr/sbin/nologin" || "$shell" == "/sbin/nologin" ]]; then
-            sort_key=1 # Shell inactivo
+            sort_key1=1 # Shell inactivo
+            sort_key2=9 # No relevante para este grupo
             shell_status="🔴 NO SHELL"
             password_status="N/A"
             locked_status="N/A"
@@ -40,7 +44,7 @@ generate_data() {
             min_max_days="N/A"
             last_login_status="N/A"
         else
-            sort_key=0 # Shell activo
+            sort_key1=0 # Shell activo
             shell_status="🟢 SHELL: $shell"
             # Verificar estado de contraseña (usando passwd -S)
             password_info=$(passwd -S "$user" 2>/dev/null)
@@ -53,11 +57,11 @@ generate_data() {
                 last_login_status="N/A"
             else
                 # Extraer estado (L=bloqueada, P=activa, NP=sin contraseña)
-                password_state=$(echo "$password_info" | awk '{print $2}')
+                password_state=$(echo "$password_info" | awk '{print $2}') 
                 case "$password_state" in
-                    "L") password_status="🔒 BLOQUEADA";;
-                    "P") password_status="🟢 ACTIVA";;
-                    "NP") password_status="🔓 SIN CONTRASEÑA";;
+                    "L") password_status="🔒 BLOQUED 🔒";;
+                    "P") password_status="🟢 ACTIVE  🟢";;
+                    "NP") password_status="🔓 NO PASS 🔓";;
                     *) password_status="❓ $password_state";;
                 esac
 
@@ -92,8 +96,10 @@ generate_data() {
                 # Obtener último login interactivo
                 last_login_info=$(LC_ALL=C lastlog -u "$user" 2>/dev/null | tail -n 1)
                 if echo "$last_login_info" | grep -q -F '**Never logged in**'; then
+                    sort_key2=1 # Nunca ha iniciado sesión
                     last_login_status="Nunca"
                 else
+                    sort_key2=0 # Ha iniciado sesión
                     # Extraer la fecha de forma robusta, buscando el día de la semana
                     # y tomando el resto de la línea. Esto evita problemas con distintos
                     # formatos de salida de `lastlog` o locales.
@@ -110,7 +116,7 @@ generate_data() {
             fi
         fi
         # Imprimir fila con delimitador para que 'column' la procese.
-        echo "$sort_key|$user|$shell_status|$password_status|$locked_status|$expiry_status|$last_change_status|$min_max_days|$last_login_status"
+        echo "$sort_key1|$sort_key2|$user|$shell_status|$password_status|$locked_status|$expiry_status|$last_change_status|$min_max_days|$last_login_status"
     done
 }
 
@@ -122,6 +128,6 @@ HEADER="USUARIO|SHELL|ESTADO PASS|BLOQUEO|EXPIRACIÓN|ÚLTIMO CAMBIO|DÍAS MIN/M
 # quitar la clave, y luego formatear la tabla.
 (
     echo "$HEADER"
-    generate_data | sort -t'|' -k1,1n | cut -d'|' -f2-
+    generate_data | sort -t'|' -k1,1n -k2,2n | cut -d'|' -f3-
 ) | column -t -s '|' -o ' | '
 echo ""
