@@ -32,20 +32,20 @@ Para su descarga de forma remota por consola:
     * **Para Windows (CMD o PowerShell):**
 
         ```powershell
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/000_ssh_keys.py" -OutFile "000_ssh_keys.py"
+        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Windows/000_ssh_keys.py" -OutFile "000_ssh_keys.py"
         ```
         O si tienes `curl` disponible:
 
         ```cmd
-        curl -o ssh_keys.py https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/000_ssh_keys.py
+        curl -o ssh_keys.py https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Windows/000_ssh_keys.py
         ```
     * **Para Linux y macOS (Terminal/Bash):**
         ```bash
-        curl -O https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/000_ssh_keys.py
+        curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Windows/000_ssh_keys.py
         ```
         O si prefieres `wget`:
         ```bash
-        wget https://raw.githubusercontent.com/Golidor24/scripts/main/Windows/000_ssh_keys.py
+        wget https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Windows/000_ssh_keys.py
         ```
 
 4.  **Ejecuta el script (una vez descargado):**
@@ -115,9 +115,9 @@ esta_otra_sin_pass,sin_pass@gmail.com
 🚧 Trabajando 🚧
 
  
-[![Share Reddit](https://img.shields.io/badge/Compartir-FF4500?logo=reddit&logoColor=white)](https://www.reddit.com/submit?title=Check%20out%20this%20project%20on%20GitHub:%20https://github.com/Golidor24/scripts/blob/main/Windows/000_ssh_keys.py)
-[![Share LinkedIn](https://img.shields.io/badge/LinkedIn-Compartir-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/Golidor24/scripts/blob/main/Windows/000_ssh_keys.py)
-[![Share X](https://img.shields.io/badge/Compartir-000000?logo=x&logoColor=white)](https://x.com/intent/tweet?text=Hecha%20un%20vistazo%20a%20este%20proyecto:%20https://github.com/Golidor24/scripts/blob/main/Windows/000_ssh_keys.py%20%23SSH%20%23Script)
-[![Share WhatsApp](https://img.shields.io/badge/Compartir-25D366?logo=whatsapp&logoColor=white)](https://wa.me/?text=Hecha%20un%20vistazo%20a%20este%20proyecto:%20https://github.com/Golidor24/scripts/blob/main/Windows/000_ssh_keys.py)
-[![Share Telegram](https://img.shields.io/badge/Compartir-0088CC?logo=telegram&logoColor=white)](https://t.me/share/url?url=https://github.com/Golidor24/scripts/blob/main/Windows/000_ssh_keys.pytext=Hecha%20un%20vistazo%20a%20este%20proyecto)
-[![Share Facebook](https://img.shields.io/badge/Compartir-1877F2?logo=facebook&logoColor=white)](https://www.facebook.com/sharer/sharer.php?u=https://github.com/Golidor24/scripts/blob/main/Windows/000_ssh_keys.py)
+[![Share Reddit](https://img.shields.io/badge/Compartir-FF4500?logo=reddit&logoColor=white)](https://www.reddit.com/submit?title=Check%20out%20this%20project%20on%20GitHub:%20https://github.com/CristianFK-Dev/scripts/blob/main/Windows/000_ssh_keys.py)
+[![Share LinkedIn](https://img.shields.io/badge/LinkedIn-Compartir-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/CristianFK-Dev/scripts/blob/main/Windows/000_ssh_keys.py)
+[![Share X](https://img.shields.io/badge/Compartir-000000?logo=x&logoColor=white)](https://x.com/intent/tweet?text=Hecha%20un%20vistazo%20a%20este%20proyecto:%20https://github.com/CristianFK-Dev/scripts/blob/main/Windows/000_ssh_keys.py%20%23SSH%20%23Script)
+[![Share WhatsApp](https://img.shields.io/badge/Compartir-25D366?logo=whatsapp&logoColor=white)](https://wa.me/?text=Hecha%20un%20vistazo%20a%20este%20proyecto:%20https://github.com/CristianFK-Dev/scripts/blob/main/Windows/000_ssh_keys.py)
+[![Share Telegram](https://img.shields.io/badge/Compartir-0088CC?logo=telegram&logoColor=white)](https://t.me/share/url?url=https://github.com/CristianFK-Dev/scripts/blob/main/Windows/000_ssh_keys.pytext=Hecha%20un%20vistazo%20a%20este%20proyecto)
+[![Share Facebook](https://img.shields.io/badge/Compartir-1877F2?logo=facebook&logoColor=white)](https://www.facebook.com/sharer/sharer.php?u=https://github.com/CristianFK-Dev/scripts/blob/main/Windows/000_ssh_keys.py)

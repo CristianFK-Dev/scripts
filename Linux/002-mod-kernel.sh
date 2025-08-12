@@ -2,13 +2,14 @@
 
 set -euo pipefail
 
-cs () {
+cs() {
     if [ -t 1 ]; then
         clear
     fi
 }
 
 # Mostrar documentación y esperar
+cs
 echo -e "\n🧾002-mod-kernel.sh\n"
 echo -e "Este script permite listar y eliminar módulos del kernel activos."
 echo -e "También permite ver si hay módulos bloqueados por archivos de blacklist."

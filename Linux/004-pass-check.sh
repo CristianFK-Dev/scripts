@@ -2,10 +2,13 @@
 
 set -euo pipefail
 
-if [ -t 1 ]; then
-    clear
-fi
+cs() {
+    if [ -t 1 ]; then
+        clear
+    fi
+}
 
+cs
 # Función para calcular entropía
 calc_entropy() {
     local password=$1
