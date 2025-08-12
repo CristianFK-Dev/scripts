@@ -56,12 +56,12 @@ generate_data() {
                 min_max_days="N/A"
                 last_login_status="N/A"
             else
-                # Extraer estado (L=bloqueada, P=activa, NP=sin contraseña)
+                # Extraer estado (L=bloqueada, P=activa, NP=sin contraseña) 
                 password_state=$(echo "$password_info" | awk '{print $2}') 
                 case "$password_state" in
-                    "L") password_status="🔒 BLOQUED 🔒";;
-                    "P") password_status="🟢 ACTIVE  🟢";;
-                    "NP") password_status="🔓NO PASS🔓";;
+                    "L") password_status="🔒 BLOQUEADA";;
+                    "P") password_status="🟢 ACTIVA";;
+                    "NP") password_status="🔓 SIN CONTRASEÑA";;
                     *) password_status="❓ $password_state";;
                 esac
 
