@@ -27,6 +27,7 @@ generate_data() {
         local expiry_status
         local last_change_status
         local min_max_days
+        local last_login_status
 
         # Verificar tipo de shell
         if [[ "$shell" == "/bin/false" || "$shell" == "/usr/sbin/nologin" || "$shell" == "/sbin/nologin" ]]; then
@@ -37,6 +38,7 @@ generate_data() {
             expiry_status="N/A"
             last_change_status="N/A"
             min_max_days="N/A"
+            last_login_status="N/A"
         else
             sort_key=0 # Shell activo
             shell_status="🟢 SHELL: $shell"
@@ -48,6 +50,7 @@ generate_data() {
                 expiry_status="N/A"
                 last_change_status="N/A"
                 min_max_days="N/A"
+                last_login_status="N/A"
             else
                 # Extraer estado (L=bloqueada, P=activa, NP=sin contraseña)
                 password_state=$(echo "$password_info" | awk '{print $2}')
@@ -85,16 +88,25 @@ generate_data() {
                 min_days=$(echo "$chage_info" | awk -F: '/^Minimum number of days/ {print $2}' | xargs)
                 max_days=$(echo "$chage_info" | awk -F: '/^Maximum number of days/ {print $2}' | xargs)
                 min_max_days="${min_days:-?}/${max_days:-?}"
+
+                # Obtener último login interactivo
+                last_login_info=$(lastlog -u "$user" 2>/dev/null | tail -n 1)
+                if echo "$last_login_info" | grep -q -F '**Never logged in**'; then
+                    last_login_status="Nunca"
+                else
+                    # Extraer la fecha eliminando todo lo que está antes del día de la semana
+                    last_login_status=$(echo "$last_login_info" | sed -E 's/.*(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/\1/')
+                fi
             fi
         fi
         # Imprimir fila con delimitador para que 'column' la procese.
-        echo "$sort_key|$user|$shell_status|$password_status|$locked_status|$expiry_status|$last_change_status|$min_max_days"
+        echo "$sort_key|$user|$shell_status|$password_status|$locked_status|$expiry_status|$last_change_status|$min_max_days|$last_login_status"
     done
 }
 
 cs
 # Encabezado de la tabla
-HEADER="USUARIO|SHELL|ESTADO PASS|BLOQUEO|EXPIRACIÓN|ÚLTIMO CAMBIO|DÍAS MIN/MAX"
+HEADER="USUARIO|SHELL|ESTADO PASS|BLOQUEO|EXPIRACIÓN|ÚLTIMO CAMBIO|DÍAS MIN/MAX|ÚLTIMO LOGIN"
 
 # Generar datos, ordenarlos por la primera columna (clave de ordenamiento),
 # quitar la clave, y luego formatear la tabla.

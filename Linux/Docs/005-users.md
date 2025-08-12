@@ -31,6 +31,7 @@ Incluye información clave sobre la seguridad de cada cuenta:
 - **Fecha de expiración**: Cuándo caduca la contraseña.
 - **Último cambio**: Cuándo se modificó la contraseña por última vez.
 - **Días MIN/MAX**: Políticas de rotación de contraseñas.
+- **Último login**: Fecha y hora del último inicio de sesión interactivo.
 
 Es una herramienta ideal para auditorías de seguridad y para generar evidencia para controles como **CIS Benchmark 6.2.x** o **PCI DSS 8.x**.
 
