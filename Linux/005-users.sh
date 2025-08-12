@@ -61,7 +61,7 @@ generate_data() {
                 case "$password_state" in
                     "L") password_status="🔒 BLOQUED 🔒";;
                     "P") password_status="🟢 ACTIVE  🟢";;
-                    "NP") password_status="🔓 NO PASS 🔓";;
+                    "NP") password_status="🔓NO PASS🔓";;
                     *) password_status="❓ $password_state";;
                 esac
 
