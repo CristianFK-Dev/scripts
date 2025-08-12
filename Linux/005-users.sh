@@ -2,10 +2,13 @@
 
 set -euo pipefail
 
-if [ -t 1 ]; then
-    clear
-fi
+cs () {
+    if [ -t 1 ]; then
+        clear
+    fi
+}
 
+cs
 awk -F: '$3 <= 1000 && $1 != "nobody" {print $1, $7}' /etc/passwd | while read user shell; do
     # Verificar tipo de shell
     if [[ "$shell" == "/bin/false" || "$shell" == "/usr/sbin/nologin" || "$shell" == "/sbin/nologin" ]]; then

@@ -9,6 +9,7 @@ cs () {
 }
 
 # Mostrar documentación y esperar
+cs
 echo -e "\n🧾001-apt-upgrade.sh\n"
 echo -e "Este script actualiza la lista de paquetes APT y permite instalar selectivamente los actualizables."
 echo -e "Podés elegir uno o varios por número, o instalar todos.\n"
@@ -62,5 +63,5 @@ apt install -y "${to_install[@]}"
 echo -e "\n✅ Instalación finalizada. Versiones instaladas:\n"
 for pkg in "${to_install[@]}"; do
     ver=$(dpkg -l "$pkg" 2>/dev/null | awk '/^ii/ {print $2, $3}')
-    echo "🔹 $ver"
+    echo -e "\n🔹 $ver"
 done

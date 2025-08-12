@@ -9,6 +9,7 @@ cs () {
 }
 
 # Mostrar documentación y esperar
+cs
 echo -e "\n🧾 003-filesystems-disable\n"
 echo -e "Este script permite listar y desactivar sistemas de archivos soportados por el kernel."
 echo -e "Podés usarlo para deshabilitar módulos como cramfs, udf, squashfs, etc.\n"
