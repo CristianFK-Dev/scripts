@@ -122,7 +122,7 @@ generate_data() {
 
 cs
 # Encabezado de la tabla
-HEADER="USUARIO|SHELL|ESTADO PASS|BLOQUEO|EXPIRACIÓN|ÚLTIMO CAMBIO|DÍAS MIN/MAX|ÚLTIMO LOGIN"
+HEADER="USUARIO|SHELL|ESTADO PASS|BLOQUEO|EXPIRACIÓN|ÚLTIMO CAMBIO|DÍAS MIN/MAX|ÚLTIMO LOGIN SSH"
 
 # Generar datos, ordenarlos por la primera columna (clave de ordenamiento),
 # quitar la clave, y luego formatear la tabla.

@@ -31,7 +31,7 @@ Incluye información clave sobre la seguridad de cada cuenta:
 - **Fecha de expiración**: Cuándo caduca la contraseña.
 - **Último cambio**: Cuándo se modificó la contraseña por última vez.
 - **Días MIN/MAX**: Políticas de rotación de contraseñas.
-- **Último login**: Fecha y hora del último inicio de sesión interactivo.
+- **Último login ssh**: Fecha y hora del último inicio de sesión interactivo con SSH.
 
 Es una herramienta ideal para auditorías de seguridad y para generar evidencia para controles como **CIS Benchmark 6.2.x** o **PCI DSS 8.x**.
 
@@ -53,15 +53,15 @@ sudo ./005-users.sh
 
 ## 💡 Ejemplo de uso
 
-La salida será una tabla bien alineada como la siguiente:
+La salida será una tabla bien alineada como la siguiente, mostrando todos los campos relevantes:
 
 ```
-USUARIO | SHELL               | ESTADO PASS      | BLOQUEO       | EXPIRACIÓN | ÚLTIMO CAMBIO | DÍAS MIN/MAX
---------|---------------------|------------------|---------------|------------|---------------|-------------
-root    | 🟢 SHELL: /bin/bash | 🟢 ACTIVA        | ✅ DESBLOQUEADA | Nunca      | May 28, 2024  | 0/99999
-cristian| 🟢 SHELL: /bin/bash | 🟢 ACTIVA        | ✅ DESBLOQUEADA | 90 days    | Sep 01, 2024  | 1/90
-daemon  | 🔴 NO SHELL         | N/A              | N/A           | N/A        | N/A           | N/A
-ftp     | 🔴 NO SHELL         | N/A              | N/A           | N/A        | N/A           | N/A
+USUARIO | SHELL               | ESTADO PASS      | BLOQUEO          | EXPIRACIÓN | ÚLTIMO CAMBIO | DÍAS MIN/MAX | ÚLTIMO LOGIN SSH
+--------|---------------------|------------------|------------------|------------|---------------|-----------------------------
+root    | 🟢 SHELL: /bin/bash | 🟢 ACTIVA       | ✅ DESBLOQUEADA | Nunca      | May 28, 2024  | 0/99999       | Thu Nov 7 14:22:11 -0300 2024
+cristian| 🟢 SHELL: /bin/bash | 🟢 ACTIVA       | ✅ DESBLOQUEADA | 90 days    | Sep 01, 2024  | 1/90          | Nunca
+daemon  | 🔴 NO SHELL         | N/A              | N/A             | N/A        | N/A           | N/A           | Nunca 
+ftp     | 🔴 NO SHELL         | N/A              | N/A             | N/A        | N/A           | N/A           | Nunca
 ```
 
 ## 📤 Compartir este script
