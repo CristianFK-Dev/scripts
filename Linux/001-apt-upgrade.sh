@@ -37,8 +37,14 @@ fi
 echo -e "\n📦 Paquetes que se pueden actualizar:"
 printf "%s\n" "${packages[@]}"
 
-echo -e "\n👉 Ingresá los números de los paquetes a instalar (separados por espacio), o 'a' para todos:"
+echo -e "\n👉 Ingresá los números de los paquetes a instalar (separados por espacio), o 'a' para todos , exit para salir:"
 read -rp "Tu elección: " choice
+
+# Verificar si quiere salir
+if [[ "$choice" == "exit" || "$choice" == "salir" ]]; then
+    cs && echo -e "\n👋 Saliendo sin hacer cambios.\n"
+    exit 0
+fi
 
 to_install=()
 
