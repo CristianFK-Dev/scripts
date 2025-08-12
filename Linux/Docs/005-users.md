@@ -1,4 +1,4 @@
-# Script de Verificación de Cuentas del Sistema (UID ≤ 1000)
+# Script de Auditoría de Cuentas de Usuario
 
 <p align="center">
     <a href="https://www.man7.org/linux/man-pages/man1/bash.1.html">
@@ -13,24 +13,26 @@
 
 ## ⚠️ Recomendaciones de Seguridad
 
-⚠️ **Advertencia Importante**  
-> Siempre revisá el contenido de cualquier script antes de ejecutarlo, especialmente si lo descargás de internet o desde un repositorio.  
-> Este script **no realiza modificaciones en el sistema**, solo imprime un reporte con fines de auditoría.
+⚠️ **Advertencia Importante**
+> Siempre revisá el contenido de cualquier script antes de ejecutarlo, especialmente si lo descargás de internet o desde un repositorio.
+> Este script **no realiza modificaciones en el sistema**, solo imprime un reporte con fines de auditoría y requiere permisos de `root` para leer la información de las cuentas.
 
 ---
 
 ## ✨ Descripción
 
-Este script (`005-users.sh`) muestra un reporte detallado del estado de las **cuentas del sistema con UID menor o igual a 1000**, excluyendo al usuario `nobody`.
+Este script (`005-users.sh`) muestra un reporte detallado del estado de **todas las cuentas de usuario del sistema**. El reporte prioriza a los usuarios con un shell de inicio de sesión activo, listándolos primero para facilitar la auditoría.
 
-Incluye información sobre:
+Incluye información clave sobre la seguridad de cada cuenta:
 
-- Shell asignado
-- Estado de la contraseña (`activa`, `bloqueada`, `sin contraseña`, `inexistente`)
-- Estado de bloqueo por `pam` (`faillock` o `pam_tally2`)
-- Fecha de caducidad de la contraseña (si aplica)
+- **Shell asignado**: Si el usuario puede o no iniciar sesión.
+- **Estado de la contraseña**: `activa`, `bloqueada`, `sin contraseña`, etc.
+- **Estado de bloqueo**: Si la cuenta está bloqueada por fallos de autenticación.
+- **Fecha de expiración**: Cuándo caduca la contraseña.
+- **Último cambio**: Cuándo se modificó la contraseña por última vez.
+- **Días MIN/MAX**: Políticas de rotación de contraseñas.
 
-Sirve como evidencia para controles de auditoría como **CIS Benchmark 6.2.x** o **PCI DSS 8.x**.
+Es una herramienta ideal para auditorías de seguridad y para generar evidencia para controles como **CIS Benchmark 6.2.x** o **PCI DSS 8.x**.
 
 ---
 
@@ -38,27 +40,28 @@ Sirve como evidencia para controles de auditoría como **CIS Benchmark 6.2.x** o
 
 ### 📥 Descargar y ejecutar:
 
+El script necesita permisos de superusuario para poder consultar la información de las contraseñas con `chage` y `passwd`.
+
 ```bash
 curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/005-users.sh
 
 chmod +x 005-users.sh
 
-./005-users.sh
+sudo ./005-users.sh
 ```
 
 ## 💡 Ejemplo de uso
 
+La salida será una tabla bien alineada como la siguiente:
 
-### ✅ CUENTAS DEL SISTEMA (UID <= 1000)
-
-| Usuario | Estado Shell           | Contraseña   | Bloqueada        | Caducidad |
-|---------|------------------------|--------------|------------------|-----------|
-| root    | 🟢 SHELL: /bin/bash     | 🟢 ACTIVA     | ✅ DESBLOQUEADA   | never     |
-| daemon  | 🔴 NO SHELL            | N/A          | N/A              | N/A       |
-| adm     | 🔴 NO SHELL            | N/A          | N/A              | N/A       |
-| ubuntu  | 🟢 SHELL: /bin/bash     | 🟢 ACTIVA     | ✅ DESBLOQUEADA   | 30 days   |
-
-
+```
+USUARIO | SHELL               | ESTADO PASS      | BLOQUEO       | EXPIRACIÓN | ÚLTIMO CAMBIO | DÍAS MIN/MAX
+--------|---------------------|------------------|---------------|------------|---------------|-------------
+root    | 🟢 SHELL: /bin/bash | 🟢 ACTIVA        | ✅ DESBLOQUEADA | Nunca      | May 28, 2024  | 0/99999
+cristian| 🟢 SHELL: /bin/bash | 🟢 ACTIVA        | ✅ DESBLOQUEADA | 90 days    | Sep 01, 2024  | 1/90
+daemon  | 🔴 NO SHELL         | N/A              | N/A           | N/A        | N/A           | N/A
+ftp     | 🔴 NO SHELL         | N/A              | N/A           | N/A        | N/A           | N/A
+```
 
 ## 📤 Compartir este script
 
