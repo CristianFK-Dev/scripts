@@ -2,6 +2,7 @@ import re
 import os
 import subprocess
 from sys import exit
+from winreg import KEY_ENUMERATE_SUB_KEYS
 
 class key_admin:
     """Clase para administrar claves SSH."""
@@ -125,6 +126,8 @@ class key_admin:
         Returns:
             str: La frase de contraseña ingresada, o '' si el usuario no desea usar una.
         """
+        print("\nADVERTENCIA: Si se establece una frase de contraseña, deberás ingresarla cada vez que uses la clave SSH.")
+        print("En caso de olvidarla, deberás generar una nueva clave SSH.")
         passphrase = input("Introduce una frase de contraseña para la clave SSH (dejar en blanco si no deseas usar una): ").strip()
         if passphrase:
             return passphrase
@@ -405,7 +408,40 @@ class key_admin:
                         
                         print(f"\nGenerando clave SSH del fichero {CSV}: {key_name}, Email: {email}, Frase de contraseña: {passphrase}, Bits: {bits}")
                         self.generate_ssh_key(key_name, email, bits, passphrase)
- 
+         
+    def file_search(self,list_keys: list) -> str | None:
+        key_name = input("\nIntroduce el nombre de la clave SSH (sin extensión) o su número de orden: \n").strip()
+        if self.is_number(key_name):
+            numered_keys = enumerate(list_keys, start=1)
+            # Pasamos a buscar la clave pública por su número de orden
+            for index, key in numered_keys:
+                if index == int(key_name):
+                    key_name = key.split('.pub')[0]
+                    break
+        elif not self.input_char_validate(key_name):
+            print("El nombre de la clave solo puede contener letras, números, guiones bajos y guiones.")
+            return None
+        return key_name
+    
+    def show_key(self) -> None:
+        """
+        Muestra el contenido de la clave pública SSH por pantalla.
+        """
+        list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
+        while True:
+            key_name = self.file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
+            if key_name and key_name+".pub" in list_keys:
+                public_key = self.display_public_key(key_name) # Se entrega el contenido de la clave pública
+                if public_key:
+                    self.copy_to_clipboard(public_key)
+                else:
+                    print(f"No se pudo mostrar la clave pública para {key_name}. Asegúrate de que la clave exista.")
+                break
+            else:
+                print(f"La clave {key_name} no se encontró en la lista de claves SSH. Por favor, verifica el nombre o número de orden.")
+                continue
+        return None
+    
     def ssh_edit_menu(self) -> None:
         """
         Implementación de menú para editar claves SSH existentes.
@@ -422,50 +458,18 @@ class key_admin:
                 print("Por favor, ingresa un número válido para la opción.")
                 continue
             break
-        
-        def file_search(list_keys: list) -> str | None:
-            key_name = input("\nIntroduce el nombre de la clave SSH (sin extensión) o su número de orden: \n").strip()
-            if self.is_number(key_name):
-                numered_keys = enumerate(list_keys, start=1)
-                # Pasamos a buscar la clave pública por su número de orden
-                for index, key in numered_keys:
-                    if index == int(key_name):
-                        key_name = key.split('.pub')[0]
-                        break
-            elif not self.input_char_validate(key_name):
-                print("El nombre de la clave solo puede contener letras, números, guiones bajos y guiones.")
-                return None
-            return key_name
-        
-        def show_key() -> None:
-            """
-            Muestra el contenido de la clave pública SSH por pantalla.
-            """
-            list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
-            while True:
-                key_name = file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
-                if key_name and key_name+".pub" in list_keys:
-                    public_key = self.display_public_key(key_name) # Se entrega el contenido de la clave pública
-                    if public_key:
-                        self.copy_to_clipboard(public_key)
-                    else:
-                        print(f"No se pudo mostrar la clave pública para {key_name}. Asegúrate de que la clave exista.")
-                    break
-                else:
-                    print(f"La clave {key_name} no se encontró en la lista de claves SSH. Por favor, verifica el nombre o número de orden.")
-                    continue
-            return None
-        
+
         def edit_key() -> None:
             """
             Edita el nombre de una clave SSH existente.
             """
             list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
             while True:
-                key_name = file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
+                key_name = self.file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
                 if key_name and key_name+".pub" in list_keys:
                     while True:
                         new_key_name = input("\nIntroduce el nuevo nombre para la clave SSH (sin extensión): \n").strip()
+                        print("")
                         if not self.input_char_validate(new_key_name):
                             print("El nombre de la clave solo puede contener letras, números, guiones bajos y guiones.")
                             continue
@@ -492,7 +496,7 @@ class key_admin:
             """
             list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
             while True:
-                key_name = file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
+                key_name = self.file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
                 if key_name and key_name+".pub" in list_keys:
                     key_path = os.path.join(self.ssh_dir, key_name)
                     pub_key_path = key_path + ".pub"
@@ -508,7 +512,7 @@ class key_admin:
         # --- Menú de opciones ---
         match int(opción):
             case 1:
-                show_key()
+                self.show_key()
             case 2:
                 edit_key()
             case 3:
@@ -604,6 +608,67 @@ class key_admin:
                 print("Comando 'ssh-agent' no encontrado. Asegúrate de tener OpenSSH instalado.")
                 return False
     
+    def add_ssh_key(self):
+        """
+        Añade una clave SSH al agente sleccionada de forma manual desde una lista de claves SSH actuales.
+        Retorna True si la clave se añadió correctamente, False en caso contrario.
+        """
+        if not self.check_ssh_agent_running():
+            print("\nEl agente SSH no está corriendo. No se puede añadir la clave.\n")
+            return False
+
+        list_keys = self.show_keys()  # Llama al método para mostrar las claves SSH
+        if not list_keys:
+            print("No hay claves SSH disponibles para añadir al agente. \nPor favor, genera una clave SSH primero desde la opción 2 del menú principal.\n")
+            return False     
+        
+        while True:
+            key_name = self.file_search(list_keys) # Solicitamos el nombre o número de la clave SSH desde las claves existentes en .ssh
+            if key_name and key_name+".pub" in list_keys:
+                key_path = os.path.join(self.ssh_dir, key_name)
+                print(f"Intentando añadir la clave: {key_path}\n")
+                command = ["ssh-add", key_path]
+                passphrase = input("Si la clave tiene una passphrase, introdúcela ahora (dejar en blanco si no tiene): ").strip()
+                if passphrase:
+                    # Si hay una passphrase, la pasamos a stdin.
+                    # Esto es un poco más delicado y puede variar en comportamiento.
+                    # Idealmente, el usuario debería haberla introducido manualmente o usar un gestor de claves.
+                    try:
+                        result = subprocess.run(
+                            command,
+                            input=passphrase + "\n", # Añadimos un salto de línea
+                            capture_output=True, text=True, check=True, encoding='utf-8'
+                        )
+                        print(f"Salida de ssh-add: {result.stdout}")
+                        if result.stderr:
+                            print(f"Errores de ssh-add: {result.stderr}")
+                        return "Identity added" in result.stdout
+                    except subprocess.CalledProcessError as e:
+                        print(f"Error al añadir la clave (con passphrase): {e}")
+                        print(f"Stderr: {e.stderr}")
+                        return False
+                else:
+                    try:
+                        result = subprocess.run(
+                            command,
+                            capture_output=True, text=True, check=True
+                        )
+                        print(f"Salida de ssh-add: {result.stdout}")
+                        if result.stderr:
+                            print(f"Errores de ssh-add: {result.stderr}")
+                        return "Identity added" in result.stdout
+                    except subprocess.CalledProcessError as e:
+                        print(f"Error al añadir la clave: {e}")
+                        print(f"Stderr: {e.stderr}")
+                        # Mensajes comunes de error: "Agent admitted failure to sign using the key."
+                        # "Could not open a connection to your authentication agent."
+                        # "Error loading key: agent refused operation"
+                        if "agent refused operation" in e.stderr:
+                            print("El agente SSH rechazó la operación. Esto puede ocurrir si la clave ya está añadida o si hay un problema con la passphrase.")
+                        return False
+                    except FileNotFoundError:
+                        print("Comando 'ssh-add' no encontrado. Asegúrate de tener OpenSSH instalado y operando normalmente.")
+                        return False
     # --------------------------------------
     
     @staticmethod
@@ -681,7 +746,8 @@ def main_menu(ka: key_admin) -> None:
                 ka.ssh_edit_menu()
             case 5:
                 print("\n---------------------------------------------")
-                ka.start_ssh_agent()
+                ka.start_ssh_agent() # Inicia el agente SSH si no está corriendo
+                ka.add_ssh_key()  # Llama al método para añadir una clave SSH al agente
             case 6:
                 ka.open_link_web("https://github.com/Golidor24/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
             case 7:

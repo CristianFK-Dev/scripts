@@ -11,9 +11,7 @@
 
 > [!TIP]
 >
->⚠️ **Advertencia de Seguridad Importante** ⚠️
->
->Por cuestiones de seguridad, recomendamos encarecidamente que lea el contenido de este o cualquier script antes de ejecutarlo en su computadora, en especial si lo va a correr directamente de forma online; o bien puede pasarle el script o incluso la url del repositorio a alguna IA para que corrobore por usted que está libre de cualquier amenaza. 
+>⚠️ Por cuestiones de seguridad, recomendamos encarecidamente que lea el contenido de este o cualquier script antes de ejecutarlo en su computadora, en especial si lo va a correr directamente de forma online; o bien puede pasarle el script o incluso la url del repositorio a alguna IA para que corrobore por usted que está libre de cualquier amenaza.
 
 ## Ejecución
 
