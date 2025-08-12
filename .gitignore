@@ -1,1 +1,10 @@
+# Ignora archivos y carpetas comunes de configuración y temporales
 .vscode/
+.venv/
+
+#Añadidos por CFK
+
+# Añadidos por PSFK
+requirements.txt
+temp.py
+Windows/CSV/
