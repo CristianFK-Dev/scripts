@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-cs () {
+cs() {
     if [ -t 1 ]; then
         clear
     fi
@@ -38,7 +38,7 @@ echo -e "\n📦 Paquetes que se pueden actualizar:"
 printf "%s\n" "${packages[@]}"
 
 echo -e "\n👉 Ingresá los números de los paquetes a instalar (separados por espacio), o 'a' para todos , exit para salir:"
-read -rp "Tu elección: " choice
+read -rp " Tu elección: " choice
 
 # Verificar si quiere salir
 if [[ "$choice" == "exit" || "$choice" == "salir" ]]; then

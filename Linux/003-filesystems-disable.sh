@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-cs () {
+cs() {
     if [ -t 1 ]; then
         clear
     fi
