@@ -9,4 +9,4 @@
 | 004|[Password security check](004-pass-check.sh) | [README](Docs/004-pass-check.md) | 🚧 En progreso 🚧 |
 | 005|[Users security check](005-users.sh) | [README](Docs/005-users.md) | ✅ Terminado ✅ |
 | 006|[Active Service manager](006-service-systemd.sh) | [README](Docs/006-service-systemd.md) | ✅ Terminado ✅ |
-| 007|[Inactive Service manager](007-service-inactive-manager.sh) | [README](Docs/007-service-inactive-manager.md) | 🚧 En progreso 🚧 |
+| 007|[Inactive Service manager](007-service-systemd-inactive.sh) | [README](Docs/007-service-inactive-manager.md) | ✅ Terminado ✅ |

@@ -21,6 +21,9 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+temp_list_file=""
+trap 'rm -f "$temp_list_file"' EXIT
+
 while true; do
     cs
     services=()
@@ -41,13 +44,15 @@ while true; do
 
     echo -e "--- Servicios Inactivos (no están corriendo) ---\n"
 
+    temp_list_file=$(mktemp)
+
+    echo "N°|SERVICIO|DESCRIPCIÓN" > "$temp_list_file"
     for i in "${!services[@]}"; do
-        numbered_services+=("$(printf "%4d) %s" "$((i+1))" "${services[$i]}")")
+        printf "%d|%s|%s\n" "$((i+1))" "${services[$i]}" "${descriptions[$i]}" >> "$temp_list_file"
     done
 
-    printf "%s\n" "${numbered_services[@]}" | column -c "$(tput cols)"
+    column -t -s '|' -o ' | ' "$temp_list_file"
     echo ""
-
     printf "👉 Elige un servicio por su número o escribe \e[38;5;208m[s] para salir\e[0m: "
     read -r choice
 
@@ -78,14 +83,14 @@ while true; do
     case "$action_choice" in
         1)
             cs
-            echo -e "🔄 Iniciando el servicio '\e[1;33m$service\e[0m'..."
+            echo -e "🚀 Iniciando el servicio '\e[1;33m$service\e[0m'..."
             systemctl start "$service"
             echo -e "\n✅ Servicio iniciado."
             ;;
         2)
             cs
             echo -e "🔎 Mostrando estado de '\e[1;33m$service\e[0m'...\n"
-            systemctl status "$service"
+            systemctl status "$service" || true
             ;;
         3)
             continue
@@ -97,4 +102,5 @@ while true; do
 
     echo ""
     read -rp "Presioná ENTER para volver a la lista..."
+    rm -f "$temp_list_file" 
 done
