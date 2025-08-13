@@ -27,6 +27,7 @@ Las opciones del menú de acciones están coloreadas para mejorar la legibilidad
 - **Ver Estado**: Verde (acción segura).
 - **Detener**: Rojo (acción potencialmente disruptiva).
 - **Reiniciar**: Amarillo (acción de reinicio).
+- La opción para **salir** del script también está resaltada en naranja para mayor claridad.
 
 ---
 

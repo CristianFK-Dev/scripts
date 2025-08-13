@@ -33,18 +33,16 @@ while true; do
     cs
     echo -e "Servicios activos:\n"
     
-    # Prepara una lista numerada para pasarla al comando 'column'
     numbered_services=()
     for i in "${!services[@]}"; do
         numbered_services+=("$(printf "%3d) %s" "$((i+1))" "${services[$i]}")")
-    fi
+    done
     
-    # Muestra la lista en columnas que se ajustan al ancho del terminal
     printf "%s\n" "${numbered_services[@]}" | column -c "$(tput cols)"
-    
     echo ""
     
-    read -rp "👉 Elige un servicio por su número o escribe [s] para salir: " choice
+    printf "👉 Elige un servicio por su número o escribe \e[38;5;208m[s] para salir\e[0m: "
+    read -r choice
 
     case "$choice" in
         s|S|salir)
@@ -64,7 +62,6 @@ while true; do
 
     cs
     echo -e "\n🔧 Acciones para el servicio: \e[1;33m$service\e[0m\n" 
-    
     echo -e "   1) \e[1;32mVer Estado (status)\e[0m"
     echo -e "   2) \e[1;31mDetener (stop)\e[0m"
     echo -e "   3) \e[1;33mReiniciar (restart)\e[0m"
