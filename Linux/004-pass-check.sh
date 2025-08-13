@@ -9,50 +9,70 @@ cs() {
 }
 
 cs
-# Función para calcular entropía
-calc_entropy() {
-    local password=$1
-    local length=${#password}
-    local char_classes=0
+echo -e "\n🧾 analizar-entropia.sh\n"
+echo -e "Este script analiza la fortaleza de una contraseña calculando su entropía."
+echo -e "Deberás ingresar una contraseña, y el script te mostrará un desglose de"
+echo -e "sus caracteres y la cantidad total de combinaciones posibles.\n"
+read -rp "Presioná ENTER para continuar..."
+cs
 
-    # Verificar clases de caracteres presentes
-    [[ $password =~ [a-z] ]] && ((char_classes+=26))   # Minúsculas
-    [[ $password =~ [A-Z] ]] && ((char_classes+=26))   # Mayúsculas
-    [[ $password =~ [0-9] ]] && ((char_classes+=10))   # Números
-    [[ $password =~ [^a-zA-Z0-9] ]] && ((char_classes+=32))  # Símbolos (ASCII común)
+if ! command -v bc &> /dev/null; then
+    echo -e "\n❌ Error: La herramienta 'bc' no está instalada."
+    echo -e "   Por favor, instalala para poder realizar los cálculos."
+    echo -e "   En sistemas Debian/Ubuntu: sudo apt install bc\n"
+    exit 1
+fi
 
-    # Cálculo de entropía (fórmula: log2(R^L)) donde R=clases, L=longitud
-    local entropy=$(echo "scale=2; l($char_classes^$length)/l(2)" | bc -l)
-    
-    # Evaluación cualitativa
-    if (( $(echo "$entropy < 28" | bc -l) ); then
-        strength="Muy Débil 🔴"
-    elif (( $(echo "$entropy < 36" | bc -l) ); then
-        strength="Débil 🟠"
-    elif (( $(echo "$entropy < 60" | bc -l) ); then
-        strength="Moderada 🟡"
-    elif (( $(echo "$entropy < 128" | bc -l) ); then
-        strength="Fuerte 🟢"
-    else
-        strength="Muy Fuerte 🔵"
-    fi
+read -rsp "🔑 Ingresá la contraseña a verificar: " password
+echo 
 
-    echo "--------------------------------"
-    echo "🔐 Análisis de Contraseña"
-    echo "--------------------------------"
-    echo "Longitud: $length caracteres"
-    echo "Clases de caracteres:"
-    echo "  - Minúsculas: $( [[ $password =~ [a-z] ]] && echo "Sí ✅" || echo "No ❌" )"
-    echo "  - Mayúsculas: $( [[ $password =~ [A-Z] ]] && echo "Sí ✅" || echo "No ❌" )"
-    echo "  - Números: $( [[ $password =~ [0-9] ]] && echo "Sí ✅" || echo "No ❌" )"
-    echo "  - Símbolos: $( [[ $password =~ [^a-zA-Z0-9] ]] && echo "Sí ✅" || echo "No ❌" )"
-    echo "--------------------------------"
-    echo "Entropía: $entropy bits"
-    echo "Fortaleza estimada: $strength"
-    echo "--------------------------------"
-}
+if [[ -z "$password" ]]; then
+    echo -e "\n❌ No ingresaste ninguna contraseña. Saliendo.\n"
+    exit 1
+fi
 
-# Solicitar contraseña (modo seguro sin eco)
-read -sp "Ingresa tu contraseña: " password
-echo -e "\n"
-calc_entropy "$password"
+total_chars=${#password}
+count_lower=$(echo "$password" | grep -o '[a-z]' | wc -l)
+count_upper=$(echo "$password" | grep -o '[A-Z]' | wc -l)
+count_digits=$(echo "$password" | grep -o '[0-9]' | wc -l)
+count_symbols=$(echo "$password" | grep -o '[^a-zA-Z0-9]' | wc -l)
+
+
+pool_size=0
+if [[ $count_lower -gt 0 ]]; then
+    pool_size=$((pool_size + 26)) # a-z
+fi
+if [[ $count_upper -gt 0 ]]; then
+    pool_size=$((pool_size + 26)) # A-Z
+fi
+if [[ $count_digits -gt 0 ]]; then
+    pool_size=$((pool_size + 10)) # 0-9
+fi
+if [[ $count_symbols -gt 0 ]]; then
+    pool_size=$((pool_size + 32))
+fi
+
+
+entropy=$(echo "$total_chars * (l($pool_size) / l(2))" | bc -l)
+entropy_rounded=$(printf "%.0f\n" "$entropy")
+
+total_combinations=$(echo "$pool_size^$total_chars" | bc)
+
+# --- Muestra de Resultados ---
+cs
+echo -e "\n📊 Análisis de tu contraseña:\n"
+echo -e "   Total de caracteres:\t$total_chars"
+echo -e "   Letras minúsculas:\t$count_lower"
+echo -e "   Letras mayúsculas:\t$count_upper"
+echo -e "   Números:\t\t$count_digits"
+echo -e "   Símbolos:\t\t$count_symbols"
+echo -e "   -----------------------------------------"
+
+echo -e "\n🧠 Fortaleza calculada:\n"
+echo -e "   🔹 Espacio de caracteres (R):\t$pool_size"
+echo -e "      (Suma de los conjuntos de caracteres únicos utilizados)\n"
+echo -e "   🔹 Entropía (redondeada):\t${entropy_rounded} bits"
+echo -e "      (Una medida de la impredictibilidad. >80 bits es excelente)\n"
+echo -e "   🔹 Combinaciones totales (R^L):\n      $total_combinations\n"
+
+echo -e "✅ Script finalizado.\n"
