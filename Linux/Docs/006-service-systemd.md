@@ -21,14 +21,14 @@
 
 ## ✨ Descripción
 
-Este script (`006-service-systemd.sh`) ofrece una interfaz interactiva y amigable para gestionar los servicios de **systemd**. En lugar de escribir comandos largos, podés ver una **lista en múltiples columnas** de todos los servicios (activos e inactivos) y elegir una acción (`ver estado`, `iniciar`, `detener`, `reiniciar`) desde un menú dinámico y con colores.
+Este script (`006-service-systemd.sh`) ofrece una interfaz interactiva y amigable para gestionar los servicios de **systemd**. En lugar de escribir comandos largos, el script te presenta un **menú principal** para que elijas si quieres gestionar servicios **activos** o **inactivos**. Cada vista tiene su propio menú de acciones contextuales (`iniciar`, `detener`, `reiniciar`).
 
 Las opciones del menú de acciones están coloreadas para mejorar la legibilidad:
 - **Ver Estado**: Verde (acción segura).
 - **Iniciar**: Verde (acción segura).
 - **Detener**: Rojo (acción potencialmente disruptiva).
 - **Reiniciar**: Amarillo (acción de reinicio).
-- La opción para **salir** del script está resaltada en naranja.
+- Las opciones de navegación y salida están resaltadas para mayor claridad.
 
 ---
 
@@ -56,38 +56,47 @@ sudo ./006-service-systemd.sh
 
 ## 💡 Ejemplo de uso
 
-1.  Al ejecutar el script, verás una lista de todos los servicios, numerados, organizados en columnas y con su estado indicado por un color.
+1.  Al ejecutar el script, verás un menú principal para elegir qué tipo de servicios gestionar.
 
     ```text
-    Servicios del sistema (systemd):
+    --- Gestor de Servicios Systemd ---
 
-       1) cron.service                         (activo)
-       2) dbus.service                         (activo)
-       3) networking.service                   (inactivo)
-       ...
+    Elige qué tipo de servicios quieres gestionar:
 
-    👉 Elige un servicio por su número o escribe [s] para salir: 3
+       1) Servicios ACTIVOS (para detener o reiniciar)
+       2) Servicios INACTIVOS (para iniciar)
+       3) Salir
+
+       Tu elección: 2
     ```
 
-2.  Tras elegir un servicio, se mostrará un **menú de acciones dinámico**. Si el servicio estaba inactivo, ofrecerá la opción de iniciarlo.
+2.  Si eliges "INACTIVOS", verás una lista de los servicios detenidos.
+
+    ```text
+    --- Servicios INACTIVOS ---
+
+       1) apparmor.service
+       2) networking.service
+       3) speech-dispatcher.service
+       ...
+
+    👉 Elige un servicio por su número o escribe [v] para volver: 2
+    ```
+
+3.  Al seleccionar un servicio inactivo, el menú de acciones te ofrecerá la opción de iniciarlo.
 
     ```text
     🔧 Acciones para el servicio: networking.service
 
        1) Ver Estado (status)
        2) Iniciar (start)
-       3) Volver al menú principal
-       Tu elección:
-    ```
+       3) Volver a la lista
 
-3.  Al seleccionar una acción, el script la ejecutará y mostrará una confirmación.
-
-    ```text
     🚀 Iniciando el servicio 'networking.service'...
 
     ✅ Servicio iniciado.
 
-    Presioná ENTER para volver al menú principal...
+    Presioná ENTER para volver a la lista de servicios...
     ```
 
 ---
@@ -97,7 +106,7 @@ sudo ./006-service-systemd.sh
 - **Agilidad**: Agiliza la gestión de servicios sin necesidad de recordar los comandos exactos de `systemctl`.
 - **Claridad**: La interfaz interactiva y con colores reduce la posibilidad de cometer errores.
 - **Eficiencia**: Ideal para administradores de sistemas que necesitan realizar comprobaciones o reinicios rápidos.
-- **Completo**: Centraliza el ciclo de vida completo de un servicio (status, start, stop, restart) en un solo lugar.
+- **Compatibilidad**: Funciona perfectamente en terminales sin soporte de color gracias a sus menús separados.
 
 ---
 
