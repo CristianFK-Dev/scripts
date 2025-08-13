@@ -21,14 +21,13 @@
 
 ## ✨ Descripción
 
-Este script (`006-service-systemd.sh`) ofrece una interfaz interactiva y amigable para gestionar los servicios de **systemd**. En lugar de escribir comandos largos, el script te presenta un **menú principal** para que elijas si quieres gestionar servicios **activos** o **inactivos**. Cada vista tiene su propio menú de acciones contextuales (`iniciar`, `detener`, `reiniciar`).
+Este script (`006-service-systemd.sh`) ofrece una interfaz interactiva y amigable para gestionar los servicios **activos** de **systemd**. En lugar de escribir comandos largos, podés ver una lista de todos los servicios activos y elegir una acción (`ver estado`, `detener`, `reiniciar`) desde un menú simple y con colores.
 
 Las opciones del menú de acciones están coloreadas para mejorar la legibilidad:
 - **Ver Estado**: Verde (acción segura).
-- **Iniciar**: Verde (acción segura).
 - **Detener**: Rojo (acción potencialmente disruptiva).
 - **Reiniciar**: Amarillo (acción de reinicio).
-- Las opciones de navegación y salida están resaltadas para mayor claridad.
+- La opción para **salir** del script también está resaltada en naranja para mayor claridad.
 
 ---
 
@@ -36,7 +35,7 @@ Las opciones del menú de acciones están coloreadas para mejorar la legibilidad
 
 - Distribución **Linux** con `systemd`.
 - Permisos de **root** (`sudo`).
-- Herramientas básicas como `systemctl`, `awk`, `bash`.
+- Herramientas básicas como `systemctl`, `awk`, `bash`, `column`.
 
 ---
 
