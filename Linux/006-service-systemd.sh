@@ -29,29 +29,52 @@ if [ ${#services[@]} -eq 0 ]; then
     exit 0
 fi
 
+ITEMS_PER_PAGE=20
+current_page=1
+total_services=${#services[@]}
+total_pages=$(( (total_services + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE ))
+
 while true; do
     cs
-    echo -e "Servicios activos:\n"
-    for i in "${!services[@]}"; do
-        printf "   %2d) %s\n" "$((i+1))" "${services[$i]}"
-    done
+    echo -e "Servicios activos (Página $current_page/$total_pages):\n"
     
-    salir_option_num=$((${#services[@]} + 1))
-    # Color naranja para la opción de salir
-    echo -e "   ${salir_option_num}) \e[38;5;208mSalir\e[0m"
-
-    echo ""
-    read -rp "👉 Elige un servicio (o el número de 'Salir') para ver opciones: " choice
-
-    # Manejar la opción de salir
-    if [[ "$choice" == "$salir_option_num" ]]; then
-        cs
-        echo -e "\n👋 Saliendo del gestor de servicios.\n"
-        break
+    start_index=$(( (current_page - 1) * ITEMS_PER_PAGE ))
+    end_index=$(( start_index + ITEMS_PER_PAGE - 1 ))
+    if (( end_index >= total_services )); then
+        end_index=$(( total_services - 1 ))
     fi
 
-    # Validar la entrada
-    if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#services[@]} )); then
+    for i in $(seq $start_index $end_index); do
+        printf "   %3d) %s\n" "$((i+1))" "${services[$i]}"
+    done
+    
+    echo ""
+    
+    nav_prompt="👉 Elige un servicio"
+    if (( total_pages > 1 )); then
+        nav_prompt+=", [n]ext, [p]rev,"
+    fi
+    nav_prompt+=" o [s]alir: "
+    
+    read -rp "$nav_prompt" choice
+
+    case "$choice" in
+        n|N)
+            if (( current_page < total_pages )); then ((current_page++)); fi
+            continue
+            ;;
+        p|P)
+            if (( current_page > 1 )); then ((current_page--)); fi
+            continue
+            ;;
+        s|S|salir)
+            cs
+            echo -e "\n👋 Saliendo del gestor de servicios.\n"
+            break
+            ;;
+    esac
+
+    if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > total_services )); then
         echo -e "\n❌ Opción no válida. Inténtalo de nuevo."
         sleep 2
         continue
@@ -88,9 +111,6 @@ while true; do
             echo -e "\n✅ Servicio reiniciado."
             ;;
         4)
-            cs 
-            echo "↩️  Volviendo al listado de servicios..."
-            # Salta el "Presioná ENTER" y vuelve a mostrar el menú principal
             continue
             ;;
         *)

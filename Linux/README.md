@@ -8,3 +8,4 @@
 | 003|[Filse system disable](003-filesystems-disable.sh) | [README](Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
 | 004|[Password security check](004-pass-check.sh) | [README](Docs/004-pass-check.md) | 🚧 En progreso 🚧 |
 | 005|[Users security check](005-users.sh) | [README](Docs/005-users.md) | ✅ Terminado ✅ |
+| 006|[Service manager](006-service-systemd.sh) | [README](Docs/006-service-systemd.md) | ✅ Terminado ✅ |
