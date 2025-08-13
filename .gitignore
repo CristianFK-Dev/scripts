@@ -3,6 +3,7 @@
 .venv/
 
 #Añadidos por CFK
+.gitignore
 
 # Añadidos por PSFK
 requirements.txt
