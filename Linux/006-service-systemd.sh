@@ -29,44 +29,22 @@ if [ ${#services[@]} -eq 0 ]; then
     exit 0
 fi
 
-ITEMS_PER_PAGE=20
-current_page=1
-total_services=${#services[@]}
-total_pages=$(( (total_services + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE ))
-
 while true; do
     cs
-    echo -e "Servicios activos (Página $current_page/$total_pages):\n"
+    echo -e "Servicios activos:\n"
     
-    start_index=$(( (current_page - 1) * ITEMS_PER_PAGE ))
-    end_index=$(( start_index + ITEMS_PER_PAGE - 1 ))
-    if (( end_index >= total_services )); then
-        end_index=$(( total_services - 1 ))
-    fi
-
-    for i in $(seq $start_index $end_index); do
-        printf "   %3d) %s\n" "$((i+1))" "${services[$i]}"
+    numbered_services=()
+    for i in "${!services[@]}"; do
+        numbered_services+=("$(printf "%3d) %s" "$((i+1))" "${services[$i]}")")
     done
     
+    printf "%s\n" "${numbered_services[@]}" | column -c "$(tput cols)"
     echo ""
     
-    nav_prompt="👉 Elige un servicio"
-    if (( total_pages > 1 )); then
-        nav_prompt+=", [n]ext, [p]rev,"
-    fi
-    nav_prompt+=" o [s]alir: "
-    
-    read -rp "$nav_prompt" choice
+    printf "👉 Elige un servicio por su número o escribe \e[38;5;208m[s] para salir\e[0m: "
+    read -r choice
 
     case "$choice" in
-        n|N)
-            if (( current_page < total_pages )); then ((current_page++)); fi
-            continue
-            ;;
-        p|P)
-            if (( current_page > 1 )); then ((current_page--)); fi
-            continue
-            ;;
         s|S|salir)
             cs
             echo -e "\n👋 Saliendo del gestor de servicios.\n"
@@ -74,7 +52,7 @@ while true; do
             ;;
     esac
 
-    if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > total_services )); then
+    if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#services[@]} )); then
         echo -e "\n❌ Opción no válida. Inténtalo de nuevo."
         sleep 2
         continue
@@ -84,7 +62,6 @@ while true; do
 
     cs
     echo -e "\n🔧 Acciones para el servicio: \e[1;33m$service\e[0m\n" 
-    
     echo -e "   1) \e[1;32mVer Estado (status)\e[0m"
     echo -e "   2) \e[1;31mDetener (stop)\e[0m"
     echo -e "   3) \e[1;33mReiniciar (restart)\e[0m"
