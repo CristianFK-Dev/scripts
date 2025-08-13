@@ -58,44 +58,26 @@ sudo ./006-service-systemd.sh
 1.  Al ejecutar el script, verás un menú principal para elegir qué tipo de servicios gestionar.
 
     ```text
-    --- Gestor de Servicios Systemd ---
-
-    Elige qué tipo de servicios quieres gestionar:
-
-       1) Servicios ACTIVOS (para detener o reiniciar)
-       2) Servicios INACTIVOS (para iniciar)
-       3) Salir
-
-       Tu elección: 2
-    ```
-
-2.  Si eliges "INACTIVOS", verás una lista de los servicios detenidos.
-
-    ```text
-    --- Servicios INACTIVOS ---
+    --- Servicios ACTIVOS ---
 
        1) apparmor.service
        2) networking.service
        3) speech-dispatcher.service
        ...
 
-    👉 Elige un servicio por su número o escribe [v] para volver: 2
+    👉 Elige un servicio por su número o escribe [s] para salir:
+
     ```
 
-3.  Al seleccionar un servicio inactivo, el menú de acciones te ofrecerá la opción de iniciarlo.
+2.  Acciones disponibles para cada servicio:
 
     ```text
     🔧 Acciones para el servicio: networking.service
 
        1) Ver Estado (status)
-       2) Iniciar (start)
-       3) Volver a la lista
-
-    🚀 Iniciando el servicio 'networking.service'...
-
-    ✅ Servicio iniciado.
-
-    Presioná ENTER para volver a la lista de servicios...
+       2) Detener (stop)
+       3) Reiniciar (restart)
+       4) Volver al menú principal
     ```
 
 ---
