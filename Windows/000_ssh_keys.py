@@ -42,6 +42,39 @@ class key_admin:
             print(f"Error inesperado al listar las claves SSH: {e}")
             return []
     
+    def greetings(self) -> None:
+        """Saludo inicial al usuario."""
+        print('▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒')
+        print('▒╔═══╦═══╦╗▒╔╗▒╔╗╔═╗▒▒▒▒▒▒▒▒╔═══╗▒╔╗▒▒▒▒▒▒▒▒')
+        print('▒║╔═╗║╔═╗║║▒║║▒║║║╔╝▒▒▒▒▒▒▒▒║╔═╗║▒║║▒▒▒▒▒▒▒▒')
+        print('▒║╚══╣╚══╣╚═╝║▒║╚╝╝╔══╦╗▒╔╗▒║║▒║╠═╝╠╗╔╦╦═╗▒▒')
+        print('▒╚══╗╠══╗║╔═╗║▒║╔╗║║║═╣║▒║║▒║╚═╝║╔╗║╚╝╠╣╔╗╗▒')
+        print('▒║╚═╝║╚═╝║║▒║║▒║║║╚╣║═╣╚═╝║▒║╔═╗║╚╝║║║║║║║║▒')
+        print('▒╚═══╩═══╩╝▒╚╝▒╚╝╚═╩══╩═╗╔╝▒╚╝▒╚╩══╩╩╩╩╩╝╚╝▒')
+        print('▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒╔═╝║▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒')
+        print('▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒╚══╝▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒')
+        print('▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒')
+        print('\n Bienvenido al administrador de claves SSH.\n')
+
+    def goodbye(self) -> None:
+        """Despedida al usuario."""
+        print("              _")
+        print("             | |")
+        print("             | |===( )   //////")
+        print("             |_|   |||  | o o|")
+        print("                    ||| ( c  )                  ____")
+        print("                     ||| \= /                  ||   \_")
+        print("                      ||||||                   ||     |")
+        print('                      ||||||                ...||__/|-"')
+        print("                      ||||||             __|________|__")
+        print("                        |||             |______________|")
+        print("                        |||             || ||      || ||")
+        print("                        |||             || ||      || ||")
+        print("------------------------|||-------------||-||------||-||-------")
+        print("                        |__>            || ||      || ||")
+
+        print("\nSaliendo del generador de claves SSH. ¡Hasta luego!\n")
+        exit(0)  # Salir del programa
     # --------- Bloque generación de claves SSH ---------
     
     def get_key_file_name(self) -> str:
@@ -717,9 +750,10 @@ class key_admin:
 def main_menu(ka: key_admin) -> None:
     """Muestra un menú de opciones al usuario."""
     
-    print("\n--- Bienvenido al generador de claves SSH. ---")
+    ka.greetings() # Saludo inicial al usuario
+    
     while True:
-        print("\n--- Por favor, elija la opción deseada:\n")
+        print("--- Por favor, elija la opción deseada:\n")
         print("1. Mostrar lista de claves SSH")
         print("2. Generar nueva clave SSH")
         print("3. Generar múltiples claves SSH desde CSV. (Ver documentación, opción 6)")
@@ -751,7 +785,7 @@ def main_menu(ka: key_admin) -> None:
             case 6:
                 ka.open_link_web("https://github.com/CristianFK-Dev/scripts/blob/main/Windows/Docs/000_ssh_keys.md")
             case 7:
-                return exit("\nSaliendo del generador de claves SSH. ¡Hasta luego!\n")
+                return ka.goodbye()  # Llama al método de despedida
             case _:
                 print("\nSeleccione una opción correcta basada en el número indicado a su izquierda.")
 
