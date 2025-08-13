@@ -3,11 +3,11 @@
 set -euo pipefail
 
 # --- Variables de Color ---
-C_GREEN='\e[1;32m'
-C_RED='\e[1;31m'
-C_YELLOW='\e[1;33m'
-C_ORANGE='\e[38;5;208m'
-C_NC='\e[0m' # Sin Color
+C_GREEN='\033[1;32m'
+C_RED='\033[1;31m'
+C_YELLOW='\033[1;33m'
+C_ORANGE='\033[38;5;208m'
+C_NC='\033[0m' # Sin Color
 
 cs() {
     if [ -t 1 ]; then
@@ -60,7 +60,7 @@ while true; do
         numbered_services+=("$(printf "%3d) %-40s %s" "$((i+1))" "$name" "$status_colored")")
     done
     
-    printf "%s\n" "${numbered_services[@]}" | column -c "$(tput cols)"
+    printf "%s\n" "${numbered_services[@]}"
     echo ""
     
     printf "👉 Elige un servicio por su número o escribe [${C_ORANGE}s${C_NC}] para salir: "
