@@ -44,7 +44,7 @@ Las opciones del menú de acciones están coloreadas para mejorar la legibilidad
 ### 📥 Descargar y ejecutar:
 
 ```bash
-curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/006-service-systemd.sh
+curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/006-service-systemd-active.sh
 
 chmod +x 006-service-systemd.sh
 

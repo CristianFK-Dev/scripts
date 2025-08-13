@@ -40,7 +40,7 @@ Es ideal para cuando un servicio se ha detenido y necesitas levantarlo rápidame
 ### 📥 Descargar y ejecutar:
 
 ```bash
-curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/007-service-inactive-manager.sh
+curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/007-service-systemd-inactive.sh
 
 chmod +x 007-service-inactive-manager.sh
 
