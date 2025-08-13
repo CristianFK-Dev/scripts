@@ -46,8 +46,8 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 003|[Filse system disable](Linux/003-filesystems-disable.sh) | [README](Linux/Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
 | 004|[Password security check](Linux/004-pass-check.sh) | [README](Linux/Docs/004-pass-check.md) | 🚧 En progreso 🚧 |
 | 005|[Users status](Linux/005-users.sh) | [README](Linux/Docs/005-users.md) | ✅ Terminado ✅ |
-| 006|[Service manager](Linux/006-service-systemd-active.sh) | [README](Linux/Docs/006-service-systemd-active.md) | ✅ Terminado ✅ |
-| 007|[Inactive Service manager](Linux/007-service-systemd-inactive.sh) | [README](Linux/Docs/007-service-inactive-manager.md) | ✅ Terminado ✅ |
+| 006|[Active service manager](Linux/006-service-systemd-active.sh) | [README](Linux/Docs/006-service-systemd-active.md) | ✅ Terminado ✅ |
+| 007|[Inactive service manager](Linux/007-service-systemd-inactive.sh) | [README](Linux/Docs/007-service-systemd-inactive.md) | ✅ Terminado ✅ |
 
 ---
 
