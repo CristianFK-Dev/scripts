@@ -21,7 +21,7 @@
 
 ## ✨ Descripción
 
-Este script (`006-service-systemd.sh`) ofrece una interfaz interactiva y amigable para gestionar los servicios activos de **systemd**. En lugar de escribir comandos largos, podés ver una **lista paginada** de todos los servicios activos y elegir una acción (`ver estado`, `detener`, `reiniciar`) desde un menú simple y con colores para una mejor visualización.
+Este script (`006-service-systemd.sh`) ofrece una interfaz interactiva y amigable para gestionar los servicios activos de **systemd**. En lugar de escribir comandos largos, podés ver una **lista en múltiples columnas** (similar al comando `ls`) de todos los servicios activos y elegir una acción (`ver estado`, `detener`, `reiniciar`) desde un menú simple y con colores.
 
 Las opciones del menú de acciones están coloreadas para mejorar la legibilidad:
 - **Ver Estado**: Verde (acción segura).
@@ -54,18 +54,16 @@ sudo ./006-service-systemd.sh
 
 ## 💡 Ejemplo de uso
 
-1.  Al ejecutar el script, verás una lista de todos los servicios activos, numerados y con la opción de "Salir" resaltada en naranja.
-    La lista estará paginada y podrás navegar con `n` (siguiente) y `p` (anterior).
+1.  Al ejecutar el script, verás una lista de todos los servicios activos, numerados y organizados en columnas para una fácil lectura.
 
     ```text
-    Servicios activos (Página 1/4):
+    Servicios activos:
 
-       1) cron.service
-       2) dbus.service
-       ...
-      20) systemd-journald.service
+       1) cron.service                 11) systemd-journald.service    21) user@1000.service
+       2) dbus.service                 12) systemd-logind.service      22) wpa_supplicant.service
+       3) networkd-dispatcher.service  13) systemd-networkd.service    ...
 
-    👉 Elige un servicio, [n]ext, [p]rev, o [s]alir:
+    👉 Elige un servicio por su número o escribe [s] para salir:
     ```
 
 2.  Tras elegir un servicio (por ejemplo, `ssh.service`), se mostrará el menú de acciones con colores.
