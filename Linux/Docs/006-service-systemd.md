@@ -21,13 +21,14 @@
 
 ## ✨ Descripción
 
-Este script (`006-service-systemd.sh`) ofrece una interfaz interactiva y amigable para gestionar los servicios activos de **systemd**. En lugar de escribir comandos largos, podés ver una **lista en múltiples columnas** (similar al comando `ls`) de todos los servicios activos y elegir una acción (`ver estado`, `detener`, `reiniciar`) desde un menú simple y con colores.
+Este script (`006-service-systemd.sh`) ofrece una interfaz interactiva y amigable para gestionar los servicios de **systemd**. En lugar de escribir comandos largos, podés ver una **lista en múltiples columnas** de todos los servicios (activos e inactivos) y elegir una acción (`ver estado`, `iniciar`, `detener`, `reiniciar`) desde un menú dinámico y con colores.
 
 Las opciones del menú de acciones están coloreadas para mejorar la legibilidad:
 - **Ver Estado**: Verde (acción segura).
+- **Iniciar**: Verde (acción segura).
 - **Detener**: Rojo (acción potencialmente disruptiva).
 - **Reiniciar**: Amarillo (acción de reinicio).
-- La opción para **salir** del script también está resaltada en naranja para mayor claridad.
+- La opción para **salir** del script está resaltada en naranja.
 
 ---
 
@@ -55,36 +56,36 @@ sudo ./006-service-systemd.sh
 
 ## 💡 Ejemplo de uso
 
-1.  Al ejecutar el script, verás una lista de todos los servicios activos, numerados y organizados en columnas para una fácil lectura.
+1.  Al ejecutar el script, verás una lista de todos los servicios, numerados, organizados en columnas y con su estado indicado por un color.
 
     ```text
-    Servicios activos:
+    Servicios del sistema (systemd):
 
-       1) cron.service                 11) systemd-journald.service    21) user@1000.service
-       2) dbus.service                 12) systemd-logind.service      22) wpa_supplicant.service
-       3) networkd-dispatcher.service  13) systemd-networkd.service    ...
+       1) cron.service                         (activo)
+       2) dbus.service                         (activo)
+       3) networking.service                   (inactivo)
+       ...
 
-    👉 Elige un servicio por su número o escribe [s] para salir:
+    👉 Elige un servicio por su número o escribe [s] para salir: 3
     ```
 
-2.  Tras elegir un servicio (por ejemplo, `ssh.service`), se mostrará el menú de acciones con colores.
+2.  Tras elegir un servicio, se mostrará un **menú de acciones dinámico**. Si el servicio estaba inactivo, ofrecerá la opción de iniciarlo.
 
     ```text
-    🔧 Acciones para el servicio: ssh.service
+    🔧 Acciones para el servicio: networking.service
 
        1) Ver Estado (status)
-       2) Detener (stop)
-       3) Reiniciar (restart)
-       4) Volver al menú principal
+       2) Iniciar (start)
+       3) Volver al menú principal
        Tu elección:
     ```
 
 3.  Al seleccionar una acción, el script la ejecutará y mostrará una confirmación.
 
     ```text
-    🔄 Reiniciando el servicio 'ssh.service'...
+    🚀 Iniciando el servicio 'networking.service'...
 
-    ✅ Servicio reiniciado.
+    ✅ Servicio iniciado.
 
     Presioná ENTER para volver al menú principal...
     ```
@@ -96,7 +97,7 @@ sudo ./006-service-systemd.sh
 - **Agilidad**: Agiliza la gestión de servicios sin necesidad de recordar los comandos exactos de `systemctl`.
 - **Claridad**: La interfaz interactiva y con colores reduce la posibilidad de cometer errores.
 - **Eficiencia**: Ideal para administradores de sistemas que necesitan realizar comprobaciones o reinicios rápidos.
-- **Simplicidad**: Centraliza las acciones más comunes (status, stop, restart) en un solo lugar.
+- **Completo**: Centraliza el ciclo de vida completo de un servicio (status, start, stop, restart) en un solo lugar.
 
 ---
 
