@@ -21,8 +21,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-
-mapfile -t services < <(systemctl list-units --type=service --state=active --no-legend | awk '{print $1}')
+mapfile -t services < <(systemctl list-units --type=service --state=active,inactive --no-legend | awk '{print $1}')
 
 if [ ${#services[@]} -eq 0 ]; then
     echo -e "\n✅ No se encontraron servicios activos.\n"
@@ -35,9 +34,15 @@ while true; do
     
     numbered_services=()
     for i in "${!services[@]}"; do
-        numbered_services+=("$(printf "%3d) %s" "$((i+1))" "${services[$i]}")")
+        state=$(systemctl is-active "${services[$i]}")
+        if [[ $state == "active" ]]; then
+            color="\e[1;32m" # verde
+        else
+            color="\e[1;31m" # rojo
+        fi
+        numbered_services+=("$(printf "%3d) ${color}%s\e[0m" "$((i+1))" "${services[$i]}")")
     done
-    
+        
     printf "%s\n" "${numbered_services[@]}" | column -c "$(tput cols)"
     echo ""
     
@@ -61,11 +66,12 @@ while true; do
     service="${services[$((choice-1))]}"
 
     cs
-    echo -e "\n🔧 Acciones para el servicio: \e[1;33m$service\e[0m\n" 
-    echo -e "   1) \e[1;32mVer Estado (status)\e[0m"
-    echo -e "   2) \e[1;31mDetener (stop)\e[0m"
-    echo -e "   3) \e[1;33mReiniciar (restart)\e[0m"
-    echo "   4) Volver al menú principal"
+   echo -e "   1) \e[1;32mVer Estado (status)\e[0m"
+   echo -e "   2) \e[1;31mDetener (stop)\e[0m"
+   echo -e "   3) \e[1;33mReiniciar (restart)\e[0m"
+   echo -e "   4) \e[1;32mIniciar (start)\e[0m"
+   echo "   5) Volver al menú principal"
+
 
     read -rp "   Tu elección: " action_choice
 
@@ -88,6 +94,12 @@ while true; do
             echo -e "\n✅ Servicio reiniciado."
             ;;
         4)
+            cs
+            echo -e "🚀 Iniciando el servicio '\e[1;33m$service\e[0m'..."
+            systemctl start "$service"
+            echo -e "\n✅ Servicio iniciado."
+            ;;
+        5)
             continue
             ;;
         *)
