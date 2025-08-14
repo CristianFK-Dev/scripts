@@ -44,7 +44,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 001|[APT upgrade](Linux/001-apt-upgrade.sh) | [README](Linux/Docs/001-apt-upgrade.md) | ✅ Terminado ✅ |
 | 002|[Kernel modules](Linux/002-mod-kernel.sh) | [README](Linux/Docs/002-mod-kernel.md) | ✅ Terminado ✅ |
 | 003|[Filse system disable](Linux/003-filesystems-disable.sh) | [README](Linux/Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
-| 004|[Password security check](Linux/004-pass-check.sh) | [README](Linux/Docs/004-pass-check.md) | 🚧 En progreso 🚧 |
+| 004|[Password security check](Linux/004-pass-check.sh) | [README](Linux/Docs/004-pass-check.md) | 🚧 WIP 🚧 |
 | 005|[Users status](Linux/005-users.sh) | [README](Linux/Docs/005-users.md) | ✅ Terminado ✅ |
 | 006|[Active service manager](Linux/006-service-systemd-active.sh) | [README](Linux/Docs/006-service-systemd-active.md) | ✅ Terminado ✅ |
 | 007|[Inactive service manager](Linux/007-service-systemd-inactive.sh) | [README](Linux/Docs/007-service-systemd-inactive.md) | ✅ Terminado ✅ |
@@ -55,8 +55,8 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 | N° | Script | Documentación | Tipo | Win🪟 | Linux🐧 | MacOS🍎 | Estado |
 |---:|---------------|:-------------:|:----:|:----:|:----:|:----:|:----:|
-| 000| [SSH Keys admin](Windows/000_ssh_keys.py) | [README](Windows/Docs/000_ssh_keys.md) | Consola | ✅ | ✅ | ✅ |🚧 En progreso 🚧 |
-| 001| [SSH Keys admin](Windows/001/001_ssh_keys_desktop.py) | ------ | Escritorio | ✅ | ✅ | ✅ |🚧 En progreso 🚧 |
+| 000| [SSH Keys admin](Windows/000_ssh_keys.py) | [README](Windows/Docs/000_ssh_keys.md) | Consola | ✅ | ✅ | ✅ |🚧 WIP 🚧 |
+| 001| [SSH Keys admin](Windows/001/001_ssh_keys_desktop.py) | ------ | Escritorio | ✅ | ✅ | ✅ |🚧 WIP 🚧 |
 
 
 
