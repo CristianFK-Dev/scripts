@@ -22,7 +22,7 @@
 
 ## ✨ Descripción
 
-Este script (`005-users.sh`) ha evolucionado de un simple reporte a un **completo dashboard interactivo para la gestión de usuarios en Linux**. Proporciona una interfaz centralizada para auditar y administrar cuentas de sistema, normales o todas juntas.
+Este script (`005-user-script-tool.sh`) ha evolucionado de un simple reporte a un **completo dashboard interactivo para la gestión de usuarios en Linux**. Proporciona una interfaz centralizada para auditar y administrar cuentas de sistema, normales o todas juntas.
 
 **Funcionalidades Principales:**
 - **Filtrado de Usuarios**: Muestra usuarios del sistema, normales o todos.
@@ -52,11 +52,11 @@ Este script (`005-users.sh`) ha evolucionado de un simple reporte a un **complet
 El script necesita permisos de superusuario para poder consultar la información de las contraseñas con `chage` y `passwd`.
 
 ```bash
-curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/005-users.sh
+curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/005-user-script-tool.sh
 
-chmod +x 005-users.sh
+chmod +x 005-user-script-tool.sh
 
-sudo ./005-users.sh
+sudo ./005-user-script-tool.sh
 ```
 
 ## 💡 Ejemplo de uso
@@ -75,16 +75,16 @@ ftp     | 🔴 NO SHELL         | N/A              | N/A             | N/A      
 ## 📤 Compartir este script
 
 <p align="center">
-    <a href="https://www.reddit.com/submit?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/005-users.sh">
+    <a href="https://www.reddit.com/submit?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/005-user-script-tool.sh">
         <img src="https://img.shields.io/badge/Compartir-FF4500?logo=reddit&logoColor=white" alt="Reddit" />
     </a>
-    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/005-users.sh">
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/005-user-script-tool.sh">
         <img src="https://img.shields.io/badge/LinkedIn-Compartir-0077B5?style=flat&logo=linkedin" alt="LinkedIn" />
     </a>
-    <a href="https://wa.me/?text=Revisá%20este%20script:%20https://github.com/CristianFK-Dev/scripts/blob/main/Linux/005-users.sh">
+    <a href="https://wa.me/?text=Revisá%20este%20script:%20https://github.com/CristianFK-Dev/scripts/blob/main/Linux/005-user-script-tool.sh">
         <img src="https://img.shields.io/badge/Compartir-25D366?logo=whatsapp&logoColor=white" alt="WhatsApp" />
     </a>
-    <a href="https://t.me/share/url?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/005-users.sh">
+    <a href="https://t.me/share/url?url=https://github.com/CristianFK-Dev/scripts/blob/main/Linux/005-user-script-tool.sh">
         <img src="https://img.shields.io/badge/Compartir-0088CC?logo=telegram&logoColor=white" alt="Telegram" />
     </a>
 </p>
