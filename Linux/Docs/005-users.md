@@ -1,4 +1,4 @@
-# Script de Auditoría de Cuentas de Usuario
+# Gestor Interactivo de Cuentas de Usuario
 
 <p align="center">
     <a href="https://www.man7.org/linux/man-pages/man1/bash.1.html">
@@ -11,29 +11,37 @@
 
 ---
 
-## ⚠️ Recomendaciones de Seguridad
+## ⚠️ Advertencia de Seguridad Crítica
 
-⚠️ **Advertencia Importante**
-> Siempre revisá el contenido de cualquier script antes de ejecutarlo, especialmente si lo descargás de internet o desde un repositorio.
-> Este script **no realiza modificaciones en el sistema**, solo imprime un reporte con fines de auditoría y requiere permisos de `root` para leer la información de las cuentas.
+> Este script es una herramienta de administración poderosa que **realiza modificaciones directas y potencialmente destructivas en el sistema**. Permite crear, borrar, bloquear/desbloquear cuentas y contraseñas, y cambiar políticas de seguridad.
+> - **Usalo con extrema precaución**, especialmente en entornos de producción.
+> - **Un error puede dejar el sistema inaccesible** o comprometer su seguridad.
+> - Siempre revisá el código antes de ejecutarlo y asegurate de entender cada acción.
 
 ---
 
 ## ✨ Descripción
 
-Este script (`005-users.sh`) muestra un reporte detallado del estado de **todas las cuentas de usuario del sistema**. El reporte prioriza a los usuarios con un shell de inicio de sesión activo, listándolos primero para facilitar la auditoría.
+Este script (`005-users.sh`) ha evolucionado de un simple reporte a un **completo dashboard interactivo para la gestión de usuarios en Linux**. Proporciona una interfaz centralizada para auditar y administrar cuentas de sistema, normales o todas juntas.
 
-Incluye información clave sobre la seguridad de cada cuenta:
-
-- **Shell asignado**: Si el usuario puede o no iniciar sesión.
-- **Estado de la contraseña**: `activa`, `bloqueada`, `sin contraseña`, etc.
-- **Estado de bloqueo**: Si la cuenta está bloqueada por fallos de autenticación.
-- **Fecha de expiración**: Cuándo caduca la contraseña.
-- **Último cambio**: Cuándo se modificó la contraseña por última vez.
-- **Días MIN/MAX**: Políticas de rotación de contraseñas.
-- **Último login ssh**: Fecha y hora del último inicio de sesión interactivo con SSH.
-
-Es una herramienta ideal para auditorías de seguridad y para generar evidencia para controles como **CIS Benchmark 6.2.x** o **PCI DSS 8.x**.
+**Funcionalidades Principales:**
+- **Filtrado de Usuarios**: Muestra usuarios del sistema, normales o todos.
+- **Dashboard Detallado**: Presenta una tabla con información de seguridad clave:
+  - **Shell asignado**: Si el usuario puede o no iniciar sesión.
+  - **Estado de la contraseña**: `ACTIVA`, `BLOQUEADA`, `SIN PASS`.
+  - **Estado de la cuenta**: Si la cuenta está bloqueada por expiración.
+  - **Vencimiento de contraseña**: Cuándo caduca la contraseña.
+  - **Último cambio**: Cuándo se modificó la contraseña por última vez.
+  - **Políticas MIN/MAX**: Días de rotación de contraseñas.
+  - **Último login**: Fecha del último inicio de sesión.
+- **Menú de Acciones Interactivo**: Permite realizar las siguientes operaciones sobre cualquier usuario:
+  - Ver estadísticas detalladas (`chage`, `id`, `lastlog`).
+  - Bloquear y desbloquear contraseñas (`passwd -l/u`).
+  - Bloquear y desbloquear cuentas completas (mediante expiración).
+  - Establecer la fecha de vencimiento de la contraseña.
+  - Cambiar la contraseña de un usuario.
+  - Crear nuevos usuarios con configuración personalizada.
+  - Borrar usuarios (con opción de eliminar su directorio home).
 
 ---
 
@@ -53,7 +61,7 @@ sudo ./005-users.sh
 
 ## 💡 Ejemplo de uso
 
-La salida será una tabla bien alineada como la siguiente, mostrando todos los campos relevantes:
+Al ejecutar el script, primero se te pedirá que elijas qué tipo de usuarios auditar:
 
 ```
 USUARIO | SHELL               | ESTADO PASS      | BLOQUEO          | EXPIRACIÓN | ÚLTIMO CAMBIO | DÍAS MIN/MAX | ÚLTIMO LOGIN SSH
