@@ -1,35 +1,78 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# =========================================================
-# Script para monitorear el uso de recursos de Tomcat.
-# Genera un log con el uso de CPU y memoria cada segundo.
-# =========================================================
+set -euo pipefail
 
-# Define la ubicación del archivo de log.
-LOG_FILE="/var/log/tomcat-resource.log"
+LOG_DIR="$HOME/proc-monitor-logs"
+mkdir -p "$LOG_DIR"
 
-# Bucle infinito para monitorear continuamente.
-while true; do
-    # Encuentra el PID de Tomcat. Usamos 'pgrep -f' para buscar
-    # el proceso por su línea de comandos completa ("java.*tomcat").
-    TOMCAT_PID=$(pgrep -u tomcat java)
-
-    # Verifica si el proceso de Tomcat está corriendo.
-    if [ -z "$TOMCAT_PID" ]; then
-        echo "$(date +"%Y-%m-%d %H:%M:%S") - ADVERTENCIA: Proceso de Tomcat no encontrado." >> "$LOG_FILE"
-    else
-        # Obtiene el uso de CPU (%) y memoria (%) del PID de Tomcat.
-        # --no-headers evita que el comando muestre la cabecera.
-        USAGE=$(ps -p "$TOMCAT_PID" -o %cpu,%mem --no-headers)
-
-        # Extrae los valores y los formatea para el log.
-        CPU_USAGE=$(echo "$USAGE" | awk '{print $1}')
-        MEM_USAGE=$(echo "$USAGE" | awk '{print $2}')
-
-        # Escribe la línea de log con la fecha, PID, CPU y memoria.
-        echo "$(date +"%Y-%m-%d %H:%M:%S") - PID: $TOMCAT_PID - CPU: $CPU_USAGE% - MEM: $MEM_USAGE%" >> "$LOG_FILE"
+cs() {
+    if [ -t 1 ]; then
+        clear
     fi
+}
 
-    # Espera 1 segundo antes de la siguiente iteración.
+# Mostrar documentación inicial
+cs
+echo -e "\n🧾 008-proc-monitor.sh\n"
+echo -e "Este script permite seleccionar uno o varios procesos y registrar su consumo de CPU y memoria."
+echo -e "Los datos se guardan en $LOG_DIR, con el nombre del proceso y la hora.\n"
+read -rp "Presioná ENTER para continuar..."
+cs
+
+# Mostrar lista de procesos activos
+mapfile -t processes < <(ps -eo pid,comm --sort=comm | awk 'NR>1 {print $1, $2}' | nl -w2 -s'. ')
+
+if [ ${#processes[@]} -eq 0 ]; then
+    echo -e "\n❌ No hay procesos activos.\n"
+    exit 1
+fi
+
+echo -e "\n📋 Procesos activos (PID y nombre):"
+printf "%s\n" "${processes[@]}"
+
+# Selección
+echo -e "\n👉 Ingresá los números de los procesos a monitorear (ej: 1 4 7), o 'exit' para salir:"
+read -rp " Tu elección: " choice
+
+if [[ "$choice" == "exit" ]]; then
+    echo -e "\n👋 Saliendo sin hacer cambios.\n"
+    exit 0
+fi
+
+pids=()
+names=()
+
+for num in $choice; do
+    if ! [[ "$num" =~ ^[0-9]+$ ]] || (( num < 1 || num > ${#processes[@]} )); then
+        echo -e "\n❌ Número inválido: $num"
+        exit 1
+    fi
+    line="${processes[$((num-1))]}"
+    pid=$(echo "$line" | awk '{print $2}')
+    name=$(echo "$line" | awk '{print $3}')
+    pids+=( "$pid" )
+    names+=( "$name" )
+done
+
+# Monitoreo
+echo -e "\n🚀 Monitoreando procesos seleccionados. Presioná Ctrl+C para detener.\n"
+
+while true; do
+    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+    for i in "${!pids[@]}"; do
+        pid="${pids[$i]}"
+        name="${names[$i]}"
+        if ps -p "$pid" > /dev/null 2>&1; then
+            stats=$(ps -p "$pid" -o %cpu,%mem,rss --no-headers)
+            cpu=$(echo "$stats" | awk '{print $1}')
+            mem=$(echo "$stats" | awk '{print $2}')
+            rss=$(echo "$stats" | awk '{print $3}')
+            echo "[$timestamp] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB" \
+                | tee -a "$LOG_DIR/${name}_${pid}.log"
+        else
+            echo "[$timestamp] $name (PID $pid) finalizó." \
+                | tee -a "$LOG_DIR/${name}_${pid}.log"
+        fi
+    done
     sleep 1
 done
