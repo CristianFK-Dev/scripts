@@ -29,14 +29,12 @@ generate_data() {
     # Definir el comando awk para filtrar usuarios según la elección
     case "$filter_type" in
         "system")
-            # Usuarios del sistema: UID < 1000, y no 'nobody'
             user_source=$(awk -F: '$3 < 1000 && $1 != "nobody" {print $1, $3, $6, $7}' /etc/passwd)
             ;;
         "normal")
-            # Usuarios normales: UID >= 1000
             user_source=$(awk -F: '$3 >= 1000 {print $1, $3, $6, $7}' /etc/passwd)
             ;;
-        *) # "all" o por defecto
+        *)
             user_source=$(awk -F: '$1 != "nobody" {print $1, $3, $6, $7}' /etc/passwd)
             ;;
     esac
@@ -76,7 +74,7 @@ generate_data() {
             # Verificar estado de contraseña (usando passwd -S)
             password_info=$(passwd -S "$user" 2>/dev/null)
             if [ -z "$password_info" ]; then
-                password_status="❓ NO EXISTE"
+                password_status="❓NO EXISTE"
                 account_lock_status="N/A"
                 account_expiry_status="N/A"
                 expiry_status="N/A"
