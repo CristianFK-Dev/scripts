@@ -6,7 +6,9 @@ LOG_DIR="/var/log/proc-monitor.log"
 
 touch "$LOG_DIR"
 
-cs() { if [ -t 1 ]; then clear; fi; }
+cs() {
+  if [ -t 1 ]; then clear; fi;
+}
 
 menu_inicial() {
   cs
@@ -58,7 +60,7 @@ menu_procesos() {
 
   echo -e "\n👉 Elegí procesos por número (ej: 1 14 24), o 'v' para volver:"
   read -rp " Tu elección: " choice
-
+  
   [[ "$choice" == "v" ]] && menu_inicial
 
   pairs=()  # almacenará PID:NOMBRE
@@ -74,10 +76,11 @@ menu_procesos() {
 
   echo -e "\n⏱️ ¿Cuántos segundos querés monitorear?"
   read -rp " Tiempo en segundos: " duration
+  cs
   if ! [[ "$duration" =~ ^[0-9]+$ ]] || (( duration <= 0 )); then
     echo -e "\n❌ Tiempo inválido."; sleep 2; menu_procesos "$filtro"
   fi
-
+  cs
   echo -e "\n📊 ¿Qué formato preferís?"
   echo "  1) Resumido (PID, CPU, MEM)"
   echo "  2) Completo (PID, CPU, MEM, RSS, CMD)"
