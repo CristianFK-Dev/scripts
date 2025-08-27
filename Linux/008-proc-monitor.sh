@@ -78,11 +78,23 @@ menu_procesos() {
     echo -e "\n❌ Tiempo inválido."; sleep 2; menu_procesos "$filtro"
   fi
 
-  monitorear "$duration" "${pairs[@]}"
+  echo -e "\n📊 ¿Qué formato preferís?"
+  echo "  1) Resumido (PID, CPU, MEM)"
+  echo "  2) Completo (PID, CPU, MEM, RSS, CMD)"
+  read -rp "👉 Formato: " formato
+
+  case "$formato" in
+    1) formato="resumido" ;;
+    2) formato="completo" ;;
+    *) echo -e "\n❌ Opción inválida"; sleep 2; menu_procesos "$filtro" ;;
+  esac
+
+  monitorear "$duration" "$formato" "${pairs[@]}"
 }
 
 monitorear() {
   local duration="$1"; shift
+  local formato="$1"; shift
   local pairs=( "$@" )
 
   trap 'echo -e "\n⛔ Monitoreo interrumpido."; read -rp "ENTER para volver al menú inicial..."; menu_inicial' INT
@@ -95,7 +107,11 @@ monitorear() {
       name="${pair#*:}"
       if ps -p "$pid" > /dev/null 2>&1; then
         read -r cpu mem rss cmdline <<<"$(ps -p "$pid" -o %cpu= -o %mem= -o rss= -o args=)"
-        echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB CMD: ${cmdline}" | tee -a "$LOG_DIR"
+        if [ "$formato" = "resumido" ]; then
+          echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}%" | tee -a "$LOG_DIR"
+        else
+          echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB CMD: ${cmdline}" | tee -a "$LOG_DIR"
+        fi
       else
         echo "[$ts] $name (PID $pid) finalizó." | tee -a "$LOG_DIR"
       fi
