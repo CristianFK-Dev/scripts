@@ -2,10 +2,9 @@
 
 set -euo pipefail
 
-LOG_DIR="/var/log/008-proc-monitor.log"
-#LOG_DIR="$HOME/proc-monitor-logs"
+LOG_DIR="/var/log/proc-monitor.log"
+
 touch "$LOG_DIR"
-#mkdir -p "$LOG_DIR"
 
 cs() { if [ -t 1 ]; then clear; fi; }
 
@@ -96,11 +95,9 @@ monitorear() {
       name="${pair#*:}"
       if ps -p "$pid" > /dev/null 2>&1; then
         read -r cpu mem rss <<<"$(ps -p "$pid" -o %cpu= -o %mem= -o rss=)"
-        echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB" \
-          | tee -a "$LOG_DIR/${name}_${pid}.log"
+        echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB" | tee -a "$LOG_DIR"
       else
-        echo "[$ts] $name (PID $pid) finalizó." \
-          | tee -a "$LOG_DIR/${name}_${pid}.log"
+        echo "[$ts] $name (PID $pid) finalizó." | tee -a "$LOG_DIR"
       fi
     done
     sleep 1
