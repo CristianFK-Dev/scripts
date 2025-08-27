@@ -8,12 +8,12 @@ cs() { if [ -t 1 ]; then clear; fi; }
 
 menu_inicial() {
   cs
-  echo -e "\n🧾 002-proc-monitor.sh\n"
+  echo -e "\n🧾 008-proc-monitor.sh\n"
   echo "¿Qué procesos querés listar?"
   echo "  1) Todos los procesos"
   echo "  2) Procesos de sistema (root)"
   echo "  3) Procesos de usuario (UID >= 1000)"
-  echo "  4) Salir"
+  echo "  s) Salir"
   echo ""
   read -rp "👉 Opción: " opt
 
@@ -21,7 +21,7 @@ menu_inicial() {
     1) filtro="all" ;;
     2) filtro="system" ;;
     3) filtro="user" ;;
-    4) echo -e "\n👋 Saliendo..."; exit 0 ;;
+    s) echo -e "\n👋 Saliendo...\n"; exit 0 ;;
     *) echo -e "\n❌ Opción inválida"; sleep 2; menu_inicial ;;
   esac
 
