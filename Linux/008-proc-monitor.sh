@@ -3,7 +3,7 @@
 set -euo pipefail
 
 LOG_DIR="/var/log/proc-monitor.log"
-
+echo "##### Archivos de registro de monitoreo de procesos script 008-proc-monitor #####" >> "$LOG_DIR"
 touch "$LOG_DIR"
 
 cs() {
