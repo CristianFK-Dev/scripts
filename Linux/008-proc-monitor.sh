@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
 
-LOG_DIR="$HOME/proc-monitor-logs"
-mkdir -p "$LOG_DIR"
+LOG_DIR="/var/log/008-proc-monitor.log"
+#LOG_DIR="$HOME/proc-monitor-logs"
+touch "$LOG_DIR"
+#mkdir -p "$LOG_DIR"
 
 cs() { if [ -t 1 ]; then clear; fi; }
 
 menu_inicial() {
   cs
   echo -e "\n🧾 008-proc-monitor.sh\n"
-  echo "¿Qué procesos querés listar?"
+  echo -e "¿Qué procesos querés listar?\n"
   echo "  1) Todos los procesos"
   echo "  2) Procesos de sistema (root)"
   echo "  3) Procesos de usuario (UID >= 1000)"
@@ -54,10 +57,10 @@ menu_procesos() {
   echo -e " Nº  PID  UID  CMD"
   printf "%s\n" "${processes[@]}"
 
-  echo -e "\n👉 Elegí procesos por número (ej: 1 4 7), o 'back' para volver:"
+  echo -e "\n👉 Elegí procesos por número (ej: 1 14 24), o 'v' para volver:"
   read -rp " Tu elección: " choice
 
-  [[ "$choice" == "back" ]] && menu_inicial
+  [[ "$choice" == "v" ]] && menu_inicial
 
   pairs=()  # almacenará PID:NOMBRE
   for num in $choice; do
