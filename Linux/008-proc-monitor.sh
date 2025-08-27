@@ -73,19 +73,18 @@ menu_procesos() {
     name=$(echo "$line" | awk '{print $4}')
     pairs+=( "${pid}:${name}" )
   done
-
+  cs
   echo -e "\n⏱️ ¿Cuántos segundos querés monitorear?"
   read -rp " Tiempo en segundos: " duration
-  cs
+
   if ! [[ "$duration" =~ ^[0-9]+$ ]] || (( duration <= 0 )); then
     echo -e "\n❌ Tiempo inválido."; sleep 2; menu_procesos "$filtro"
   fi
-  cs
   echo -e "\n📊 ¿Qué formato preferís?"
   echo "  1) Resumido (PID, CPU, MEM)"
   echo "  2) Completo (PID, CPU, MEM, RSS, CMD)"
   read -rp "👉 Formato: " formato
-
+  cs
   case "$formato" in
     1) formato="resumido" ;;
     2) formato="completo" ;;
