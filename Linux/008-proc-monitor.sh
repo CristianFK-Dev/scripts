@@ -74,6 +74,8 @@ menu_procesos() {
     pairs+=( "${pid}:${name}" )
   done
   cs
+  echo -e "\n✅ Procesos seleccionados:"
+  printf "%s\n" "${pairs[@]}"
   echo -e "\n⏱️ ¿Cuántos segundos querés monitorear?"
   read -rp " Tiempo en segundos: " duration
 
