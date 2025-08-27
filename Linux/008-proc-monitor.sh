@@ -94,12 +94,13 @@ monitorear() {
       pid="${pair%%:*}"
       name="${pair#*:}"
       if ps -p "$pid" > /dev/null 2>&1; then
-        read -r cpu mem rss <<<"$(ps -p "$pid" -o %cpu= -o %mem= -o rss=)"
-        echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB" | tee -a "$LOG_DIR"
+        read -r cpu mem rss cmdline <<<"$(ps -p "$pid" -o %cpu= -o %mem= -o rss= -o args=)"
+        echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB CMD: ${cmdline}" | tee -a "$LOG_DIR"
       else
         echo "[$ts] $name (PID $pid) finalizó." | tee -a "$LOG_DIR"
       fi
     done
+    echo "----------------------------------------------------------------------------" | tee -a "$LOG_DIR"
     sleep 1
   done
 
