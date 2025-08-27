@@ -116,10 +116,9 @@ monitorear() {
         echo "[$ts] $name (PID $pid) finalizó." | tee -a "$LOG_DIR"
       fi
     done
-    echo "----------------------------------------------------------------------------" | tee -a "$LOG_DIR"
     sleep 1
   done
-
+  echo "----------------------------------------------------------------------------------------------------------" | tee -a "$LOG_DIR"
   echo -e "\n✅ Monitoreo finalizado. Ver logs en $LOG_DIR\n"
   read -rp "ENTER para volver al menú inicial..."
   menu_inicial
