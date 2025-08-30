@@ -2,77 +2,71 @@
 
 set -euo pipefail
 
-LOG_DIR="$HOME/proc-monitor-logs"
-mkdir -p "$LOG_DIR"
-
 cs() {
     if [ -t 1 ]; then
         clear
     fi
 }
 
-# Mostrar documentación inicial
 cs
-echo -e "\n🧾 008-proc-monitor.sh\n"
-echo -e "Este script permite seleccionar uno o varios procesos y registrar su consumo de CPU y memoria."
-echo -e "Los datos se guardan en $LOG_DIR, con el nombre del proceso y la hora.\n"
+echo -e "\n🧾001-apt-upgrade.sh\n"
+echo -e "Este script actualiza la lista de paquetes APT y permite instalar selectivamente los actualizables."
+echo -e "Podés elegir uno o varios por número, o instalar todos.\n"
 read -rp "Presioná ENTER para continuar..."
 cs
 
-# Mostrar lista de procesos activos
-mapfile -t processes < <(ps -eo pid,comm --sort=comm | awk 'NR>1 {print $1, $2}' | nl -w2 -s'. ')
-
-if [ ${#processes[@]} -eq 0 ]; then
-    echo -e "\n❌ No hay procesos activos.\n"
+if [[ $EUID -ne 0 ]]; then
+    echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"
     exit 1
 fi
 
-echo -e "\n📋 Procesos activos (PID y nombre):"
-printf "%s\n" "${processes[@]}"
+echo -e "\n🔄 Actualizando lista de paquetes...\n"
+apt update -y > /dev/null
 
-# Selección
-echo -e "\n👉 Ingresá los números de los procesos a monitorear (ej: 1 4 7), o 'exit' para salir:"
-read -rp " Tu elección: " choice
+mapfile -t packages < <(apt list --upgradable 2>/dev/null | grep -v "Listing..." | awk -F'/' '{print $1}' | nl -w2 -s'. ')
+mapfile -t rawinfo < <(apt list --upgradable 2>/dev/null | grep -v "Listing...")
 
-if [[ "$choice" == "exit" ]]; then
-    echo -e "\n👋 Saliendo sin hacer cambios.\n"
+if [ ${#packages[@]} -eq 0 ]; then
+    echo -e "\n✅ Todo está actualizado. No hay paquetes pendientes.\n"
     exit 0
 fi
 
-pids=()
-names=()
+echo -e "\n📦 Paquetes que se pueden actualizar:"
+printf "%s\n" "${packages[@]}"
 
-for num in $choice; do
-    if ! [[ "$num" =~ ^[0-9]+$ ]] || (( num < 1 || num > ${#processes[@]} )); then
-        echo -e "\n❌ Número inválido: $num"
-        exit 1
-    fi
-    line="${processes[$((num-1))]}"
-    pid=$(echo "$line" | awk '{print $2}')
-    name=$(echo "$line" | awk '{print $3}')
-    pids+=( "$pid" )
-    names+=( "$name" )
-done
+echo -e "\n👉 Ingresá los números de los paquetes a instalar (separados por espacio), o 'a' para todos , exit para salir:"
+read -rp " Tu elección: " choice
 
-# Monitoreo
-echo -e "\n🚀 Monitoreando procesos seleccionados. Presioná Ctrl+C para detener.\n"
+if [[ "$choice" == "exit" || "$choice" == "salir" ]]; then
+    cs && echo -e "\n👋 Saliendo sin hacer cambios.\n"
+    exit 0
+fi
 
-while true; do
-    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    for i in "${!pids[@]}"; do
-        pid="${pids[$i]}"
-        name="${names[$i]}"
-        if ps -p "$pid" > /dev/null 2>&1; then
-            stats=$(ps -p "$pid" -o %cpu,%mem,rss --no-headers)
-            cpu=$(echo "$stats" | awk '{print $1}')
-            mem=$(echo "$stats" | awk '{print $2}')
-            rss=$(echo "$stats" | awk '{print $3}')
-            echo "[$timestamp] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB" \
-                | tee -a "$LOG_DIR/${name}_${pid}.log"
-        else
-            echo "[$timestamp] $name (PID $pid) finalizó." \
-                | tee -a "$LOG_DIR/${name}_${pid}.log"
+to_install=()
+
+if [[ "$choice" == "a" ]]; then
+    to_install=( $(printf "%s\n" "${rawinfo[@]}" | awk -F'/' '{print $1}') )
+else
+    for num in $choice; do
+        if ! [[ "$num" =~ ^[0-9]+$ ]] || (( num < 1 || num > ${#packages[@]} )); then
+            echo -e "\n❌ Número inválido: $num"
+            exit 1
         fi
+        pkg_line="${packages[$((num-1))]}"
+        pkg_name=$(echo "$pkg_line" | awk '{print $2}')
+        to_install+=( "$pkg_name" )
     done
-    sleep 1
+fi
+
+echo -e "\n🚀 Instalando paquetes seleccionados...\n"
+apt install -y "${to_install[@]}"
+echo -e "\n Los logs se borraran en 5 segundos...\n"
+sleep 5
+cs
+
+echo -e "\n✅ Instalación finalizada. Versiones instaladas:\n"
+for pkg in "${to_install[@]}"; do
+    ver=$(dpkg -l "$pkg" 2>/dev/null | awk '/^ii/ {print $2, $3}')
+    echo "🔹 $ver"
+    echo ""
 done
