@@ -26,7 +26,6 @@ generate_data() {
     local filter_type="$1"
     local user_source
 
-    # Definir el comando awk para filtrar usuarios según la elección
     case "$filter_type" in
         "system")
             user_source=$(awk -F: '$3 < 1000 && $1 != "nobody" {print $1, $3, $6, $7}' /etc/passwd)
@@ -378,7 +377,7 @@ echo -e "${CYAN}|   | || |_| | |_| | |___                                       
 echo -e "${CYAN}|   |_| \___/ \___/|_____|                                      ${CYAN}|  ${YELLOW}8)${RESET}➕ Crear User         ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}|  ${YELLOW}9)${RESET}🗑️  Borrar User        ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}| ${YELLOW}10)${RESET}🔙 Volver             ${CYAN}|"
-echo -e "${CYAN}|    ${MAGENTA}#GESTIÓN DE USUARIOS# -by CristianFK-                      ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
+echo -e "${CYAN}|    ${MAGENTA}#GESTIÓN DE USUARIOS# by -CristianFK-                      ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 
         echo  "---------------------------------------------------------------------------------------------------------------------------------------------------------------------"

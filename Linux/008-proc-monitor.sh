@@ -2,8 +2,7 @@
 
 set -euo pipefail
 
-LOG_DIR="/var/log/proc-monitor.log"
-echo "##### Archivos de registro de monitoreo de procesos script 008-proc-monitor #####" >> "$LOG_DIR"
+LOG_DIR="/var/log/008-proc-monitor.log"
 touch "$LOG_DIR"
 
 cs() {
@@ -17,6 +16,7 @@ menu_inicial() {
   echo "  1) Todos los procesos"
   echo "  2) Procesos de sistema (root)"
   echo "  3) Procesos de usuario (UID >= 1000)"
+  echo "  l) Ver log"
   echo "  s) Salir"
   echo ""
   read -rp "👉 Opción: " opt
@@ -25,7 +25,8 @@ menu_inicial() {
     1) filtro="all" ;;
     2) filtro="system" ;;
     3) filtro="user" ;;
-    s) echo -e "\n👋 Saliendo...\n"; exit 0 ;;
+    l) less "$LOG_DIR"; menu_inicial ;;
+    s) cs ; echo -e "\n 👋 Saliendo...\n" ; exit 0 ;;
     *) echo -e "\n❌ Opción inválida"; sleep 2; menu_inicial ;;
   esac
 
@@ -104,6 +105,7 @@ monitorear() {
   trap 'echo -e "\n⛔ Monitoreo interrumpido."; read -rp "ENTER para volver al menú inicial..."; menu_inicial' INT
 
   echo -e "\n🚀 Monitoreando durante $duration segundos...\n"
+  echo "$(date "+%Y-%m-%d %H:%M:%S") ----INICIO------------------------------------------------------------------------------------------------" | tee -a "$LOG_DIR"
   for ((i=1; i<=duration; i++)); do
     ts=$(date "+%Y-%m-%d %H:%M:%S")
     for pair in "${pairs[@]}"; do
@@ -122,7 +124,7 @@ monitorear() {
     done
     sleep 1
   done
-  echo "----------------------------------------------------------------------------------------------------------" | tee -a "$LOG_DIR"
+  echo "$(date "+%Y-%m-%d %H:%M:%S") ----FIN--Se monitorearon $duration segundos-----------------------------------------------------------------------" | tee -a "$LOG_DIR"
   echo -e "\n✅ Monitoreo finalizado. Ver logs en $LOG_DIR\n"
   read -rp "ENTER para volver al menú inicial..."
   menu_inicial

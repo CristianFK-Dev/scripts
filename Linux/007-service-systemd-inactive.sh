@@ -74,8 +74,8 @@ while true; do
 
     cs
     echo -e "🔧 Acciones para el servicio inactivo: \e[1;33m$service\e[0m\n"
-    echo -e "   1) \e[1;32mIniciar (start)\e[0m"
-    echo -e "   2) \e[1;33mVer Estado (status)\e[0m"
+    echo -e "   1) \e[1;33mVer Estado (status)\e[0m"
+    echo -e "   2) \e[1;32mIniciar (start)\e[0m"
     echo -e "   3) Volver a la lista"
     echo ""
     read -rp "   Tu elección: " action_choice
@@ -83,14 +83,14 @@ while true; do
     case "$action_choice" in
         1)
             cs
+            echo -e "🔎 Mostrando estado de '\e[1;33m$service\e[0m'...\n"
+            systemctl status "$service" || true
+            ;;
+        2)
+             cs
             echo -e "🚀 Iniciando el servicio '\e[1;33m$service\e[0m'..."
             systemctl start "$service"
             echo -e "\n✅ Servicio iniciado."
-            ;;
-        2)
-            cs
-            echo -e "🔎 Mostrando estado de '\e[1;33m$service\e[0m'...\n"
-            systemctl status "$service" || true
             ;;
         3)
             continue

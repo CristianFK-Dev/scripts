@@ -3,28 +3,26 @@
 set -euo pipefail
 
 cs() {
-    if [ -t 1 ]; then
-        clear
-    fi
+    clear
 }
 
-# Mostrar documentación y esperar
-cs
-echo -e "\n🧾002-mod-kernel.sh\n"
-echo -e "Este script permite listar y eliminar módulos del kernel activos."
-echo -e "También permite ver si hay módulos bloqueados por archivos de blacklist."
-echo -e "Por seguridad, se pedirá que escribas el nombre exacto del módulo antes de eliminarlo.\n"
-read -rp "Presioná ENTER para continuar..."
-cs
-
-# Verificamos si es root
 if [[ $EUID -ne 0 ]]; then
     echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)"
     exit 1
 fi
 
+cs
+echo -e "._______________________________________________________________________________________________________."
+echo -e "| 🧾002-mod-kernel.sh                                                                                   |"
+echo -e "| Este script permite listar y eliminar módulos del kernel activos.                                     |"
+echo -e "| También permite ver si hay módulos bloqueados por archivos de blacklist.                              |" 
+echo -e "| Por seguridad, se pedirá que escribas el nombre exacto del módulo antes de eliminarlo.                |"             
+echo -e "|______________________________________________________________________ ________________________________|\n"
+read -rp "Presioná ENTER para continuar..."
+cs
+
 # Mostrar primero módulos bloqueados
-echo -e "\n🔍 Verificando módulos bloqueados en /etc/modprobe.d/blacklist*..."
+echo -e "\n🔍 Verificando módulos bloqueados en /etc/modprobe.d/blacklist*...\n"
 
 blacklist_files=$(find /etc/modprobe.d/ -type f -name "*blacklist*.conf")
 
@@ -54,12 +52,10 @@ for mod in "${modules[@]}"; do
     echo "$mod"
 done
 
-# Preguntar qué módulo desactivar
 echo
-read -rp "👉 Ingresá el número del módulo a desactivar o escribí 'exit' para salir: " index
+read -rp "👉 Ingresá el número del módulo a desactivar o escribí 's' para salir: " index
 
-# Verificar si quiere salir
-if [[ "$index" == "exit" || "$index" == "salir" ]]; then
+if [[ "$index" == "s" || "$index" == "salir" ]]; then
     cs && echo -e "\n👋 Saliendo sin hacer cambios.\n"
     exit 0
 fi
