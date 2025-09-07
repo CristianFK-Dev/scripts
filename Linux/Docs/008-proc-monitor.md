@@ -13,7 +13,7 @@
 
 ## ⚠️ Recomendaciones de Seguridad
 
-> ⚠️ **Este script realiza acciones que modifican el estado de los servicios del sistema (iniciar).**  
+> ⚠️ **Este script necesita de permisos elevados para su ejecución.**  
 > Usalo con precaución, especialmente en entornos de producción.  
 > ✅ Siempre revisá el código antes de ejecutarlo.
 
@@ -84,7 +84,7 @@ sudo bash 008-proc-monitor.sh
 
 ---
 
-## Ejemplo de uso
+## 💡 Ejemplo de uso
 
 ```bash
 sudo bash 008-proc-monitor.sh
@@ -114,6 +114,14 @@ sudo bash 008-proc-monitor.sh
 ```
 
 ---
+
+## 🧠 ¿Por qué usar este script?
+
+- Permite monitorear de forma sencilla y rápida el consumo de recursos de procesos específicos, sin depender de herramientas gráficas.
+- Es útil para detectar procesos que consumen mucha CPU o memoria y así anticipar problemas de rendimiento.
+- Facilita la auditoría y el troubleshooting en servidores o entornos de producción.
+- El log generado permite analizar el comportamiento de los procesos a lo largo del tiempo.
+- Es ideal para administradores de sistemas, desarrolladores y usuarios avanzados que buscan una solución ligera y personalizable.
 
 ## 📤 Compartir este script
 
