@@ -10,3 +10,4 @@
 | 005|[User script tool](005-user-script-tool.sh) | [README](Docs/005-user-script-tool.md) | ✅ Terminado ✅ |
 | 006|[Active service manager](006-service-systemd-active.sh) | [README](Docs/006-service-systemd-active.md) | ✅ Terminado ✅ |
 | 007|[Inactive service manager](007-service-systemd-inactive.sh) | [README](Docs/007-service-systemd-inactive-manager.md) | ✅ Terminado ✅ |
+| 008|[Inactive process monitor](008-proc-monitor.sh) | [README](Docs/008-proc-monitor.md) | ✅ Terminado ✅ |

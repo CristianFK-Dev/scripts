@@ -48,6 +48,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 005|[User script tool](Linux/005-user-script-tool.sh) | [README](Linux/Docs/005-user-script-tool.md) | ✅ Terminado ✅ |
 | 006|[Active service manager](Linux/006-service-systemd-active.sh) | [README](Linux/Docs/006-service-systemd-active.md) | ✅ Terminado ✅ |
 | 007|[Inactive service manager](Linux/007-service-systemd-inactive.sh) | [README](Linux/Docs/007-service-systemd-inactive.md) | ✅ Terminado ✅ |
+| 008|[Inactive process monitor](Linux/008-proc-monitor.sh) | [README](Linux/Docs/008-proc-monitor.md) | ✅ Terminado ✅ |
 
 ---
 
