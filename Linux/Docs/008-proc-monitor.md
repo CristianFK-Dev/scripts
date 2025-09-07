@@ -42,7 +42,7 @@ curl -O https://raw.githubusercontent.com/CristianFK-Dev/scripts/main/Linux/008-
 
 chmod +x bash 008-proc-monitor.sh
 
-sudo bash 008-proc-monitor.sh
+sudo ./008-proc-monitor.sh
 ```
 
 ---
