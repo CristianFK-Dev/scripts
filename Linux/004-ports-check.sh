@@ -46,7 +46,7 @@ menu_inicial() {
 
     echo -e "\n✅ Host $host_ip encontrado\n"
     echo "Información del host:"
-    echo "-------------------------------------\n"
+    echo "-------------------------------------"
     nmap -sn "$host_ip" | grep -v "Starting"
     
     echo -e "\nIngresá los puertos a verificar:"
@@ -68,10 +68,10 @@ menu_inicial() {
             fi
             
             if nc -zv "$host_ip" "$port" 2>/dev/null; then
-                estado="ABIERTO✅"
+                estado="ABIERTO ✅"
                 servicio=$(nmap -p"$port" -sV "$host_ip" | grep "$port/tcp" | awk '{print $3}')
             else
-                estado="CERRADO❌"
+                estado="CERRADO ❌"
                 servicio="Servicio N/A"
             fi
             
