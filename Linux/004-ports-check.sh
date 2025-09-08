@@ -46,7 +46,7 @@ menu_inicial() {
 
     echo -e "\n✅ Host $host_ip encontrado\n"
     echo "Información del host:"
-    echo "----------------------"
+    echo "-------------------------------------\n"
     nmap -sn "$host_ip" | grep -v "Starting"
     
     echo -e "\nIngresá los puertos a verificar:"
@@ -54,7 +54,6 @@ menu_inicial() {
     echo "  - 'a' para puertos comunes"
     read -rp "👉 Puertos: " ports
 
-    echo -e "\n-------------------------------------"
     if [[ "$ports" == "a" ]]; then
         echo -e "\n🔍 Escaneando puertos comunes..."
         echo -e "---------------------------------\n"
@@ -79,7 +78,7 @@ menu_inicial() {
             echo "Puerto $port: $estado ($servicio)"
         done
     fi
-    echo -e "\n-------------------------------------\n"
+    echo -e "\n-------------------------------------"
     echo -e "\n¿Querés escanear otro host? Si no lo haces, el script finalizará."
     read -rp "👉 [s/N]: " otra
     case "${otra,,}" in
