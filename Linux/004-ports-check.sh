@@ -10,8 +10,25 @@ check_dependencies() {
     local deps=(nc nmap)
     for dep in "${deps[@]}"; do
         if ! command -v "$dep" &>/dev/null; then
-            echo "❌ Falta $dep. Instalalo con: sudo apt install $dep"
-            exit 1
+            cs
+            echo -e "❌ Falta $dep.\n"
+            read -rp "¿Querés instalar $dep? [s/N]: " install
+            case "${install,,}" in
+                s|si|y|yes)
+                    echo "🔄 Instalando $dep..."
+                    if sudo apt update && sudo apt install -y "$dep"; then
+                        echo "✅ $dep instalado correctamente"
+                        sleep 1
+                    else
+                        echo "❌ Error instalando $dep"
+                        exit 1
+                    fi
+                    ;;
+                *)
+                    echo "❌ $dep es necesario para ejecutar este script"
+                    exit 1
+                    ;;
+            esac
         fi
     done
 }
