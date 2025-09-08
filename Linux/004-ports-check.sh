@@ -63,8 +63,8 @@ menu_inicial() {
         echo -e "\n🔍 Escaneando puertos comunes..."
         nmap -sV "$host_ip" | grep -v "Starting"
     else
-        echo -e "\n🔍 Verificando puertos específicos...\n"
-        echo "-------------------------------------------"
+        echo -e "\n🔍 Verificando puertos específicos..."
+        echo -e "-------------------------------------\n"
         for port in $ports; do
             if ! [[ "$port" =~ ^[0-9]+$ ]]; then
                 echo "❌ Puerto inválido: $port"
@@ -81,16 +81,6 @@ menu_inicial() {
             
             echo "Puerto $port: $estado ($servicio)"
         done
-    fi
-
-    echo -e "\n📊 Información adicional:"
-    echo "------------------------"
-    # Intentar obtener uptime si ssh está disponible
-    if nc -z "$host_ip" 22 2>/dev/null; then
-        echo "🕒 Uptime:"
-        ssh -o ConnectTimeout=5 "$host_ip" uptime 2>/dev/null || echo "No se pudo obtener uptime"
-    else
-        echo "No se pudo obtener uptime (SSH no disponible)"
     fi
 
     echo -e "\n¿Querés escanear otro host? Si no lo haces, el script finalizará."
