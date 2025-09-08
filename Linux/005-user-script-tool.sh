@@ -2,16 +2,14 @@
 
 set -euo pipefail
 
+cs() {
+    clear
+}
+
 if [[ $EUID -ne 0 ]]; then
     echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"
     exit 1
 fi
-
-cs() {
-    if [ -t 1 ]; then
-        clear
-    fi
-}
 
 RED="\e[31m"
 GREEN="\e[32m"

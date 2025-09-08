@@ -19,7 +19,6 @@ echo -e "| 🧾 003-filesystems-disable                                         
 echo -e "|Este script permite listar y desactivar sistemas de archivos soportados por el kernel.                 |"
 echo -e "|Podés usarlo para deshabilitar módulos como cramfs, udf, squashfs, etc.                                |"
 echo -e "|_______________________________________________________________________________________________________|\n"
-
 read -rp "Presioná ENTER para continuar..."
 cs
 

@@ -3,23 +3,23 @@
 set -euo pipefail
 
 cs() {
-    if [ -t 1 ]; then
-        clear
-    fi
+    clear
 }
-
-cs
-echo -e "\n🛠️  006-service-systemd.sh\n"
-echo -e "Este script lista los servicios activos de systemd y permite gestionarlos"
-echo -e "de forma interactiva. Podrás ver el estado, detener o reiniciar"
-echo -e "el servicio que elijas del menú.\n"
-read -rp "Presioná ENTER para continuar..."
-cs
 
 if [[ $EUID -ne 0 ]]; then
    echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n" 
    exit 1
 fi
+
+cs
+echo -e "._______________________________________________________________________________________________________."
+echo -e "| 🛠️ 006-service-systemd.sh                                                                             |"
+echo -e "| Este script lista los servicios activos de systemd y permite gestionarlos                             |"
+echo -e "| de forma interactiva. Podrás ver el estado, detener o reiniciar                                       |"
+echo -e "| el servicio que elijas del menú.                                                                      |"
+echo -e "|_______________________________________________________________________________________________________|\n"
+read -rp "Presioná ENTER para continuar..."
+cs
 
 # Usamos un trap para asegurarnos de que los archivos temporales se borren al salir (p. ej. con Ctrl+C).
 temp_list_file=""

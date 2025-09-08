@@ -3,23 +3,23 @@
 set -euo pipefail
 
 cs() {
-    if [ -t 1 ]; then
-        clear
-    fi
+    clear
 }
-
-cs
-echo -e "\n🛠️  007-service-systemd-inactive.sh\n"
-echo -e "Este script lista los servicios INACTIVOS de systemd y permite gestionarlos"
-echo -e "de forma interactiva. Podrás iniciar o ver el estado detallado"
-echo -e "del servicio que elijas del menú.\n"
-read -rp "Presioná ENTER para continuar..."
 
 if [[ $EUID -ne 0 ]]; then
    cs
    echo -e "\n🔐 Este script debe ejecutarse como root (usá sudo)\n"
    exit 1
 fi
+
+cs
+echo -e "._______________________________________________________________________________________________________."
+echo -e "| 🛠️  007-service-systemd-inactive.sh                                                                  |"
+echo -e "| Este script lista los servicios INACTIVOS de systemd y permite gestionarlos                           |"
+echo -e "| de forma interactiva. Podrás iniciar o ver el estado detallado                                        |"
+echo -e "| del servicio que elijas del menú.                                                                     |"
+echo -e "|_______________________________________________________________________________________________________|\n"
+read -rp "Presioná ENTER para continuar..."
 
 temp_list_file=""
 trap 'rm -f "$temp_list_file"' EXIT

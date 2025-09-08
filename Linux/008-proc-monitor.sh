@@ -6,8 +6,14 @@ LOG_DIR="/var/log/008-proc-monitor.log"
 touch "$LOG_DIR"
 
 cs() {
-  if [ -t 1 ]; then clear; fi;
+  clear
 }
+
+if [[ $EUID -ne 0 ]]; then
+   cs
+   echo -e "\n🔐 Este script debe ejecutarse como root (usá sudo)\n"
+   exit 1
+fi
 
 menu_inicial() {
   cs
