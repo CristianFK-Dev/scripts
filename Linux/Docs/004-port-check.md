@@ -20,8 +20,7 @@
 
 ## 🧾 Descripción
 
-Este script analiza **puertos y servicios** en un host objetivo  
-permitiendo verificar estados, servicios y obtener información adicional del sistema.
+Este script analiza **puertos y servicios** en un host objetivo permitiendo verificar estados, servicios y obtener información adicional del sistema.
 
 Este script:
 
