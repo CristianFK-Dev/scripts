@@ -44,7 +44,7 @@ menu_inicial() {
         menu_inicial
     fi
 
-    echo -e "\n✅ Host $host_ip encontrado\n"
+    echo -e "\n✅ Host $host_ip encontrado ✅\n"
     echo "Información del host:"
     echo "-------------------------------------"
     nmap -sn "$host_ip" | grep -v "Starting"

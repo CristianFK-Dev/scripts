@@ -11,14 +11,17 @@
 
 ---
 
-## 🔍 Verificador de Puertos y Host
+## ⚠️ Recomendaciones de Seguridad
 
-> Este script analiza **puertos y servicios** en un host objetivo  
-> permitiendo verificar estados, servicios y obtener información adicional del sistema.
+> ⚠️ **Este script solicita instalar nmap para su funcionamiento.**    
+> 📌 Siempre revisá el código antes de ejecutarlo, o pedile a una IA que lo revise por vos.
 
 ---
 
 ## 🧾 Descripción
+
+> Este script analiza **puertos y servicios** en un host objetivo  
+> permitiendo verificar estados, servicios y obtener información adicional del sistema.
 
 Este script:
 
