@@ -51,14 +51,20 @@ menu_inicial() {
     
     echo -e "\nIngresá los puertos a verificar:"
     echo "  - Separados por espacios (ej: 22 80 443)"
-    echo "  - 'a' para todos los puertos comunes"
+    echo "  - 'a' para puertos comunes"
+    echo "  - 'a+' para todos los puertos (1-65535)"
     read -rp "👉 Puertos: " ports
 
-    if [[ "$ports" == "a" ]]; then
+    if [[ "$ports" == "a+" ]]; then
+        echo -e "\n🔍 Escaneando todos los puertos (1-65535)..."
+        echo "⚠️ Esta operación puede demorar varios minutos"
+        nmap -p- -sV "$host_ip" | grep -v "Starting"
+    elif [[ "$ports" == "a" ]]; then
         echo -e "\n🔍 Escaneando puertos comunes..."
         nmap -sV "$host_ip" | grep -v "Starting"
     else
-        echo -e "\n🔍 Verificando puertos específicos..."
+        echo -e "\n🔍 Verificando puertos específicos...\n"
+        echo "-------------------------------------------"
         for port in $ports; do
             if ! [[ "$port" =~ ^[0-9]+$ ]]; then
                 echo "❌ Puerto inválido: $port"
@@ -66,10 +72,10 @@ menu_inicial() {
             fi
             
             if nc -zv "$host_ip" "$port" 2>/dev/null; then
-                estado="ABIERTO"
+                estado="ABIERTO✅"
                 servicio=$(nmap -p"$port" -sV "$host_ip" | grep "$port/tcp" | awk '{print $3}')
             else
-                estado="CERRADO"
+                estado="CERRADO❌"
                 servicio="N/A"
             fi
             
@@ -83,9 +89,11 @@ menu_inicial() {
     if nc -z "$host_ip" 22 2>/dev/null; then
         echo "🕒 Uptime:"
         ssh -o ConnectTimeout=5 "$host_ip" uptime 2>/dev/null || echo "No se pudo obtener uptime"
+    else
+        echo "No se pudo obtener uptime (SSH no disponible)"
     fi
 
-    echo -e "\n¿Querés escanear otro host?"
+    echo -e "\n¿Querés escanear otro host? Si no lo haces, el script finalizará."
     read -rp "👉 [s/N]: " otra
     case "${otra,,}" in
         s|si|y|yes) menu_inicial ;;
