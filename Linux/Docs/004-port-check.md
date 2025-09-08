@@ -20,8 +20,8 @@
 
 ## 🧾 Descripción
 
-> Este script analiza **puertos y servicios** en un host objetivo  
-> permitiendo verificar estados, servicios y obtener información adicional del sistema.
+Este script analiza **puertos y servicios** en un host objetivo  
+permitiendo verificar estados, servicios y obtener información adicional del sistema.
 
 Este script:
 
@@ -29,9 +29,8 @@ Este script:
 - 🔍 Escanea puertos específicos o comunes
 - 📊 Muestra estado de puertos (abierto/cerrado)
 - 🔎 Identifica servicios en puertos abiertos
-- ⏱️ Obtiene información adicional (uptime, etc.)
 
-Ideal para diagnósticos de red, auditorías de seguridad o verificación de servicios.
+Ideal para diagnósticos de red rápido, auditorías de seguridad o verificación de servicios.
 
 ---
 
