@@ -44,7 +44,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 | 001|[APT upgrade](Linux/001-apt-upgrade.sh) | [README](Linux/Docs/001-apt-upgrade.md) | ✅ Terminado ✅ |
 | 002|[Kernel modules](Linux/002-mod-kernel.sh) | [README](Linux/Docs/002-mod-kernel.md) | ✅ Terminado ✅ |
 | 003|[Filse system disable](Linux/003-filesystems-disable.sh) | [README](Linux/Docs/003-filesystems-disable.md) | ✅ Terminado ✅ |
-| 004|[Password security check](Linux/004-port-check.sh) | [README](Linux/Docs/004-port-check.md) | ✅ Terminado ✅ |
+| 004|[Host and port check](Linux/004-port-check.sh) | [README](Linux/Docs/004-port-check.md) | ✅ Terminado ✅ |
 | 005|[User script tool](Linux/005-user-script-tool.sh) | [README](Linux/Docs/005-user-script-tool.md) | ✅ Terminado ✅ |
 | 006|[Active service manager](Linux/006-service-systemd-active.sh) | [README](Linux/Docs/006-service-systemd-active.md) | ✅ Terminado ✅ |
 | 007|[Inactive service manager](Linux/007-service-systemd-inactive.sh) | [README](Linux/Docs/007-service-systemd-inactive.md) | ✅ Terminado ✅ |
