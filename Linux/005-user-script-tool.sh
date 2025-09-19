@@ -21,143 +21,136 @@ WHITE="\e[97m"
 RESET="\e[0m"
 
 generate_data() {
-    local filter="$1"
-    local show_header="${2:-yes}"
-    
-    # Initialize data array
-    data=()
-    
-    # Show header if requested
-    [[ "$show_header" == "yes" ]] && {
-        printf "%-8s | %-18s | %-16s | %-16s | %-10s | %-13s | %-11s | %-20s\n" \
-            "USUARIO" "SHELL" "ESTADO PASS" "BLOQUEO" "EXPIRACIÓN" "ÚLTIMO CAMBIO" "DÍAS MIN/MAX" "ÚLTIMO LOGIN SSH"
-        printf "%s\n" "$(printf '=%.0s' {1..120})"
-    }
+    local filter_type="$1"
+    local user_source
 
-    while IFS=: read -r username _ uid _ _ home shell; do
-        # Initialize all variables at the start
-        local pass_status="N/A"
-        local lock_status="N/A"
-        local expiry_status="N/A"
-        local last_change="N/A"
-        local minmax_days="N/A"
-        local last_login="Nunca"
+    case "$filter_type" in
+        "system")
+            user_source=$(awk -F: '$3 < 1000 && $1 != "nobody" {print $1, $3, $6, $7}' /etc/passwd)
+            ;;
+        "normal")
+            user_source=$(awk -F: '$3 >= 1000 {print $1, $3, $6, $7}' /etc/passwd)
+            ;;
+        *)
+            user_source=$(awk -F: '$1 != "nobody" {print $1, $3, $6, $7}' /etc/passwd)
+            ;;
+    esac
+
+    # Procesa la lista de usuarios filtrada para generar los datos con una clave de ordenamiento.
+    # Clave 1 (sort_key_shell): 0 para shell activo, 1 para inactivo.
+    # Clave 2 (login_timestamp): Timestamp de Unix del último login (0 si nunca).
+    # Esto ordena: 1. Por estado del shell, 2. Por fecha de login descendente.
+    # Formato de salida: sort_key_shell|login_timestamp|USUARIO (UID)|HOME|...
+    echo "$user_source" | while read -r user uid home_dir shell; do
+        local sort_key_shell
+        local login_timestamp
         local shell_status
-        local max_days="-1"
-        local min_days="0"
-        local sort_key_shell="999"
-        local home_dir="$home"
-        local password_status="N/A"
-        local account_lock_status="N/A"
-        local last_change_status="N/A"
-        local min_max_days="0/99999"
-        local last_login_status="Nunca"
-        local user="$username"
+        local password_status
+        local account_lock_status
+        local account_expiry_status
+        local expiry_status
+        local last_change_status
+        local min_max_days
+        local last_login_status
 
-        # Filter users based on parameter
-        case "$filter" in
-            system) [[ $uid -lt 1000 ]] || continue ;;
-            normal) [[ $uid -ge 1000 ]] || continue ;;
-        esac
-
-        # Process shell status
-        if [[ "$shell" == "/sbin/nologin" || "$shell" == "/bin/false" ]]; then
-            shell_status="🔴 NO LOGIN"
-            sort_key_shell="2"
+        # Verificar tipo de shell
+        if [[ "$shell" == "/bin/false" || "$shell" == "/usr/sbin/nologin" || "$shell" == "/sbin/nologin" ]]; then
+            sort_key_shell=1 # Shell inactivo
+            login_timestamp=0
+            shell_status="🔴NO SHELL"
+            password_status="N/A"
+            account_lock_status="N/A"
+            account_expiry_status="N/A"
+            expiry_status="N/A"
+            last_change_status="N/A"
+            min_max_days="N/A"
+            last_login_status="N/A"
         else
-            shell_status="🟢 $shell"
-            sort_key_shell="1"
-        fi
-
-        # Get chage info if available
-        if chage -l "$username" &>/dev/null; then
-            chage_info=$(chage -l "$username")
-            
-            # Get max and min days
-            max_days=$(echo "$chage_info" | awk -F': ' '/Maximum number of days between password change/ {print $2}')
-            min_days=$(echo "$chage_info" | awk -F': ' '/Minimum number of days between password change/ {print $2}')
-            minmax_days="${min_days}/${max_days}"
-
-            # Get password expiry
-            expiry_date=$(echo "$chage_info" | awk -F': ' '/Password expires/ {print $2}' | xargs)
-            if [[ -z "$expiry_date" || "$max_days" == "-1" ]]; then
-                expiry_status="Nunca"
-            elif [[ "$expiry_date" == "never" ]]; then
-                expiry_status="Nunca"
-            else
-                expiry_status="$expiry_date"
-            fi
-
-            # Verificar estado de la cuenta (bloqueada por expiración)
-            account_expiry_date=$(echo "$chage_info" | awk -F: '/^Account expires/ {print $2}' | xargs)
-            if [[ -z "$account_expiry_date" || "$account_expiry_date" == "never" ]]; then
-                account_lock_status="✅UNLOCK"
-            else
-                # Comparamos fechas en formato YYYY-MM-DD para evitar problemas de locale
-                account_expiry_yyyymmdd=$(date -d "$account_expiry_date" "+%Y-%m-%d" 2>/dev/null)
-                current_yyyymmdd=$(date "+%Y-%m-%d")
-                if [[ -n "$account_expiry_yyyymmdd" && "$account_expiry_yyyymmdd" < "$current_yyyymmdd" ]]; then
-                    account_lock_status="❌BLOCK"
-                else
-                    account_lock_status="✅UNLOCK"
-                fi
-            fi
-
-            # Modificar la sección de expiración de contraseña
-            expiry_date=$(echo "$chage_info" | awk -F: '/^Password expires/ {print $2}' | xargs)
-            if [[ -z "$expiry_date" ]]; then
+            sort_key_shell=0 # Shell activo
+            shell_status="🟢SHELL: $shell"
+            # Verificar estado de contraseña (usando passwd -S)
+            password_info=$(passwd -S "$user" 2>/dev/null)
+            if [ -z "$password_info" ]; then
+                password_status="❓NO EXISTE"
+                account_lock_status="N/A"
+                account_expiry_status="N/A"
                 expiry_status="N/A"
-            elif [[ "$expiry_date" == "never" ]]; then
-                expiry_status="Nunca"
+                last_change_status="N/A"
+                min_max_days="N/A"
+                last_login_status="N/A"
             else
-                # Convertir la fecha a formato dd/mm/yyyy
-                if date -d "$expiry_date" >/dev/null 2>&1; then
-                    expiry_status=$(date -d "$expiry_date" "+%d/%m/%Y")
+                # Extraer estado de la contraseña (L=bloqueada, P=activa, NP=sin contraseña) 
+                password_state=$(echo "$password_info" | awk '{print $2}')  
+                case "$password_state" in
+                    "L") password_status="🔴BLOCK";;
+                    "P") password_status="🟢ACTIVE";;
+                    "NP") password_status="🔓NO PASS";;
+                    *) password_status="❓ $password_state";;
+                esac
+
+                # Obtener y formatear datos de políticas de contraseña con chage
+                chage_info=$(chage -l "$user" 2>/dev/null)
+
+                # Verificar estado de la cuenta (bloqueada por expiración)
+                account_expiry_date=$(echo "$chage_info" | awk -F: '/^Account expires/ {print $2}' | xargs)
+                if [[ -z "$account_expiry_date" || "$account_expiry_date" == "never" ]]; then
+                    account_lock_status="✅UNLOCK"
                 else
-                    expiry_status="$expiry_date"
+                    # Comparamos fechas en formato YYYY-MM-DD para evitar problemas de locale
+                    account_expiry_yyyymmdd=$(date -d "$account_expiry_date" "+%Y-%m-%d" 2>/dev/null)
+                    current_yyyymmdd=$(date "+%Y-%m-%d")
+                    if [[ -n "$account_expiry_yyyymmdd" && "$account_expiry_yyyymmdd" < "$current_yyyymmdd" ]]; then
+                        account_lock_status="❌BLOCK"
+                    else
+                        account_lock_status="✅UNLOCK"
+                    fi
+                fi
+
+                # La columna VENCE muestra la expiración de la CONTRASEÑA.
+                expiry_date=$(echo "$chage_info" | awk -F: '/^Password expires/ {print $2}' | xargs)
+                if [[ -z "$expiry_date" || "$expiry_date" == "never" ]]; then
+                    expiry_status="Nunca"
+                else
+                    expiry_status=$(date -d "$expiry_date" "+%d/%m/%Y" 2>/dev/null || echo "$expiry_date")
+                fi
+
+                last_change=$(echo "$chage_info" | awk -F: '/^Last password change/ {print $2}' | xargs)
+                if [[ -z "$last_change" || "$last_change" == "never" ]]; then
+                    last_change_status="Nunca"
+                else
+                    last_change_status=$(date -d "$last_change" "+%d/%m/%Y" 2>/dev/null || echo "$last_change")
+                fi
+
+                min_days=$(echo "$chage_info" | awk -F: '/^Minimum number of days/ {print $2}' | xargs)
+                max_days=$(echo "$chage_info" | awk -F: '/^Maximum number of days/ {print $2}' | xargs)
+                min_max_days="${min_days:-?}/${max_days:-?}"
+
+                # Obtener último login interactivo
+                last_login_info=$(LC_ALL=C lastlog -u "$user" 2>/dev/null | tail -n 1)
+                if echo "$last_login_info" | grep -q -F '**Never logged in**'; then
+                    login_timestamp=0
+                    last_login_status="Nunca"
+                else
+                    # Extraer la fecha de forma robusta, buscando el día de la semana (en inglés)
+                    # y tomando el resto de la línea. Esto evita problemas con distintos
+                    # formatos de salida de `lastlog` o locales.
+                    last_login_status=$(echo "$last_login_info" | awk '{
+                        for (i=1; i<=NF; i++) {
+                            if ($i ~ /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/) {
+                                for (j=i; j<=NF; j++) { printf "%s ", $j }
+                                print ""
+                                exit
+                            }
+                        }
+                    }' | xargs)
+                    # Convertir fecha a timestamp. Si falla, es 0.
+                    login_timestamp=$(date -d "$last_login_status" +%s 2>/dev/null || echo 0)
                 fi
             fi
-
-            # Si max_days es -1, significa que nunca expira
-            if [[ "$max_days" == "-1" ]]; then
-                expiry_status="Nunca"
-            fi
-
-            last_change=$(echo "$chage_info" | awk -F: '/^Last password change/ {print $2}' | xargs)
-            if [[ -z "$last_change" || "$last_change" == "never" ]]; then
-                last_change_status="Nunca"
-            else
-                last_change_status=$(date -d "$last_change" "+%d/%m/%Y" 2>/dev/null || echo "$last_change")
-            fi
-
-            min_days=$(echo "$chage_info" | awk -F: '/^Minimum number of days/ {print $2}' | xargs)
-            max_days=$(echo "$chage_info" | awk -F: '/^Maximum number of days/ {print $2}' | xargs)
-            min_max_days="${min_days:-?}/${max_days:-?}"
-
-            # Obtener último login interactivo
-            last_login_info=$(LC_ALL=C lastlog -u "$user" 2>/dev/null | tail -n 1)
-            if echo "$last_login_info" | grep -q -F '**Never logged in**'; then
-                login_timestamp=0
-                last_login_status="Nunca"
-            else
-                # Extraer la fecha de forma robusta, buscando el día de la semana (en inglés)
-                # y tomando el resto de la línea. Esto evita problemas con distintos
-                # formatos de salida de `lastlog` o locales.
-                last_login_status=$(echo "$last_login_info" | awk '{
-                    for (i=1; i<=NF; i++) {
-                        if ($i ~ /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/) {
-                            for (j=i; j<=NF; j++) { printf "%s ", $j }
-                            print ""
-                            exit
-                    }
-                }' | xargs)
-                # Convertir fecha a timestamp. Si falla, es 0.
-                login_timestamp=$(date -d "$last_login_status" +%s 2>/dev/null || echo 0)
-            fi
         fi
-        # Imprimir fila con delimitador para que 'column' la procese
+        # Imprimir fila con delimitador para que 'column' la procese.
         echo "$sort_key_shell|$login_timestamp|$user ($uid)|$home_dir|$shell_status|$password_status|$account_lock_status|$expiry_status|$last_change_status|$min_max_days|$last_login_status"
-    done < /etc/passwd
+    done
 }
 
 prompt_for_user() {
@@ -421,7 +414,7 @@ echo -e "${CYAN}'---------------------------------------------------------------
 while true; do
     cs
 
-echo -e "${CYAN}.1-------------------------------------------------------------------------------------."
+echo -e "${CYAN}.--------------------------------------------------------------------------------------."
 echo -e "${CYAN}|  ${CYAN}_   _ ____  _____ ____    ____   ____ ____  ___ ____ _____   ${CYAN}|                      |"
 echo -e "${CYAN}| | | | / ___|| ____|  _ \  / ___| / ___|  _ \|_ _|  _ \_   _|  ${CYAN}|---------${YELLOW}MENU${CYAN}---------|"
 echo -e "${CYAN}| | | | \___ \|  _| | |_) | \___ \| |   | |_) || || |_) || |    ${CYAN}|   ${GREEN}AUDITAR USUARIOS${CYAN}   |"
