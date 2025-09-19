@@ -106,12 +106,24 @@ generate_data() {
                     fi
                 fi
 
-                # La columna VENCE muestra la expiración de la CONTRASEÑA.
+                # Modificar la sección de expiración de contraseña
                 expiry_date=$(echo "$chage_info" | awk -F: '/^Password expires/ {print $2}' | xargs)
-                if [[ -z "$expiry_date" || "$expiry_date" == "never" ]]; then
+                if [[ -z "$expiry_date" ]]; then
+                    expiry_status="N/A"
+                elif [[ "$expiry_date" == "never" ]]; then
                     expiry_status="Nunca"
                 else
-                    expiry_status=$(date -d "$expiry_date" "+%d/%m/%Y" 2>/dev/null || echo "$expiry_date")
+                    # Convertir la fecha a formato dd/mm/yyyy
+                    if date -d "$expiry_date" >/dev/null 2>&1; then
+                        expiry_status=$(date -d "$expiry_date" "+%d/%m/%Y")
+                    else
+                        expiry_status="$expiry_date"
+                    fi
+                fi
+
+                # Si max_days es -1, significa que nunca expira
+                if [[ "$max_days" == "-1" ]]; then
+                    expiry_status="Nunca"
                 fi
 
                 last_change=$(echo "$chage_info" | awk -F: '/^Last password change/ {print $2}' | xargs)
@@ -414,7 +426,7 @@ echo -e "${CYAN}'---------------------------------------------------------------
 while true; do
     cs
 
-echo -e "${CYAN}.--------------------------------------------------------------------------------------."
+echo -e "${CYAN}.1-------------------------------------------------------------------------------------."
 echo -e "${CYAN}|  ${CYAN}_   _ ____  _____ ____    ____   ____ ____  ___ ____ _____   ${CYAN}|                      |"
 echo -e "${CYAN}| | | | / ___|| ____|  _ \  / ___| / ___|  _ \|_ _|  _ \_   _|  ${CYAN}|---------${YELLOW}MENU${CYAN}---------|"
 echo -e "${CYAN}| | | | \___ \|  _| | |_) | \___ \| |   | |_) || || |_) || |    ${CYAN}|   ${GREEN}AUDITAR USUARIOS${CYAN}   |"
