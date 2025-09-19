@@ -35,13 +35,7 @@ generate_data() {
     }
 
     while IFS=: read -r username _ uid _ _ home shell; do
-        # Filter users based on parameter
-        case "$filter" in
-            system) [[ $uid -lt 1000 ]] || continue ;;
-            normal) [[ $uid -ge 1000 ]] || continue ;;
-        esac
-
-        # Initialize variables
+        # Initialize all variables at the start
         local pass_status="N/A"
         local lock_status="N/A"
         local expiry_status="N/A"
@@ -51,6 +45,29 @@ generate_data() {
         local shell_status
         local max_days="-1"
         local min_days="0"
+        local sort_key_shell="999"
+        local home_dir="$home"
+        local password_status="N/A"
+        local account_lock_status="N/A"
+        local last_change_status="N/A"
+        local min_max_days="0/99999"
+        local last_login_status="Nunca"
+        local user="$username"
+
+        # Filter users based on parameter
+        case "$filter" in
+            system) [[ $uid -lt 1000 ]] || continue ;;
+            normal) [[ $uid -ge 1000 ]] || continue ;;
+        esac
+
+        # Process shell status
+        if [[ "$shell" == "/sbin/nologin" || "$shell" == "/bin/false" ]]; then
+            shell_status="🔴 NO LOGIN"
+            sort_key_shell="2"
+        else
+            shell_status="🟢 $shell"
+            sort_key_shell="1"
+        fi
 
         # Get chage info if available
         if chage -l "$username" &>/dev/null; then
@@ -138,7 +155,7 @@ generate_data() {
                 login_timestamp=$(date -d "$last_login_status" +%s 2>/dev/null || echo 0)
             fi
         fi
-        # Imprimir fila con delimitador para que 'column' la procese.
+        # Imprimir fila con delimitador para que 'column' la procese
         echo "$sort_key_shell|$login_timestamp|$user ($uid)|$home_dir|$shell_status|$password_status|$account_lock_status|$expiry_status|$last_change_status|$min_max_days|$last_login_status"
     done < /etc/passwd
 }
