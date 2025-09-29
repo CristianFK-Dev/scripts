@@ -3,9 +3,7 @@
 set -euo pipefail
 
 cs() {
-    if [ -t 1 ]; then
-        clear
-    fi
+      clear
 }
 
 if [[ $EUID -ne 0 ]]; then
@@ -21,12 +19,6 @@ echo -e "|Podés usarlo para deshabilitar módulos como cramfs, udf, squashfs, e
 echo -e "|_______________________________________________________________________________________________________|\n"
 read -rp "Presioná ENTER para continuar..."
 cs
-
-if [ -t 1 ]; then
-    clear
-fi
-
-
 
 echo -e "\n📂 Listando sistemas de archivos cargados..."
 
