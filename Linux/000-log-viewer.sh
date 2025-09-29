@@ -43,8 +43,9 @@ check_dependencies() {
 }
 
 get_logs() {
-    #mapfile -t logs < <(find /var/log -type f -name "*.log" -o -name "syslog" | sort)
+    mapfile -t logs < <(find /var/log -type f -name "*.log" -o -name "syslog" | sort)
     mapfile -t logs < <(find /fidelynet3/logs -type f -name "*.log" -o -name "syslog" | sort)
+    mapfile -t logs < <(find /opt/tomcat/logs -type f -name "*.log" -o -name "syslog" | sort)
 }
 
 show_log_menu() {
