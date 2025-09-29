@@ -24,11 +24,17 @@
 Este script (`000-log-viewer.sh`) proporciona una interfaz interactiva para monitorear logs del sistema en tiempo real usando `multitail`.
 
 **Características principales:**
-- 📋 Lista todos los archivos .log disponibles en `/var/log`
-- 🔍 Permite monitorear hasta 4 logs simultáneamente
+- 📋 Lista los directorios de logs disponibles
+- 🗂️ Permite seleccionar múltiples directorios de logs
+- 🔍 Monitoreo de hasta 4 logs simultáneamente
+- ✅ Verificación de disponibilidad de directorios
 - 🎨 Visualización en color para mejor legibilidad
 - 🔄 Actualización en tiempo real
 - 🔧 Instalación automática de dependencias
+
+**Directorios soportados por defecto:**
+- `/var/log`
+- `/opt/tomcat/logs`
 
 ---
 
@@ -55,10 +61,18 @@ sudo ./000-log-viewer.sh
 ### 💡 Ejemplo de uso:
 
 1. Ejecutar el script con sudo
-2. Seleccionar cantidad de logs a monitorear (1-4)
-3. Elegir los logs por número
-4. Ver el monitoreo en tiempo real
-5. Usar Ctrl+C para volver al menú
+2. Seleccionar directorios de logs (usando números o 'a' para todos)
+3. Seleccionar cantidad de logs a monitorear (1-4)
+4. Elegir los logs específicos por número
+5. Ver el monitoreo en tiempo real
+6. Usar Ctrl+C para volver al menú
+
+### 📊 Opciones de visualización:
+
+- Selección individual de directorios
+- Selección de todos los directorios ('a')
+- Indicadores visuales de disponibilidad (✓/×)
+- Monitoreo de múltiples logs en paralelo
 
 ---
 
