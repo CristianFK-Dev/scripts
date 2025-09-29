@@ -43,9 +43,59 @@ check_dependencies() {
 }
 
 get_logs() {
-    mapfile -t logs < <(find /var/log -type f -name "*.log" -o -name "syslog" | sort)
-    mapfile -t logs < <(find /fidelynet3/logs -type f -name "*.log" -o -name "syslog" | sort)
-    mapfile -t logs < <(find /opt/tomcat/logs -type f -name "*.log" -o -name "syslog" | sort)
+    local log_dirs=(
+        "/var/log"
+        "/fidelynet3/logs"
+        "/opt/tomcat/logs"
+    )
+
+    cs
+    echo -e "\n📂 Directorios de logs disponibles:\n"
+    for i in "${!log_dirs[@]}"; do
+        if [ -d "${log_dirs[$i]}" ]; then
+            echo -e "${CYAN}$((i+1))${RESET}) ${log_dirs[$i]} ${GREEN}✓${RESET}"
+        else
+            echo -e "${CYAN}$((i+1))${RESET}) ${log_dirs[$i]} ${RED}×${RESET}"
+        fi
+    done
+    echo -e "\n${YELLOW}a${RESET}) Todos los directorios"
+    echo -e "${YELLOW}s${RESET}) 🚪 Salir"
+
+    echo -e "\n👉 Elegí los directorios (ej: 1 2):"
+    read -ra choices
+
+    if [[ "${choices[0],,}" == "s" ]]; then
+        cs
+        echo -e "\n👋 ¡Hasta luego!\n"
+        exit 0
+    fi
+
+    logs=()
+    if [[ "${choices[0],,}" == "a" ]]; then
+        for dir in "${log_dirs[@]}"; do
+            if [ -d "$dir" ]; then
+                mapfile -t -O "${#logs[@]}" logs < <(find "$dir" -type f -name "*.log" -o -name "syslog" 2>/dev/null | sort)
+            fi
+        done
+    else
+        for choice in "${choices[@]}"; do
+            if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#log_dirs[@]} )); then
+                echo -e "\n❌ Selección inválida: $choice"
+                sleep 2
+                continue
+            fi
+            dir="${log_dirs[$((choice-1))]}"
+            if [ -d "$dir" ]; then
+                mapfile -t -O "${#logs[@]}" logs < <(find "$dir" -type f -name "*.log" -o -name "syslog" 2>/dev/null | sort)
+            fi
+        done
+    fi
+
+    if [ ${#logs[@]} -eq 0 ]; then
+        echo -e "\n❌ No se encontraron logs en los directorios seleccionados"
+        sleep 2
+        get_logs
+    fi
 }
 
 show_log_menu() {
