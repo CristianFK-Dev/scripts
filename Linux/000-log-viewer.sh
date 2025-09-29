@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+cs() {
+    clear
+}
+
 cs
 echo -e " .______________________________________________________________________________________________________."
 echo -e " | 🧾 000-log-visor.sh                                                                                |"                                                                            
@@ -19,10 +23,6 @@ MAGENTA="\e[35m"
 CYAN="\e[36m"
 WHITE="\e[97m"
 RESET="\e[0m"
-
-cs() {
-    clear
-}
 
 if [[ $EUID -ne 0 ]]; then
     echo -e "\n🔐 Este script debe ejecutarse como root (usá sudo)\n"

@@ -3,7 +3,9 @@
 set -euo pipefail
 
 cs() {
-      clear
+    if [ -t 1 ]; then
+        clear
+    fi
 }
 
 if [[ $EUID -ne 0 ]]; then
