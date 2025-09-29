@@ -84,7 +84,7 @@ main() {
             echo -e "\n❌ Debés elegir exactamente $num_logs logs"
             sleep 2
             continue
-        
+        fi
 
         for choice in "${choices[@]}"; do
             if ! [[ "$choice" =~ ^[0-9]+$ ]] || \
@@ -107,6 +107,7 @@ main() {
         echo -e "📌 Presioná Ctrl+C para volver al menú\n"
         sleep 2
         eval "$cmd"
+    done
 }
 
 main
