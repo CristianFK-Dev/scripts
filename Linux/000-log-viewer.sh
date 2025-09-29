@@ -107,7 +107,6 @@ main() {
         echo -e "📌 Presioná Ctrl+C para volver al menú\n"
         sleep 2
         eval "$cmd"
-    done
 }
 
 main
