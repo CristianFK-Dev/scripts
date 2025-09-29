@@ -8,9 +8,9 @@ cs() {
 
 cs
 echo -e " .______________________________________________________________________________________________________."
-echo -e " | 🧾 000-log-visor.sh                                                                                |"                                                                            
+echo -e " | 🧾 000-log-visor.sh                                                                                 |"                                                                            
 echo -e " | Este script permite visualizar y monitorear archivos de log en tiempo real.                          |"
-echo -e " | Podés elegir uno o varios logs por número, o ver todos.                                            |"
+echo -e " | Podés elegir uno o varios logs por número, o ver todos.                                             |"
 echo -e " |______________________________________________________________________________________________________|\n"
 read -rp " Presioná ENTER para continuar..." 
 
@@ -84,7 +84,7 @@ main() {
             echo -e "\n❌ Debés elegir exactamente $num_logs logs"
             sleep 2
             continue
-        }
+        
 
         for choice in "${choices[@]}"; do
             if ! [[ "$choice" =~ ^[0-9]+$ ]] || \
