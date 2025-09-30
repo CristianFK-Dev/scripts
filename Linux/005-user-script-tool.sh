@@ -414,17 +414,17 @@ echo -e "${CYAN}'---------------------------------------------------------------
 while true; do
     cs
 
-echo -e "${CYAN}.@-------------------------------------------------------------------------------------."
-echo -e "${CYAN}|  ${CYAN}_   _ ____  _____ ____    ____   ____ ____  ___ ____ _____   ${CYAN}|                      |"
-echo -e "${CYAN}| | | | / ___|| ____|  _ \  / ___| / ___|  _ \|_ _|  _ \_   _|  ${CYAN}|---------${YELLOW}MENU${CYAN}---------|"
-echo -e "${CYAN}| | | | \___ \|  _| | |_) | \___ \| |   | |_) || || |_) || |    ${CYAN}|   ${GREEN}AUDITAR USUARIOS${CYAN}   |"
-echo -e "${CYAN}| | |_| |___) | |___|  _ <   ___) | |___|  _ < | ||  __/ | |    ${CYAN}|                      |"
-echo -e "${CYAN}|  \___/|____/|_____|_| \_\ |____/ \____|_| \_\___|_|    |_|    ${CYAN}|   ${YELLOW}1)${RESET}👥 Todos         ${CYAN}|"
-echo -e "${CYAN}| |_   _/ _ \ / _ \| |                                          ${CYAN}|   ${YELLOW}2)${RESET}🤖 Sistema       ${CYAN}|"
-echo -e "${CYAN}|   | || | | | | | | |                                          ${CYAN}|   ${YELLOW}3)${RESET}😊 Normales      ${CYAN}|"
-echo -e "${CYAN}|   | || |_| | |_| | |___                                       ${CYAN}|   ${RED}s)${RESET}🚪 SALIR         ${CYAN}|"
-echo -e "${CYAN}|   |_| \___/ \___/|_____|${MAGENTA}#GESTIÓN DE USUARIOS# -by CristianFK- ${CYAN}|                      |"
-echo -e "${CYAN}'--------------------------------------------------------------------------------------'${RESET}"
+echo -e "${CYAN}.@-----------------------------------------------------------------------------------------."
+echo -e "${CYAN}|  ${CYAN}_   _ ____  _____ ____    ____   ____ ____  ___ ____ _____       ${CYAN}|                      |"
+echo -e "${CYAN}| | | | / ___|| ____|  _ \  / ___| / ___|  _ \|_ _|  _ \_   _|      ${CYAN}|---------${YELLOW}MENU${CYAN}---------|"
+echo -e "${CYAN}| | | | \___ \|  _| | |_) | \___ \| |   | |_) || || |_) || |        ${CYAN}|   ${GREEN}AUDITAR USUARIOS${CYAN}   |"
+echo -e "${CYAN}| | |_| |___) | |___|  _ <   ___) | |___|  _ < | ||  __/ | |        ${CYAN}|                      |"
+echo -e "${CYAN}|  \___/|____/|_____|_| \_\ |____/ \____|_| \_\___|_|    |_|        ${CYAN}|   ${YELLOW}1)${RESET}👥 Todos         ${CYAN}|"
+echo -e "${CYAN}| |_   _/ _ \ / _ \| |                                              ${CYAN}|   ${YELLOW}2)${RESET}🤖 Sistema       ${CYAN}|"
+echo -e "${CYAN}|   | || | | | | | | |                                              ${CYAN}|   ${YELLOW}3)${RESET}😊 Normales      ${CYAN}|"
+echo -e "${CYAN}|   | || |_| | |_| | |___                                           ${CYAN}|   ${RED}s)${RESET}🚪 SALIR         ${CYAN}|"
+echo -e "${CYAN}|   |_| \___/ \___/|_____|${MAGENTA}#GESTIÓN DE USUARIOS# -by CristianFK-     ${CYAN}|                      |"
+echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 
     read -rp $'\e[38;5;208m   TU ELECCIÓN: \e[0m' choice
 

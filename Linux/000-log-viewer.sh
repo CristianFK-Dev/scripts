@@ -9,9 +9,9 @@ cs() {
 cs
 echo -e " .______________________________________________________________________________________________________."
 echo -e " | 🧾 000-log-visor.sh                                                                                 |"                                                                            
-echo -e " | Este script permite visualizar y monitorear archivos de log en tiempo real.                          |"
+echo -e " | Este script permite visualizar y monitorear archivos de log en tiempo real.                         |"
 echo -e " | Podés elegir uno o varios logs por número, o ver todos.                                             |"
-echo -e " |______________________________________________________________________________________________________|\n"
+echo -e " |_____________________________________________________________________________________________________|\n"
 read -rp " Presioná ENTER para continuar..." 
 
 # Colors
