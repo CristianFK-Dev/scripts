@@ -376,7 +376,7 @@ echo -e "${CYAN}|   | || |_| | |_| | |___                                       
 echo -e "${CYAN}|   |_| \___/ \___/|_____|                                      ${CYAN}|  ${YELLOW}8)${RESET}➕ Crear User         ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}|  ${YELLOW}9)${RESET}🗑️  Borrar User        ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}| ${YELLOW}10)${RESET}🔙 Volver             ${CYAN}|"
-echo -e "${CYAN}|    ${MAGENTA}#GESTIÓN DE USUARIOS# by -CristianFK- v1.0            ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
+echo -e "${CYAN}|    ${MAGENTA}#GESTIÓN DE USUARIOS# by -CristianFK- v1.0                ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 
         echo  "---------------------------------------------------------------------------------------------------------------------------------------------------------------------"
