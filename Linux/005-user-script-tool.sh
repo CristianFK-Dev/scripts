@@ -92,38 +92,32 @@ generate_data() {
                 chage_info=$(chage -l "$user" 2>/dev/null)
 
                 # Verificar estado de la cuenta (bloqueada por expiración)
-                account_expiry_date=$(echo "$chage_info" | awk -F: '/^Account expires/ {print $2}' | xargs)
-                if [[ -z "$account_expiry_date" || "$account_expiry_date" == "never" ]]; then
+                account_expiry_date=$(echo "$chage_info" | grep "Account expires" | cut -d: -f2 | xargs)
+                if [[ "$account_expiry_date" == "never" ]]; then
                     account_lock_status="✅UNLOCK"
                 else
-                    # Comparamos fechas en formato YYYY-MM-DD para evitar problemas de locale
-                    account_expiry_yyyymmdd=$(date -d "$account_expiry_date" "+%Y-%m-%d" 2>/dev/null)
-                    current_yyyymmdd=$(date "+%Y-%m-%d")
-                    if [[ -n "$account_expiry_yyyymmdd" && "$account_expiry_yyyymmdd" < "$current_yyyymmdd" ]]; then
-                        account_lock_status="❌BLOCK"
-                    else
-                        account_lock_status="✅UNLOCK"
-                    fi
+                    account_lock_status="❌BLOCK"
                 fi
 
-                # La columna VENCE muestra la expiración de la CONTRASEÑA.
-                expiry_date=$(echo "$chage_info" | awk -F: '/^Password expires/ {print $2}' | xargs)
-                if [[ -z "$expiry_date" || "$expiry_date" == "never" ]]; then
+                # La columna VENCE muestra la expiración de la CONTRASEÑA
+                expiry_date=$(echo "$chage_info" | grep "Password expires" | cut -d: -f2 | xargs)
+                if [[ "$expiry_date" == "never" ]]; then
                     expiry_status="Nunca"
                 else
-                    expiry_status=$(date -d "$expiry_date" "+%d/%m/%Y" 2>/dev/null || echo "$expiry_date")
+                    expiry_status="$expiry_date"
                 fi
 
-                last_change=$(echo "$chage_info" | awk -F: '/^Last password change/ {print $2}' | xargs)
-                if [[ -z "$last_change" || "$last_change" == "never" ]]; then
+                # Último cambio de contraseña
+                last_change=$(echo "$chage_info" | grep "Last password change" | cut -d: -f2 | xargs)
+                last_change_status="$last_change"
+                if [[ -z "$last_change" ]]; then
                     last_change_status="Nunca"
-                else
-                    last_change_status=$(date -d "$last_change" "+%d/%m/%Y" 2>/dev/null || echo "$last_change")
                 fi
 
-                min_days=$(echo "$chage_info" | awk -F: '/^Minimum number of days/ {print $2}' | xargs)
-                max_days=$(echo "$chage_info" | awk -F: '/^Maximum number of days/ {print $2}' | xargs)
-                min_max_days="${min_days:-?}/${max_days:-?}"
+                # Min/Max días
+                min_days=$(echo "$chage_info" | grep "Minimum" | cut -d: -f2 | xargs)
+                max_days=$(echo "$chage_info" | grep "Maximum" | cut -d: -f2 | xargs)
+                min_max_days="$min_days/$max_days"
 
                 # Obtener último login interactivo
                 last_login_info=$(LC_ALL=C lastlog -u "$user" 2>/dev/null | tail -n 1)
@@ -414,7 +408,7 @@ echo -e "${CYAN}'---------------------------------------------------------------
 while true; do
     cs
 
-echo -e "${CYAN}.4-----------------------------------------------------------------------------------------."
+echo -e "${CYAN}.1-----------------------------------------------------------------------------------------."
 echo -e "${CYAN}|  ${CYAN}_   _ ____  _____ ____    ____   ____ ____  ___ ____ _____       ${CYAN}|                      |"
 echo -e "${CYAN}| | | | / ___|| ____|  _ \  / ___| / ___|  _ \|_ _|  _ \_   _|      ${CYAN}|---------${YELLOW}MENU${CYAN}---------|"
 echo -e "${CYAN}| | | | \___ \|  _| | |_) | \___ \| |   | |_) || || |_) || |        ${CYAN}|   ${GREEN}AUDITAR USUARIOS${CYAN}   |"
