@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 set -euo pipefail
@@ -79,8 +80,8 @@ generate_data() {
                 min_max_days="N/A"
                 last_login_status="N/A"
             else
-                # Extraer estado de la contraseña (L=bloqueada, P=activa, NP=sin contraseña) 
-                password_state=$(echo "$password_info" | awk '{print $2}')  
+                # Extraer estado de la contraseña (L=bloqueada, P=activa, NP=sin contraseña)
+                password_state=$(echo "$password_info" | awk '{print $2}')
                 case "$password_state" in
                     "L") password_status="🔴BLOCK";;
                     "P") password_status="🟢ACTIVE";;
@@ -92,32 +93,38 @@ generate_data() {
                 chage_info=$(chage -l "$user" 2>/dev/null)
 
                 # Verificar estado de la cuenta (bloqueada por expiración)
-                account_expiry_date=$(echo "$chage_info" | grep "Account expires" | cut -d: -f2 | xargs)
-                if [[ "$account_expiry_date" == "never" ]]; then
+                account_expiry_date=$(echo "$chage_info" | awk -F: '/^Account expires/ {print $2}' | xargs)
+                if [[ -z "$account_expiry_date" || "$account_expiry_date" == "never" ]]; then
                     account_lock_status="✅UNLOCK"
                 else
-                    account_lock_status="❌BLOCK"
+                    # Comparamos fechas en formato YYYY-MM-DD para evitar problemas de locale
+                    account_expiry_yyyymmdd=$(date -d "$account_expiry_date" "+%Y-%m-%d" 2>/dev/null)
+                    current_yyyymmdd=$(date "+%Y-%m-%d")
+                    if [[ -n "$account_expiry_yyyymmdd" && "$account_expiry_yyyymmdd" < "$current_yyyymmdd" ]]; then
+                        account_lock_status="❌BLOCK"
+                    else
+                        account_lock_status="✅UNLOCK"
+                    fi
                 fi
 
-                # La columna VENCE muestra la expiración de la CONTRASEÑA
-                expiry_date=$(echo "$chage_info" | grep "Password expires" | cut -d: -f2 | xargs)
-                if [[ "$expiry_date" == "never" ]]; then
+                # La columna VENCE muestra la expiración de la CONTRASEÑA.
+                expiry_date=$(echo "$chage_info" | awk -F: '/^Password expires/ {print $2}' | xargs)
+                if [[ -z "$expiry_date" || "$expiry_date" == "never" ]]; then
                     expiry_status="Nunca"
                 else
-                    expiry_status="$expiry_date"
+                    expiry_status=$(date -d "$expiry_date" "+%d/%m/%Y" 2>/dev/null || echo "$expiry_date")
                 fi
 
-                # Último cambio de contraseña
-                last_change=$(echo "$chage_info" | grep "Last password change" | cut -d: -f2 | xargs)
-                last_change_status="$last_change"
-                if [[ -z "$last_change" ]]; then
+                last_change=$(echo "$chage_info" | awk -F: '/^Last password change/ {print $2}' | xargs)
+                if [[ -z "$last_change" || "$last_change" == "never" ]]; then
                     last_change_status="Nunca"
+                else
+                    last_change_status=$(date -d "$last_change" "+%d/%m/%Y" 2>/dev/null || echo "$last_change")
                 fi
 
-                # Min/Max días
-                min_days=$(echo "$chage_info" | grep "Minimum" | cut -d: -f2 | xargs)
-                max_days=$(echo "$chage_info" | grep "Maximum" | cut -d: -f2 | xargs)
-                min_max_days="$min_days/$max_days"
+                min_days=$(echo "$chage_info" | awk -F: '/^Minimum number of days/ {print $2}' | xargs)
+                max_days=$(echo "$chage_info" | awk -F: '/^Maximum number of days/ {print $2}' | xargs)
+                min_max_days="${min_days:-?}/${max_days:-?}"
 
                 # Obtener último login interactivo
                 last_login_info=$(LC_ALL=C lastlog -u "$user" 2>/dev/null | tail -n 1)
@@ -369,7 +376,7 @@ echo -e "${CYAN}|   | || |_| | |_| | |___                                       
 echo -e "${CYAN}|   |_| \___/ \___/|_____|                                      ${CYAN}|  ${YELLOW}8)${RESET}➕ Crear User         ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}|  ${YELLOW}9)${RESET}🗑️  Borrar User        ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}| ${YELLOW}10)${RESET}🔙 Volver             ${CYAN}|"
-echo -e "${CYAN}|    ${MAGENTA}#GESTIÓN DE USUARIOS# by -CristianFK- 30/09/2025           ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
+echo -e "${CYAN}|    ${MAGENTA}#GESTIÓN DE USUARIOS# by -CristianFK-                      ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 
         echo  "---------------------------------------------------------------------------------------------------------------------------------------------------------------------"
@@ -384,7 +391,7 @@ echo -e "${CYAN}'---------------------------------------------------------------
             ) | column -t -s '|' -o ' | '
         fi
         echo  "---------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-      
+
         read -rp $'\e[38;5;208m   TU ELECCIÓN: \e[0m' mgmt_choice
         echo ""
 
@@ -408,7 +415,7 @@ echo -e "${CYAN}'---------------------------------------------------------------
 while true; do
     cs
 
-echo -e "${CYAN}.------------------------------------------------------------------------------------------."
+echo -e "${CYAN}.4-----------------------------------------------------------------------------------------."
 echo -e "${CYAN}|  ${CYAN}_   _ ____  _____ ____    ____   ____ ____  ___ ____ _____       ${CYAN}|                      |"
 echo -e "${CYAN}| | | | / ___|| ____|  _ \  / ___| / ___|  _ \|_ _|  _ \_   _|      ${CYAN}|---------${YELLOW}MENU${CYAN}---------|"
 echo -e "${CYAN}| | | | \___ \|  _| | |_) | \___ \| |   | |_) || || |_) || |        ${CYAN}|   ${GREEN}AUDITAR USUARIOS${CYAN}   |"
