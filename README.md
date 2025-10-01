@@ -56,7 +56,7 @@ Ideal para administradores de sistemas, entornos de testing, laboratorios o desp
 
 | N° | Script | Documentación | Tipo | Win🪟 | Linux🐧 | MacOS🍎 | Estado |
 |---:|---------------|:-------------:|:----:|:----:|:----:|:----:|:----:|
-| 000| [SSH Keys admin](Windows/000_ssh_keys.py) | [README](Windows/Docs/000_ssh_keys.md) | Consola | ✅ | ✅ | ✅ |🚧 WIP 🚧 |
+| 000| [SSH Keys admin](Windows/000_ssh_keys.py) | [README](Windows/Docs/000_ssh_keys.md) | Consola | ✅ | ✅ | ✅ |✅ |
 | 001| [SSH Keys admin](Windows/001/001_ssh_keys_desktop.py) | ------ | Escritorio | ✅ | ✅ | ✅ |🚧 WIP 🚧 |
 
 
