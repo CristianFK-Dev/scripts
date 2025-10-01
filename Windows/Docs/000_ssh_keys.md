@@ -111,9 +111,6 @@ esta_otra_sin_pass,sin_pass@gmail.com
 >En caso de haber claves con nombres ya existentes en el sistema dentro de los archivos CSV, al correr la opción de generar claves múltiples, estas serán reemplazadas sin previo aviso, usar con precaución. 
 
 
-
-🚧 Trabajando 🚧
-
  
 [![Share Reddit](https://img.shields.io/badge/Compartir-FF4500?logo=reddit&logoColor=white)](https://www.reddit.com/submit?title=Check%20out%20this%20project%20on%20GitHub:%20https://github.com/CristianFK-Dev/scripts/blob/main/Windows/000_ssh_keys.py)
 [![Share LinkedIn](https://img.shields.io/badge/LinkedIn-Compartir-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/CristianFK-Dev/scripts/blob/main/Windows/000_ssh_keys.py)
