@@ -70,11 +70,13 @@ get_logs() {
         exit 0
     fi
 
-    logs=()
+  logs=()
     if [[ "${choices[0],,}" == "a" ]]; then
         for dir in "${log_dirs[@]}"; do
             if [ -d "$dir" ]; then
-                mapfile -t -O "${#logs[@]}" logs < <(find "$dir" -type f -name "*.log" -o -name "syslog" 2>/dev/null | sort)
+                mapfile -t -O "${#logs[@]}" logs < <(
+                    find "$dir" -type f \( -name "*.log" -o -name "*.out" -o -name "syslog" \) 2>/dev/null | sort
+                )
             fi
         done
     else
@@ -86,7 +88,9 @@ get_logs() {
             fi
             dir="${log_dirs[$((choice-1))]}"
             if [ -d "$dir" ]; then
-                mapfile -t -O "${#logs[@]}" logs < <(find "$dir" -type f -name "*.log" -o -name "syslog" 2>/dev/null | sort)
+                mapfile -t -O "${#logs[@]}" logs < <(
+                    find "$dir" -type f \( -name "*.log" -o -name "*.out" -o -name "syslog" \) 2>/dev/null | sort
+                )
             fi
         done
     fi
