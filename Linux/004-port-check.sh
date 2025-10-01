@@ -7,7 +7,7 @@ cs() {
 }
 
 check_dependencies() {
-    local deps=(nc nmap)
+    local deps=(ncat nmap)
     for dep in "${deps[@]}"; do
         if ! command -v "$dep" &>/dev/null; then
             cs
@@ -38,8 +38,15 @@ menu_inicial() {
     echo -e "\n🔍 004-ports-check.sh - Verificador de puertos y host\n"
     read -rp "👉 Ingresá la IP del host: " host_ip
 
+    local ip_flag=""
+    # Detectar si es una dirección IPv6
+    if [[ "$host_ip" =~ ":" ]]; then
+        echo -e "\n🔎 Dirección IPv6 detectada."
+        ip_flag="-6"
+    fi
+
     if ! ping -c 1 "$host_ip" &>/dev/null; then
-        echo -e "\n❌ El host $host_ip no responde."
+        echo -e "\n❌ El host $host_ip no responde❌ "
         sleep 2
         menu_inicial
     fi
@@ -47,7 +54,7 @@ menu_inicial() {
     echo -e "\n✅ Host $host_ip encontrado ✅\n"
     echo "Información del host:"
     echo "-------------------------------------"
-    nmap -sn "$host_ip" | grep -v "Starting"
+    nmap $ip_flag -sn "$host_ip" | grep -v "Starting"
     
     echo -e "\nIngresá los puertos a verificar:"
     echo "  - Separados por espacios (ej: 22 80 443)"
@@ -56,8 +63,8 @@ menu_inicial() {
 
     if [[ "$ports" == "a" ]]; then
         echo -e "\n🔍 Escaneando puertos comunes..."
-        echo -e "---------------------------------\n"
-        nmap -sV "$host_ip" | grep -v "Starting"
+        echo -e "-------------------------------------\n"
+        nmap $ip_flag -sV "$host_ip" | grep -v "Starting"
     else
         echo -e "\n🔍 Verificando puertos específicos..."
         echo -e "-------------------------------------\n"
@@ -67,9 +74,9 @@ menu_inicial() {
                 continue
             fi
             
-            if nc -zv "$host_ip" "$port" 2>/dev/null; then
+            if nc $ip_flag -zv "$host_ip" "$port" 2>/dev/null; then
                 estado="ABIERTO ✅"
-                servicio=$(nmap -p"$port" -sV "$host_ip" | grep "$port/tcp" | awk '{print $3}')
+                servicio=$(nmap $ip_flag -p"$port" -sV "$host_ip" | grep "$port/tcp" | awk '{print $3}')
             else
                 estado="CERRADO ❌"
                 servicio="Servicio N/A"

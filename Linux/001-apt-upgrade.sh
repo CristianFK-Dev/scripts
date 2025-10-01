@@ -24,8 +24,11 @@ read -rp " Presioná ENTER para continuar..."
 
 while true; do
     cs
-    echo -e "\n🔄 Actualizando lista de paquetes...\n"
+    #echo -e "\n🔄 Actualizando lista de paquetes...\n"
+    echo -e "\n🔄 Ejecutando 'apt update' para refrescar la lista de paquetes...\n"
+    apt update
 
+    echo -e "\nBuscando paquetes actualizables..."
     mapfile -t packages < <(apt list --upgradable 2>/dev/null | grep -v "Listing..." | awk -F'/' '{print $1}' | nl -w2 -s'. ')
     mapfile -t rawinfo < <(apt list --upgradable 2>/dev/null | grep -v "Listing...")
 
@@ -119,5 +122,5 @@ while true; do
         echo ""
     done
     echo -e "Presioná ENTER para volver al menú..."
-    read -
+    read -r
 done

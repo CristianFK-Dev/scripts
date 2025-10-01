@@ -3,14 +3,19 @@
 
 set -euo pipefail
 
-cs() {
-    clear
-}
 
 if [[ $EUID -ne 0 ]]; then
     echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"
     exit 1
 fi
+
+cs() {
+    clear
+}
+
+export LANG=en_US.UTF-8
+export LANGUAGE=
+export LC_ALL=en_US.UTF-8
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -375,7 +380,7 @@ echo -e "${CYAN}|   | || | | | | | | |                                          
 echo -e "${CYAN}|   | || |_| | |_| | |___                                       ${CYAN}|  ${YELLOW}7)${RESET}🔑 Cambiar Pass       ${CYAN}|"
 echo -e "${CYAN}|   |_| \___/ \___/|_____|                                      ${CYAN}|  ${YELLOW}8)${RESET}➕ Crear User         ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}|  ${YELLOW}9)${RESET}🗑️  Borrar User        ${CYAN}|"
-echo -e "${CYAN}|                                                               ${CYAN}| ${YELLOW}10)${RESET}🔙 Volver             ${CYAN}|"
+echo -e "${CYAN}|                                                               ${CYAN}| ${YELLOW} v)${RESET}🔙 Volver             ${CYAN}|"
 echo -e "${CYAN}|    ${MAGENTA}#GESTIÓN DE USUARIOS# by -CristianFK- v1.0                 ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 
@@ -405,7 +410,7 @@ echo -e "${CYAN}'---------------------------------------------------------------
             7) change_user_password ;;
             8) create_user ;;
             9) delete_user ;;
-           10) break ;;
+            v) break ;;
             s) cs; echo -e "\n👋 Saliendo.\n"; exit 0 ;;
             *) echo -e "\n❌ Opción no válida. Presioná ENTER para reintentar."; read -r ;;
         esac
@@ -426,6 +431,7 @@ echo -e "${CYAN}|   | || | | | | | | |                                          
 echo -e "${CYAN}|   | || |_| | |_| | |___                                           ${CYAN}|   ${RED}s)${RESET}🚪 SALIR         ${CYAN}|"
 echo -e "${CYAN}|   |_| \___/ \___/|_____|${MAGENTA}#GESTIÓN DE USUARIOS# -by CristianFK-     ${CYAN}|                      |"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
+echo -e "${CYAN}        LOCALE CONFIGURADAS: LANG=$LANG - LC_ALL=$LC_ALL - LANGUAGE=$LANGUAGE\n"
 
     read -rp $'\e[38;5;208m   TU ELECCIÓN: \e[0m' choice
 
