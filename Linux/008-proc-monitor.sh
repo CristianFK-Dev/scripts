@@ -44,13 +44,13 @@ menu_procesos() {
 
   case "$filtro" in
     all)
-      mapfile -t processes < <(ps -eo pid,uid,comm --sort=comm | awk 'NR>1 {printf("%s %s %s\n",$1,$2,$3)}' | nl -w2 -s'. ')
+      mapfile -t processes < <(ps -eo pid,uid,comm --sort=comm | awk 'NR>1 {printf("%-10s %-10s %s\n",$1,$2,$3)}' | nl -w3 -s'. ')
       ;;
     system)
-      mapfile -t processes < <(ps -eo pid,uid,comm --sort=comm | awk 'NR>1 && $2==0 {printf("%s %s %s\n",$1,$2,$3)}' | nl -w2 -s'. ')
+      mapfile -t processes < <(ps -eo pid,uid,comm --sort=comm | awk 'NR>1 && $2==0 {printf("%-10s %-10s %s\n",$1,$2,$3)}' | nl -w3 -s'. ')
       ;;
     user)
-      mapfile -t processes < <(ps -eo pid,uid,comm --sort=comm | awk 'NR>1 && $2>=1000 {printf("%s %s %s\n",$1,$2,$3)}' | nl -w2 -s'. ')
+      mapfile -t processes < <(ps -eo pid,uid,comm --sort=comm | awk 'NR>1 && $2>=1000 {printf("%-10s %-10s %s\n",$1,$2,$3)}' | nl -w3 -s'. ')
       ;;
   esac
 
@@ -60,7 +60,7 @@ menu_procesos() {
     menu_inicial
   }
 
-  echo -e " Nº  PID  UID  CMD"
+  echo -e "  Nº PID        UID        CMD"
   printf "%s\n" "${processes[@]}"
 
   echo -e "\n👉 Elegí procesos por número (ej: 1 14 24), o 'v' para volver:"
