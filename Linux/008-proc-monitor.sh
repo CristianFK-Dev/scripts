@@ -101,30 +101,91 @@ monitorear() {
 
   trap 'echo -e "\n⛔ Interrumpido"; read -rp "ENTER..."; menu_inicial' INT
 
+  # Detectar CLK_TCK para cálculo preciso de CPU (fallback 100)
+  local clk_tck
+  clk_tck=$(getconf CLK_TCK 2>/dev/null || echo 100)
+
+  # Arrays asociativos para guardar estado previo
+  declare -A prev_ticks
+  declare -A prev_time
+
+  # Toma de datos inicial para calcular el delta
+  for pair in "${pairs[@]}"; do
+    local pid="${pair%%:*}"
+    if [[ -f "/proc/$pid/stat" ]]; then
+      local content right stats
+      content=$(< "/proc/$pid/stat")
+      right="${content##*)}"
+      read -r -a stats <<< "$right"
+      # utime (idx 11) + stime (idx 12)
+      prev_ticks[$pid]=$(( ${stats[11]} + ${stats[12]} ))
+      prev_time[$pid]=$(date +%s.%N)
+    fi
+  done
+
   echo "$(date "+%Y-%m-%d %H:%M:%S") ----INICIO------------------------------------------------" | tee -a "$LOG_DIR"
 
   for ((i=1; i<=duration; i++)); do
+    # Esperamos 1 segundo para crear el intervalo de medición
+    sleep 1
+    local ts
     ts=$(date "+%Y-%m-%d %H:%M:%S")
+    
     for pair in "${pairs[@]}"; do
-      pid="${pair%%:*}"
-      name="${pair#*:}"
+      local pid="${pair%%:*}"
+      local name="${pair#*:}"
 
-      if ps -p "$pid" &>/dev/null; then
-        cpu_real=$(ps -T -p "$pid" -o %cpu= | awk '{sum+=$1} END {printf "%.1f",sum}')
-        mem=$(ps -p "$pid" -o %mem=)
-        rss=$(ps -p "$pid" -o rss=)
-        threads=$(ps -T -p "$pid" | tail -n +2 | wc -l)
+      if [[ -f "/proc/$pid/stat" ]]; then
+        local content right stats
+        content=$(< "/proc/$pid/stat")
+        right="${content##*)}"
+        read -r -a stats <<< "$right"
+        
+        local utime="${stats[11]}"
+        local stime="${stats[12]}"
+        local total_ticks=$(( utime + stime ))
+        local current_time
+        current_time=$(date +%s.%N)
+        
+        # Recuperar valores previos (o usar actuales si falló inicialización)
+        local p_ticks=${prev_ticks[$pid]:-$total_ticks}
+        local p_time=${prev_time[$pid]:-$current_time}
+        
+        local delta_ticks=$(( total_ticks - p_ticks ))
+        
+        # Cálculo de CPU usando awk para aritmética flotante
+        # Fórmula: (delta_ticks / clk_tck) / delta_seconds * 100
+        # Esto reporta uso "instantáneo" como top (Irix mode: 1 core = 100%)
+        local cpu_real
+        cpu_real=$(awk -v dt="$delta_ticks" -v ct="$current_time" -v pt="$p_time" -v clk="$clk_tck" 'BEGIN { 
+            period = ct - pt; 
+            if (period <= 0) period = 1; 
+            usage = (dt / clk) / period * 100; 
+            printf "%.1f", usage 
+        }')
+
+        # Actualizar estado
+        prev_ticks[$pid]=$total_ticks
+        prev_time[$pid]=$current_time
+
+        # Obtener MEM y RSS via ps por simplicidad
+        # Threads se obtiene directo de stat (idx 17 -> campo 20)
+        local threads="${stats[17]}"
+        
+        local mem_data
+        mem_data=$(ps -p "$pid" -o %mem=,rss= 2>/dev/null || echo "0.0 0")
+        local mem rss
+        read -r mem rss <<< "$mem_data"
 
         if [[ "$formato" == "resumido" ]]; then
-          echo "[$ts] $name (PID $pid) CPU_REAL: ${cpu_real}% MEM: ${mem}%" | tee -a "$LOG_DIR"
+          echo "[$ts] $name (PID $pid) CPU: ${cpu_real}% MEM: ${mem}%" | tee -a "$LOG_DIR"
         else
-          echo "[$ts] $name (PID $pid) CPU_REAL: ${cpu_real}% MEM: ${mem}% RSS: ${rss}KB THREADS: $threads" | tee -a "$LOG_DIR"
+          echo "[$ts] $name (PID $pid) CPU: ${cpu_real}% MEM: ${mem}% RSS: ${rss}KB THREADS: $threads" | tee -a "$LOG_DIR"
         fi
       else
         echo "[$ts] $name (PID $pid) finalizó." | tee -a "$LOG_DIR"
       fi
     done
-    sleep 1
   done
 
   echo "$(date "+%Y-%m-%d %H:%M:%S") ----FIN----------------------------------------------------" | tee -a "$LOG_DIR"
