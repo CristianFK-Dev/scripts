@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Mejoras Logs
+# En los logs tendria que tener una lista de los PID y el nombre del proceso antes del inicio del log
+# Al final del log se tendria que poner -----fin xx/xx/xx/ xx:xx:xxxx------ con el timestamp correspondiente
+
 set -euo pipefail
 
 LOG_DIR="/var/log/008-proc-monitor.log"
