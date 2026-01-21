@@ -5,9 +5,7 @@ set -euo pipefail
 LOG_DIR="/var/log/008-proc-monitor.log"
 touch "$LOG_DIR"
 
-cs() {
-  clear
-}
+cs() { clear; }
 
 if [[ $EUID -ne 0 ]]; then
    cs
@@ -45,7 +43,7 @@ menu_procesos() {
   echo -e "\n📋 Selección de procesos ($filtro)\n"
 
   case "$filtro" in
-    all) 
+    all)
       mapfile -t processes < <(ps -eo pid,uid,comm --sort=comm | awk 'NR>1 {printf("%s %s %s\n",$1,$2,$3)}' | nl -w2 -s'. ')
       ;;
     system)
@@ -56,48 +54,41 @@ menu_procesos() {
       ;;
   esac
 
-  if [ ${#processes[@]} -eq 0 ]; then
-    echo -e "\n❌ No se encontraron procesos para esta categoría."
-    read -rp "ENTER para volver al menú inicial..."
+  [[ ${#processes[@]} -eq 0 ]] && {
+    echo -e "\n❌ No se encontraron procesos."
+    read -rp "ENTER para volver..."
     menu_inicial
-  fi
+  }
 
   echo -e " Nº  PID  UID  CMD"
   printf "%s\n" "${processes[@]}"
 
   echo -e "\n👉 Elegí procesos por número (ej: 1 14 24), o 'v' para volver:"
   read -rp " Tu elección: " choice
-  
+
   [[ "$choice" == "v" ]] && menu_inicial
 
-  pairs=()  # almacenará PID:NOMBRE
+  pairs=()
   for num in $choice; do
-    if ! [[ "$num" =~ ^[0-9]+$ ]] || (( num < 1 || num > ${#processes[@]} )); then
-      echo -e "\n❌ Número inválido: $num"; sleep 2; menu_procesos "$filtro"
-    fi
     line="${processes[$((num-1))]}"
-    pid=$(echo "$line"  | awk '{print $2}')
-    name=$(echo "$line" | awk '{print $4}')
+    pid=$(awk '{print $2}' <<< "$line")
+    name=$(awk '{print $4}' <<< "$line")
     pairs+=( "${pid}:${name}" )
   done
-  cs
-  echo -e "\n✅ Procesos seleccionados:"
-  printf "%s\n" "👉 ${pairs[@]}"
-  echo -e "\n⏱️ ¿Cuántos segundos querés monitorear?"
-  read -rp " Tiempo en segundos: " duration
 
-  if ! [[ "$duration" =~ ^[0-9]+$ ]] || (( duration <= 0 )); then
-    echo -e "\n❌ Tiempo inválido."; sleep 2; menu_procesos "$filtro"
-  fi
-  echo -e "\n📊 ¿Qué formato preferís?"
-  echo "  1) Resumido (PID, CPU, MEM)"
-  echo "  2) Completo (PID, CPU, MEM, RSS, CMD)"
-  read -rp "👉 Formato: " formato
   cs
+  echo -e "\n⏱️ ¿Cuántos segundos querés monitorear?"
+  read -rp " Tiempo: " duration
+
+  echo -e "\n📊 Formato:"
+  echo "  1) Resumido (CPU REAL, MEM)"
+  echo "  2) Completo (CPU REAL, MEM, RSS, THREADS)"
+  read -rp "👉 Opción: " formato
+
   case "$formato" in
     1) formato="resumido" ;;
     2) formato="completo" ;;
-    *) echo -e "\n❌ Opción inválida"; sleep 2; menu_procesos "$filtro" ;;
+    *) menu_procesos "$filtro" ;;
   esac
 
   monitorear "$duration" "$formato" "${pairs[@]}"
@@ -108,21 +99,26 @@ monitorear() {
   local formato="$1"; shift
   local pairs=( "$@" )
 
-  trap 'echo -e "\n⛔ Monitoreo interrumpido."; read -rp "ENTER para volver al menú inicial..."; menu_inicial' INT
+  trap 'echo -e "\n⛔ Interrumpido"; read -rp "ENTER..."; menu_inicial' INT
 
-  echo -e "\n🚀 Monitoreando durante $duration segundos...\n"
-  echo "$(date "+%Y-%m-%d %H:%M:%S") ----INICIO------------------------------------------------------------------------------------------------" | tee -a "$LOG_DIR"
+  echo "$(date "+%Y-%m-%d %H:%M:%S") ----INICIO------------------------------------------------" | tee -a "$LOG_DIR"
+
   for ((i=1; i<=duration; i++)); do
     ts=$(date "+%Y-%m-%d %H:%M:%S")
     for pair in "${pairs[@]}"; do
       pid="${pair%%:*}"
       name="${pair#*:}"
-      if ps -p "$pid" > /dev/null 2>&1; then
-        read -r cpu mem rss cmdline <<<"$(ps -p "$pid" -o %cpu= -o %mem= -o rss= -o args=)"
-        if [ "$formato" = "resumido" ]; then
-          echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}%" | tee -a "$LOG_DIR"
+
+      if ps -p "$pid" &>/dev/null; then
+        cpu_real=$(ps -T -p "$pid" -o %cpu= | awk '{sum+=$1} END {printf "%.1f",sum}')
+        mem=$(ps -p "$pid" -o %mem=)
+        rss=$(ps -p "$pid" -o rss=)
+        threads=$(ps -T -p "$pid" | tail -n +2 | wc -l)
+
+        if [[ "$formato" == "resumido" ]]; then
+          echo "[$ts] $name (PID $pid) CPU_REAL: ${cpu_real}% MEM: ${mem}%" | tee -a "$LOG_DIR"
         else
-          echo "[$ts] $name (PID $pid) CPU: ${cpu}% MEM: ${mem}% RSS: ${rss} KB CMD: ${cmdline}" | tee -a "$LOG_DIR"
+          echo "[$ts] $name (PID $pid) CPU_REAL: ${cpu_real}% MEM: ${mem}% RSS: ${rss}KB THREADS: $threads" | tee -a "$LOG_DIR"
         fi
       else
         echo "[$ts] $name (PID $pid) finalizó." | tee -a "$LOG_DIR"
@@ -130,9 +126,9 @@ monitorear() {
     done
     sleep 1
   done
-  echo "$(date "+%Y-%m-%d %H:%M:%S") ----FIN--Se monitorearon $duration segundos-----------------------------------------------------------------------" | tee -a "$LOG_DIR"
-  echo -e "\n✅ Monitoreo finalizado. Ver logs en $LOG_DIR\n"
-  read -rp "ENTER para volver al menú inicial..."
+
+  echo "$(date "+%Y-%m-%d %H:%M:%S") ----FIN----------------------------------------------------" | tee -a "$LOG_DIR"
+  read -rp "ENTER para volver al menú..."
   menu_inicial
 }
 
