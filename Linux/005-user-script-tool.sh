@@ -381,7 +381,7 @@ echo -e "${CYAN}|   | || |_| | |_| | |___                                       
 echo -e "${CYAN}|   |_| \___/ \___/|_____|                                      ${CYAN}|  ${YELLOW}8)${RESET}➕ Crear User         ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}|  ${YELLOW}9)${RESET}🗑️  Borrar User        ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}| ${YELLOW} v)${RESET}🔙 Volver             ${CYAN}|"
-echo -e "${CYAN}|    ${MAGENTA}    #GESTIÓN DE USUARIOS# by -CristianFK- v1.0 - 25/01/2026    ${CYAN}  ${RED}s)${RESET}🚪 SALIR            ${CYAN}|"
+echo -e "${CYAN}|    ${MAGENTA}      #GESTIÓN DE USUARIOS# by -CristianFK- v1.0           ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 
         echo  "---------------------------------------------------------------------------------------------------------------------------------------------------------------------"
@@ -420,7 +420,7 @@ echo -e "${CYAN}'---------------------------------------------------------------
 while true; do
     cs
 
-echo -e "${CYAN}.4-----------------------------------------------------------------------------------------."
+echo -e "${CYAN}.------------------------------------------------------------------------------------------."
 echo -e "${CYAN}|  ${CYAN}_   _ ____  _____ ____    ____   ____ ____  ___ ____ _____       ${CYAN}|                      |"
 echo -e "${CYAN}| | | | / ___|| ____|  _ \  / ___| / ___|  _ \|_ _|  _ \_   _|      ${CYAN}|---------${YELLOW}MENU${CYAN}---------|"
 echo -e "${CYAN}| | | | \___ \|  _| | |_) | \___ \| |   | |_) || || |_) || |        ${CYAN}|   ${GREEN}AUDITAR USUARIOS${CYAN}   |"
@@ -429,7 +429,7 @@ echo -e "${CYAN}|  \___/|____/|_____|_| \_\ |____/ \____|_| \_\___|_|    |_|    
 echo -e "${CYAN}| |_   _/ _ \ / _ \| |                                              ${CYAN}|   ${YELLOW}2)${RESET}🤖 Sistema       ${CYAN}|"
 echo -e "${CYAN}|   | || | | | | | | |                                              ${CYAN}|   ${YELLOW}3)${RESET}😊 Normales      ${CYAN}|"
 echo -e "${CYAN}|   | || |_| | |_| | |___                                           ${CYAN}|   ${RED}s)${RESET}🚪 SALIR         ${CYAN}|"
-echo -e "${CYAN}|   |_| \___/ \___/|_____|${MAGENTA}#GESTIÓN DE USUARIOS# -by CristianFK- - 25/01/2026     ${CYAN}|                      |"
+echo -e "${CYAN}|   |_| \___/ \___/|_____|${MAGENTA}     #GESTIÓN DE USUARIOS# -by CristianFK- - 25/01/2026     ${CYAN}     |"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 echo -e "${CYAN}        LOCALE CONFIGURADAS: LANG=$LANG - LC_ALL=$LC_ALL - LANGUAGE=$LANGUAGE\n"
 
