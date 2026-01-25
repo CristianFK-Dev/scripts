@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-# Release 25/01/2026
+# Release - 25/01/2026
 
 cs() {
     if [ -t 1 ]; then

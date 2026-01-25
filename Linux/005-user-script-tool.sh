@@ -2,7 +2,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-# Release 25/01/2026
+# Release - 25/01/2026
 
 if [[ $EUID -ne 0 ]]; then
     echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"

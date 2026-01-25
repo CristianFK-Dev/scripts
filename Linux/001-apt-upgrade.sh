@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-# Release 25/01/2026
+# Release - 25/01/2026
 
 LOGFILE="/var/log/001-apt-upgrade.log"
 
