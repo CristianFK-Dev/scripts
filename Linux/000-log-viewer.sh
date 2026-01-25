@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+# Release 25/01/2026
 
 cs() {
     clear
@@ -8,7 +9,7 @@ cs() {
 
 cs
 echo -e " .______________________________________________________________________________________________________."
-echo -e " | 🧾 000-log-visor.sh                                                                                 |"                                                                            
+echo -e " | 🧾 000-log-visor.sh - 25/01/2026                                                                  |"                                                                            
 echo -e " | Este script permite visualizar y monitorear archivos de log en tiempo real.                         |"
 echo -e " | Podés elegir uno o varios logs por número, o ver todos.                                             |"
 echo -e " |_____________________________________________________________________________________________________|\n"

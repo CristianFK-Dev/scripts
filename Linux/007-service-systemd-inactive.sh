@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+# Release 25/01/2026
 
 cs() {
     clear
@@ -14,7 +15,7 @@ fi
 
 cs
 echo -e "._______________________________________________________________________________________________________."
-echo -e "| 🛠️  007-service-systemd-inactive.sh                                                                  |"
+echo -e "| 🛠️  007-service-systemd-inactive.sh - 25/01/2026                                                       |"
 echo -e "| Este script lista los servicios INACTIVOS de systemd y permite gestionarlos                           |"
 echo -e "| de forma interactiva. Podrás iniciar o ver el estado detallado                                        |"
 echo -e "| del servicio que elijas del menú.                                                                     |"

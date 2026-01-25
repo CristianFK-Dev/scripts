@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+# Release 25/01/2026
 
 cs() {
     clear
@@ -13,7 +14,7 @@ fi
 
 cs
 echo -e "._______________________________________________________________________________________________________."
-echo -e "| 🛠️ 006-service-systemd.sh                                                                             |"
+echo -e "| 🛠️ 006-service-systemd.sh - 25/01/2026                                                                |"
 echo -e "| Este script lista los servicios activos de systemd y permite gestionarlos                             |"
 echo -e "| de forma interactiva. Podrás ver el estado, detener o reiniciar                                       |"
 echo -e "| el servicio que elijas del menú.                                                                      |"

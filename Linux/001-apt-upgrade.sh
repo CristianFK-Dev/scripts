@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+# Release 25/01/2026
 
 LOGFILE="/var/log/001-apt-upgrade.log"
 
@@ -15,7 +16,7 @@ fi
 
 cs
 echo -e " .______________________________________________________________________________________________________."
-echo -e " | 🧾 001-apt-upgrade.sh                                                                                |"                                                                            
+echo -e " | 🧾 001-apt-upgrade.sh - 25/01/2026                                                                 |"                                                                            
 echo -e " | Este script actualiza la lista de paquetes APT o upgrade del so completo.                            |"
 echo -e " | Podés elegir uno o varios paquetes por número, o instalar todos.                                     |" 
 echo -e " | Los datos quedan registrados en $LOGFILE                                         |"

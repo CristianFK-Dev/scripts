@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+# Release 25/01/2026
 
 cs() {
     clear
@@ -13,7 +14,7 @@ fi
 
 cs
 echo -e "._______________________________________________________________________________________________________."
-echo -e "| 🧾002-mod-kernel.sh                                                                                   |"
+echo -e "| 🧾002-mod-kernel.sh - 25/01/2026                                                                    |"
 echo -e "| Este script permite listar y eliminar módulos del kernel activos.                                     |"
 echo -e "| También permite ver si hay módulos bloqueados por archivos de blacklist.                              |" 
 echo -e "| Por seguridad, se pedirá que escribas el nombre exacto del módulo antes de eliminarlo.                |"             

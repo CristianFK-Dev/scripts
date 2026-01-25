@@ -2,7 +2,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-
+# Release 25/01/2026
 
 if [[ $EUID -ne 0 ]]; then
     echo -e "\n🔒 Este script debe ejecutarse como root (usá sudo)\n"
@@ -381,7 +381,7 @@ echo -e "${CYAN}|   | || |_| | |_| | |___                                       
 echo -e "${CYAN}|   |_| \___/ \___/|_____|                                      ${CYAN}|  ${YELLOW}8)${RESET}➕ Crear User         ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}|  ${YELLOW}9)${RESET}🗑️  Borrar User        ${CYAN}|"
 echo -e "${CYAN}|                                                               ${CYAN}| ${YELLOW} v)${RESET}🔙 Volver             ${CYAN}|"
-echo -e "${CYAN}|    ${MAGENTA}#GESTIÓN DE USUARIOS# by -CristianFK- v1.0                 ${CYAN}|  ${RED}s)${RESET}🚪 SALIR              ${CYAN}|"
+echo -e "${CYAN}|    ${MAGENTA}    #GESTIÓN DE USUARIOS# by -CristianFK- v1.0 - 25/01/2026    ${CYAN}  ${RED}s)${RESET}🚪 SALIR            ${CYAN}|"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 
         echo  "---------------------------------------------------------------------------------------------------------------------------------------------------------------------"
@@ -429,7 +429,7 @@ echo -e "${CYAN}|  \___/|____/|_____|_| \_\ |____/ \____|_| \_\___|_|    |_|    
 echo -e "${CYAN}| |_   _/ _ \ / _ \| |                                              ${CYAN}|   ${YELLOW}2)${RESET}🤖 Sistema       ${CYAN}|"
 echo -e "${CYAN}|   | || | | | | | | |                                              ${CYAN}|   ${YELLOW}3)${RESET}😊 Normales      ${CYAN}|"
 echo -e "${CYAN}|   | || |_| | |_| | |___                                           ${CYAN}|   ${RED}s)${RESET}🚪 SALIR         ${CYAN}|"
-echo -e "${CYAN}|   |_| \___/ \___/|_____|${MAGENTA}#GESTIÓN DE USUARIOS# -by CristianFK-     ${CYAN}|                      |"
+echo -e "${CYAN}|   |_| \___/ \___/|_____|${MAGENTA}#GESTIÓN DE USUARIOS# -by CristianFK- - 25/01/2026     ${CYAN}|                      |"
 echo -e "${CYAN}'------------------------------------------------------------------------------------------'${RESET}"
 echo -e "${CYAN}        LOCALE CONFIGURADAS: LANG=$LANG - LC_ALL=$LC_ALL - LANGUAGE=$LANGUAGE\n"
 

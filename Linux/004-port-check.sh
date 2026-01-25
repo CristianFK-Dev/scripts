@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+# Release 25/01/2026
 
 cs() {
     clear
@@ -35,7 +36,7 @@ check_dependencies() {
 
 menu_inicial() {
     cs
-    echo -e "\n🔍 004-ports-check.sh - Verificador de puertos y host\n"
+    echo -e "\n🔍 004-ports-check.sh - Verificador de puertos y host - 25/01/2026\n"
     read -rp "👉 Ingresá la IP del host: " host_ip
 
     local ip_flag=""

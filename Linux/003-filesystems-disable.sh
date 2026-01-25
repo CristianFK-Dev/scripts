@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+# Release 25/01/2026
 
 cs() {
     if [ -t 1 ]; then
@@ -15,7 +16,7 @@ fi
 
 cs
 echo -e "._______________________________________________________________________________________________________."
-echo -e "| 🧾 003-filesystems-disable                                                                            |"
+echo -e "| 🧾 003-filesystems-disable - 25/01/2026                                                               |"
 echo -e "|Este script permite listar y desactivar sistemas de archivos soportados por el kernel.                 |"
 echo -e "|Podés usarlo para deshabilitar módulos como cramfs, udf, squashfs, etc.                                |"
 echo -e "|_______________________________________________________________________________________________________|\n"
